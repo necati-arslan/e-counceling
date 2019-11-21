@@ -1,0 +1,174 @@
+<!-- <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center ">
+    <div fxFlex="20%">
+        <img mat-card-image class="img" src="https://d2lm6fxwu08ot6.cloudfront.net/img-thumbs/960w/8V46UZCS0V.jpg">
+    </div>
+    <div fxFlex="20%">
+        <img mat-card-image class="img" src="https://d2lm6fxwu08ot6.cloudfront.net/img-thumbs/960w/LTLE4QGRVQ.jpg">
+    </div>
+    <div fxFlex="20%">
+        <img mat-card-image class="img" src="https://d2lm6fxwu08ot6.cloudfront.net/img-thumbs/960w/R926LU1YEA.jpg">
+    </div>
+    <div fxFlex="20%">
+        <img mat-card-image class="img" src="https://d2lm6fxwu08ot6.cloudfront.net/img-thumbs/960w/U9PP3KXXY2.jpg">
+    </div>
+</div> --> 
+
+
+
+
+
+<!-- <button (click)="layoutButton=layoutButton=='column' ? 'row' : 'column'">change</button>
+<div [fxLayout]="layoutButton">
+    <button>E1</button>
+    <button>E2</button>
+    <button>E3</button>
+
+</div> -->
+
+
+
+
+<!-- <div class="container" fxLayout="row">
+    <div style="background-color: blueviolet; flex:1 2 auto;"> I'm above on mobile, </div>
+    <div style="background-color: red; flex:1 1 auto;"> I'm below on mobile, and to the right on larger devices.</div>
+</div> -->
+
+
+<!-- <div  fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutGap="32px grid" >
+    <ng-container *ngFor="let _ of [1,2,3,4,5,6]">
+        <div fxFlex="0 1 calc(33.3% - 32px)" fxFlex.lt-md="0 1 calc(50% - 32px)" fxFlex.lt-sm="100%" style="border:1px solid black;padding: 32px;">I'm below on mobile, and to the right on larger devices.</div>
+    </ng-container>
+</div> -->
+
+<!-- <div style="border:1px solid black;padding:15px;" fxFlexFill>
+        <div fxFlex>1. One</div> <div fxFlex>2. Two</div> <div fxFlex>3. Three</div> <div>4. Four</div>
+ </div> -->
+
+fill row static
+     
+    <mat-card class="card-demo" (click)="toggleDirection()">
+        <mat-card-title>'Flex' to Fill Row</mat-card-title>
+        <mat-card-subtitle>Simple row using "flex" on 3rd element to fill available main axis.
+        </mat-card-subtitle>
+        <mat-card-content>
+          <div class="containerX">
+            <div [fxLayout]="direction" (click)="toggleDirection()" class="colored box"
+                 style="cursor: pointer;">
+              <div [fxFlex]="someValue" fxFlexOffset="15"> fxFlex="20"</div>
+              <div fxFlex="60"> fxFlex="60"</div>
+              <div fxFlex> fxFlex</div>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-footer>
+          <div class="hint">&lt;div fxLayout="{{ direction }}" &gt;</div>
+        </mat-card-footer>
+      </mat-card> 
+
+ <mat-card class="card-demo">
+    <mat-card-title><a href="" target="_blank">Layout Gap</a></mat-card-title>
+    <mat-card-subtitle>Using 'fxLayoutGap' to create a grid-like layout
+    </mat-card-subtitle>
+    <mat-card-content class="large">
+        <div fxFlexLayout fxLayoutAlign="center center" fxFlex=0%> 
+            <div fxFlexFill fxLayout="column" fxLayoutGap="10px grid" style="cursor: pointer;"
+                (click)="toggleDirection()">
+                <div fxFlex="25">
+                    <div class="one"  fxLayoutAlign="center center">
+                       Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam repellat ex, ipsum a aut dicta. Blanditiis fuga consequatur similique maiores ipsam voluptatum, nesciunt, eum laudantium doloremque alias veritatis sint officiis?
+                    </div>
+                </div>
+                <div fxFlex="25">
+                    <div class="two" fxFlexFill fxLayoutAlign="center center">
+                        B
+                    </div>
+                </div>
+                <div fxFlex="25">
+                    <div class="three" fxFlexFill fxLayoutAlign="center center">
+                        C
+                    </div>
+                </div>
+                <div fxFlex="25">
+                    <div class="four" fxFlexFill fxLayoutAlign="center center">
+                        D
+                    </div>
+                </div>
+                <div fxFlex="25">
+                    <div class="five" fxFlexFill fxLayoutAlign="center center">
+                        E
+                    </div>
+                </div>
+                <div fxFlex="25">
+                    <div class="six" fxFlexFill fxLayoutAlign="center center">
+                        F
+                    </div>
+                </div>
+                <div fxFlex="25">
+                    <div class="seven" fxFlexFill fxLayoutAlign="center center">
+                        G
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-footer class="bottomPad">
+        <div class="hint"></div>
+    </mat-card-footer>
+</mat-card>
+
+<!-- <mat-card class="card-demo">
+    <mat-card-title>Responsive Layout Directions</mat-card-title>
+    <mat-card-subtitle>Layout direction changes to 'column' for 'xs' or 'sm' viewport sizes:
+    </mat-card-subtitle>
+    <mat-card-content>
+        <div class="containerX">
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="coloredContainerX box">
+                <div fxFlex> I'm above on mobile, and to the left on larger devices.</div>
+                <div fxFlex> I'm below on mobile, and to the right on larger devices.</div>
+                <div fxFlex> I'm below on mobile, and to the right on larger devices.</div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-footer style="width:95%">
+        
+    </mat-card-footer>
+</mat-card> -->
+
+<mat-card class="card-demo">
+        <mat-card-title>Multiple Responsive Columns</mat-card-title>
+        <mat-card-subtitle>Simple row with nested layout containers. Note: the 1st column is
+          responsive.
+        </mat-card-subtitle>
+        <mat-card-content>
+          <div class="containerX">
+      
+            <div class="colorNested box" fxLayout="row" *ngIf="isVisible">
+              <div [fxLayout]="cols.firstCol"
+                   [fxLayout.xs]="cols.firstColXs"
+                   [fxLayout.md]="cols.firstColMd"
+                   [fxLayout.lg]="cols.firstColLg"
+                   [fxLayout.gt-lg]="cols.firstColGtLg"
+                   fxFlex="50%"
+                   fxFlex.gt-sm="25"
+                   fxHide.md
+                   (click)="toggleLayoutFor(1)" style="cursor: pointer;">
+                <div fxFlex>Col #1: First item in row</div>
+                <div fxFlex>Col #1: Second item in row</div>
+              </div>
+              <div [fxLayout]="cols.secondCol" fxFlex (click)="toggleLayoutFor(2)"
+                   style="cursor: pointer;">
+                <div fxFlex>Col #2: First item in column</div>
+                <div fxFlex>Col #2: Second item in column</div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-footer style="width:95%; font-size: 0.9em; padding-left: 25px;">
+          <div fxLayout="row" class="hint" fxLayoutAlign="space-around">
+            <div>&lt;div fxLayout="{{ cols.firstCol }}" fxFlex="50%" fxFlex.gt-sm="25%" fxHide.md &gt;
+            </div>
+            <div fxFlex></div>
+            <div>&lt;div fxLayout="{{ cols.secondCol }}" fxFlex &gt;</div>
+          </div>
+        </mat-card-footer>
+      </mat-card>

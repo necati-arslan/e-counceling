@@ -1,0 +1,111 @@
+<div>
+<mat-card style="top: 80px;" *ngIf="therapist$ |async as therapist"> 
+    <div style="border: 1px solid black;" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
+        <div fxFlex="10%">
+            <!--therapist photo and selection-->
+            <div style="border: 1px solid black;" fxLayout="column">
+                <div>
+                    <img mat-card-image
+                        src="https://i.pinimg.com/originals/00/fc/cf/00fccf7594ff0822281187d77a132e01.png">
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" (click)="askType('message')">Message</button>
+                    <button mat-raised-button color="primary" (click)="askType('chat')">Chat</button>
+                    <button mat-raised-button color="primary">Voice Call</button>
+                    <button style="width: 100%;" mat-raised-button color="primary">Face to Face</button>
+                </div>
+                <div *ngFor="let therapistOfUser of room$ | async">
+                    <a [routerLink]="therapistOfUser.id">{{therapistOfUser.therapist.therapistname}}</a>
+                </div>
+            </div>
+        </div>
+        <!--therapist photo and selection-->
+
+        <div fxFlex="90%" style="border: 1px solid black;">
+            <!--biografi and payment-->
+            <div fxLayout="column" fxFlexFill>
+                <div fxFlex>
+                    <h5>{{therapist.displayName}} State:{{therapist.state}}</h5>
+                </div>
+                <div fxFlex>
+                    <h5>Uzmanlık: {{therapist.expertise}}</h5>
+                </div>
+                <div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit earum iste sit ipsam laudantium
+                        quasi et neque pariatur aliquid unde commodi, consectetur vitae deleniti voluptatibus soluta!
+                        Laudantium repudiandae provident possimus?</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit earum iste sit ipsam laudantium
+                        quasi et neque pariatur aliquid unde commodi, consectetur vitae deleniti voluptatibus soluta!
+                        Laudantium repudiandae provident possimus?</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit earum iste sit ipsam laudantium
+                        quasi et neque pariatur aliquid unde commodi, consectetur vitae deleniti voluptatibus soluta!
+                        Laudantium repudiandae provident possimus?</p>
+                </div>
+                <div>
+                    <!--chat/message...-->
+                  
+                    <div fxLayout fxLayoutAlign="center center">
+                        <!--chat-->
+                        <form fxLayout="column" fxFlex="80%" class="paymentForm" style="border: 1px solid red;"
+                            [formGroup]="paymentForm" (ngSubmit)="onSubmitPayment(therapist)">
+
+                            <div *ngIf="ask=='message'" >
+                                    <!--message-->
+                                    <mat-form-field class="example-full-width">
+                                        <textarea formControlName="message" matInput placeholder="message"></textarea>
+                                    </mat-form-field>
+                            </div>
+
+                            <mat-form-field fxFlex="50%" hintLabel="Should be at least 6 characters long.">
+                                <input type="tel" matInput placeholder="card Number" formControlName="cardNumber"
+                                    appCardNumber>
+                                <mat-error *ngIf="paymentForm.get('cardNumber').hasError('required')">Lütfen bir kard
+                                    numarası giriniz</mat-error>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="50%" hintLabel="Should be at least 6 characters long.">
+                                <input type="text" matInput placeholder="Card Name" formControlName="cardName">
+                                <mat-error>Lütfen kard üzerinde yazılı ismi
+                                    giriniz</mat-error>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="50%" hintLabel="Should be at least 6 characters long.">
+                                <input type="text" matInput placeholder="CVV" formControlName="cardCVV" appCardCvv>
+                                <mat-error>Lütfen kard üzerinde yazılı ismi
+                                    giriniz</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>Cars</mat-label>
+                                <select matNativeControl required>
+                                    <option value="volvo">Volvo</option>
+                                    <option value="saab">Saab</option>
+                                    <option value="mercedes">Mercedes</option>
+                                    <option value="audi">Audi</option>
+                                </select>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>Cars</mat-label>
+                                <select matNativeControl required>
+                                    <option value="volvo">Volvo</option>
+                                    <option value="saab">Saab</option>
+                                    <option value="mercedes">Mercedes</option>
+                                    <option value="audi">Audi</option>
+                                </select>
+                            </mat-form-field>
+
+                            <button type="submit" mat-raised-button color="primary">Giriş</button>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</mat-card>
+</div>

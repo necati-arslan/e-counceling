@@ -1,0 +1,19 @@
+<div >
+   <p>dashboard-user works!</p>    
+
+   <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+ <div *ngIf="lastInfo">
+    <button 
+    mat-raised-button
+    [routerLink]="['/chats',lastInfo.roomId,lastInfo.chatId]">Last Chat</button>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>

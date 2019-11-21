@@ -1,0 +1,9 @@
+.is-success{
+    border:1px solid green;
+}
+.is-warning{
+    border:1px solid black;
+}
+.is-danger{
+    border:1px solid red;
+}

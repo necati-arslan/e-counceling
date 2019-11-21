@@ -1,0 +1,33 @@
+<mat-nav-list>
+    <mat-list-item fxLayoutAlign="flex-end" *ngIf="userAuth?.uid && !mobileQuery" (click)="onClose(isExpanded = !isExpanded)">
+        <mat-icon *ngIf="isExpanded">navigate_before</mat-icon>
+        <mat-icon *ngIf="!isExpanded">navigate_next</mat-icon>
+    </mat-list-item>
+
+    <mat-divider *ngIf="userAuth?.uid && !mobileQuery"></mat-divider>
+    <mat-list-item *ngIf="userAuth?.uid">
+        <mat-icon >account_circle</mat-icon>
+        <span *ngIf="isExpanded || mobileQuery" class="nav-caption">{{userAuth.displayName ? userAuth.displayName : userEmail }}</span>
+    </mat-list-item>
+    <a mat-list-item routerLink="/how-work" (click)="onClose()">
+        <mat-icon>account_circle</mat-icon>
+        <span *ngIf="isExpanded || mobileQuery"  class="nav-caption">Nasıl Çalışır</span>
+    </a>
+    <a mat-list-item routerLink="/blog" (click)="onClose()">
+        <mat-icon>account_circle</mat-icon>
+        <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Blog</span>
+    </a>
+    <a mat-list-item routerLink="/about-us" (click)="onClose()">
+        <mat-icon>account_circle</mat-icon>
+        <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Hakkımızda</span>
+    </a>
+    <a class="hemenBasla" mat-list-item *ngIf="!userAuth?.uid" (click)="startCounceling()">
+        <span class="nav-caption">Hemen Başla</span>
+    </a>
+    <a mat-list-item *ngIf="userAuth?.uid" (click)="onLogout()">
+    
+        <span *ngIf="isExpanded" class="nav-caption">Oturum Kapat</span>
+    </a>
+
+
+</mat-nav-list>

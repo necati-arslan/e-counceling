@@ -1,0 +1,6 @@
+<div *ngIf="lastInfo">
+    <button 
+    mat-raised-button
+    [routerLink]="['/chats',lastInfo.roomId,lastInfo.chatId]">Last Chat</button>
+   
+</div>

@@ -1,0 +1,107 @@
+.img {
+    width: 100%;
+    margin-bottom: 18%;
+  }
+
+  .container {
+    min-height: 100%;
+    width: 100%;
+    border: 2px solid black;
+  }
+
+  .card-picture {
+    width: 23%;
+    margin-bottom: 2%;
+  }
+
+  .card-demo mat-card,
+  .card-demo mat-card-content {
+    margin-bottom: 24px;
+  }
+  
+  .card-demo mat-card-footer {
+    left: 24px;
+    margin-bottom: 24px;
+  }
+
+  .containerX {
+    border: solid 1px #b6b6b6;
+    box-sizing: content-box !important;
+  }
+
+  .box {
+    border: solid 1px gray;
+  }
+
+  .colorNested, .colored, .coloredContainerX {
+    height: 200px;
+  }
+
+  div.colored > div {
+    padding: 8px;
+    box-shadow: 0 2px 5px 0 rgba(52, 47, 51, 0.63);
+    opacity: 0.9;
+    color: #fff;
+    text-align: center;
+    
+  }
+
+  div.colored > div:nth-child(10n+1), .one {
+    background-color: #009688;
+  }
+  div.colored > div:nth-child(10n+2), .two {
+    background-color: #3949ab;
+  }
+  
+  div.colored > div:nth-child(10n+3), .three {
+    background-color: #9c27b0;
+  }
+  
+  div.colored > div:nth-child(10n+4), .four {
+    background-color: #8bc34a;
+  }
+  
+  div.colored > div:nth-child(10n+5), .five {
+    background-color: #03a9f4;
+  }
+  
+  div.colored > div:nth-child(10n+6), .six {
+    background-color: #c9954e;
+  }
+  
+  div.colored > div:nth-child(10n+7), .seven {
+    background-color: #ff5722;
+  }
+
+  div.coloredContainerX > div, div.colorNested > div > div {
+    padding: 8px;
+    box-shadow: 0 2px 5px 0 rgba(52, 47, 51, 0.63);
+    opacity: 0.9;
+    color: #fff;
+    text-align: center;
+  }
+
+  div.coloredContainerX > div:nth-child(10n+1), div.colorNested > div > div:nth-child(10n+1),
+div.box1 {
+  background-color: #009688;
+}
+
+div.coloredContainerX > div:nth-child(10n+2), div.colorNested > div > div:nth-child(10n+2),
+div.box2 {
+  background-color: #3949ab;
+}
+div.coloredContainerX > div:nth-child(10n+3), div.colorNested > div > div:nth-child(10n+2),
+div.box2 {
+  background-color: brown;
+}
+
+
+  .large {
+    height: 200px;
+    border:1px solid black;
+  }
+  
+  .large div.one, .large div.two {
+    color: white;
+    
+  }

@@ -1,0 +1,60 @@
+.banner{
+	background-image:url('./pictures/head.jpg');
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.banner-text{
+    padding:150px 0 150px 0;
+    text-align: center;
+}
+
+.banner-heading{
+	font-family: 'Lobster', cursive;
+	font-size: 75px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color:#fff;
+}
+
+.banner-sub-heading{
+	font-size: 30px;
+    font-weight: 300;
+    line-height: 30px;
+    margin-bottom: 30px;
+	color:#f1eaeb;
+    text-shadow:5px 5px 8px black;	
+    font-family: 'Lobster', cursive;
+}
+
+.banner-button{
+    background-color: #49a010;
+    color:white;
+	font-size: 20px;
+}
+
+/* XS */
+@media (max-width:599px){ 
+    
+.banner-text{
+    padding:140px 0 140px 0;
+    text-align: center;
+}
+
+.banner-heading{
+	font-family: 'Lobster', cursive;
+	font-size: 50px;
+    font-weight: 200;
+    margin-bottom: 20px;
+    color:#fff;
+}
+  
+    }
+
+  /* header intro end    */

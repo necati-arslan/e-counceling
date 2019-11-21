@@ -1,0 +1,81 @@
+.toolbarTop{
+  background-color:transparent;
+  position: fixed;
+  position: -webkit-fixed;
+  top: 0; /* Sets the sticky toolbar to be on top */
+  height: 80px;
+  z-index: 2;
+  margin: 0;
+
+} 
+.toolbarOffsetY{
+  background-color:rgba(0, 0, 0, 0.5);
+  position: fixed;
+  position: -webkit-fixed; /* For macOS/iOS Safari */
+  top: 0; /* Sets the sticky toolbar to be on top */
+  height: 80px;
+  z-index: 1000;
+  margin: 0;
+ 
+}
+.toolbarUser{
+  background-color:rgba(0, 0, 0, 0.5);
+  position: sticky;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 0; /* Sets the sticky toolbar to be on top */
+  height: 80px;
+  z-index: 1000;
+  margin: 0;
+  
+}
+
+a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  a:hover,
+  a:active {
+    color: rgb(233, 232, 231);
+    cursor: pointer;
+  }
+
+  
+ 
+  .navigation-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toolbarLink::after{
+    content:'';
+    display:block;
+    width:0px;
+    height:3px;
+    background:#49a010;
+    -webkit-transition:width 0.4s;
+    -moz-transition:width 0.4s;
+    -o-transition:width 0.4s;
+    -ms-transition:width 0.4s;
+    transition:width 0.4s;
+}
+
+.toolbarLink:hover::after{
+    width:100%;
+}
+
+.banner-button{
+  background-color: #49a010;
+  color:white;
+  font-size: 15px;
+}
+
+.material-icons{
+  font-size: 35px;
+}
+
+.menu > ul > li{
+  padding-right: 5px;
+  
+}

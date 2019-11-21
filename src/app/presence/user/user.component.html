@@ -1,0 +1,15 @@
+
+<div>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium vel laboriosam, nihil explicabo officiis quibusdam consectetur sequi doloremque voluptatum! Quod incidunt esse porro tenetur doloremque quibusdam nam magnam ducimus fuga!
+</div>
+
+<div *ngIf="presence$ | async as presence" class="tag is-large" 
+      [ngClass]="{
+          'is-success':  presence.status  === 'online',
+          'is-warning': presence.status  === 'away',
+          'is-danger':  presence.status  === 'offline'
+      }"
+>
+
+  {{ presence.status }}
+</div>

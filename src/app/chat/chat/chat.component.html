@@ -1,0 +1,32 @@
+<ng-container *ngIf="chat$ | async as chat">
+
+    <div class="top">
+      <p>
+          ecouncel/{{ chat.id }}
+      </p>
+    </div>
+
+
+    <div class="chat">
+
+
+      <div fxLayout  *ngFor="let msg of chat.messages; trackBy: trackByCreated">
+
+        <div  fxFlex="100px" class="user">
+          <img style="width:100px;height:100px;" [src]="msg.user?.photoURL">  
+        </div>
+        <div fxLayoutAlign="center center"><span>{{ msg.user?.displayName }}</span>:</div>
+        <div fxLayoutAlign="start center"><p>{{ msg.content }}</p></div>
+        
+
+      </div>
+
+    </div>
+
+    <div class="form">
+      <input [(ngModel)]="newMsg" (keydown.enter)="submit(chat.id)">
+
+      <button (click)="submit(chat.id)">Send</button>
+    </div>
+
+</ng-container>

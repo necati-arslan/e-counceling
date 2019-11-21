@@ -1,0 +1,54 @@
+
+<mat-toolbar [ngClass]="{'toolbarTop':(userAuth===null)||(currentUrl && userAuth),
+                          'toolbarOffsetY':toolbarColor,
+                          'toolbarUser':!currentUrl && userAuth }">
+  <div fxFlexFill fxLayout=row fxLayoutAlign="center center" fxLayoutGap="5px">
+
+    <div fxFlex="0 1 auto" fxHide.gt-xs fxLayoutAlign="start">
+      <button  mat-icon-button (click)="onToggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div fxFlex="0 1 auto" fxLayoutAlign="start center" fxFlex.lt-sm fxLayoutAlign.lt-sm="flex-end">
+      <div>
+        <img src="/assets/payandamini.png" alt="">
+      </div>
+      <div>
+        <img style="padding-top:7px;" src="/assets/payandamintext.png" alt="">
+      </div>
+    </div>
+    <div class="menu" fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.lt-sm>
+      <ul fxLayout class="navigation-items">
+        <li class="toolbarLink">
+          <a routerLink="/how-work">Nasıl Çalışır</a>
+        </li>
+        <li class="toolbarLink">
+          <a routerLink="/blog">Blog</a>
+        </li>
+        <li class="toolbarLink">
+          <a routerLink="/about-us">Hakkımızda</a>
+        </li>
+        <li *ngIf="!userAuth?.uid">
+          <button mat-raised-button class="banner-button" (click)="startCounceling()">Hemen Başla</button>
+        </li>
+
+        <li class="toolbarLink" *ngIf="userAuth?.uid">
+          <a (click)="onLogout()">Logout</a>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="userAuth?.uid" style="cursor: pointer;" fxFlex="0 1 auto" fxLayoutAlign="start center" fxHide.lt-sm>
+      <a>/&nbsp;{{userAuth.displayName ? userAuth.displayName : userEmail }}</a>
+      <i class="material-icons">
+        account_circle
+      </i>
+    </div>
+
+
+
+
+
+  </div>
+
+</mat-toolbar>

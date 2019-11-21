@@ -1,0 +1,188 @@
+<div fxLayout fxLayoutAlign="center center">
+
+    <div *ngIf="!recommendedTherapist" fxFlex="50%" fxFlex.xs="100%">
+        <div fxLayout="column">
+            <h3 style="text-align:center;  font-weight: 200;color:#4d4d4d; ">Formda verdiğiniz cevaplara göre, size en
+                iyi şekilde yardım edebilecek tarapistler
+                önerilecektir </h3>
+            <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="matchingForm"
+                (ngSubmit)="onSubmitMatch()">
+
+                <mat-form-field fxFlexFill>
+                    <mat-label>Aradığınız yardım konusu nedir?</mat-label>
+                    <mat-select formControlName="askHelp" multiple>
+                        <mat-option *ngFor="let help of askHelp$ | async" [value]="help.name">{{help.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+
+                <button type="submit" mat-raised-button color="primary" [disabled]="matchingForm.invalid">Giriş</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div *ngIf="recommendedTherapist" fxFlex="70%" fxFlex.xs="100%">
+        <mat-card *ngFor="let therapist of recommendedTherapist$ | async" class="example-card">
+            <div fxFlexFill fxLayout>
+                <div>
+                    <mat-card-header>
+                        <div mat-card-avatar class="example-header-image"></div>
+                        <mat-card-title>{{therapist.name}}</mat-card-title>
+                        <mat-card-subtitle>{{therapist.expertise}} </mat-card-subtitle>
+                    </mat-card-header>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta doloremque, magnam veniam
+                        incidunt amet vitae deleniti maiores, quaerat commodi libero iusto magni voluptatem tempore hic
+                        dolores earum reprehenderit nam ullam!</div>
+                    <mat-card-actions>
+                        <button mat-raised-button 
+                        [ngClass]="{
+                            'is-success':  therapist?.state  === 'online',
+                            'is-warning': therapist?.state  === 'away',
+                            'is-danger':  therapist?.state  === 'offline'
+                        }"
+
+                        [routerLink]="['/therapist', therapist.uid]"
+                        >{{therapist.state}}</button>
+                        <button mat-raised-button color="primary">Approve</button>
+                    </mat-card-actions>
+
+                </div>
+            </div>
+        </mat-card>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+     <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+     <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+     <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+     <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+     <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+     <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+     <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    
+
+
+
+</div>

@@ -1,0 +1,74 @@
+<h1 mat-dialog-title>Payanda ...</h1>
+
+<mat-dialog-content>
+
+    <mat-tab-group>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="material-icons">person</mat-icon>
+                Giriş Yap
+            </ng-template>
+
+            <section style="margin-top: 3px;" class="signup-form">
+
+                <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="loginForm"
+                    (ngSubmit)="onSubmitLogin()">
+
+                    <button class="socialButton" type="button" mat-raised-button>
+                        <img class="socialButton" src="/assets/social/google.png" alt="">
+                        <span style="padding-left: 1px;">Google ile Giriş Yap  </span> </button>
+
+                    <button   style="background-color:#3C5A99;color:white;" class="socialButton" type="button" mat-raised-button>
+                        <img  src="/assets/social/facebook.png" alt="">
+                        <span >Facebook ile Giriş Yap</span> </button>
+
+                    <mat-form-field>
+                        <input  type="email" matInput placeholder="email" formControlName="email">
+                        <mat-error *ngIf="loginForm.get('email').hasError('email')">Lütfen doğru bir email adresi
+                            yazınız</mat-error>
+                        <mat-error *ngIf="loginForm.get('email').hasError('required')">Email boş brıaklımaz!
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field hintLabel="Should be at least 6 characters long.">
+                        <input type="password" matInput placeholder="Şifreniz" formControlName="password">
+                        <mat-error>Şifre En az 6 karakterli olmalıdır. </mat-error>
+                    </mat-form-field>
+
+                    <button type="submit" mat-raised-button color="primary"
+                        [disabled]="loginForm.invalid">Giriş</button>
+                </form>
+            </section>
+        </mat-tab>
+
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="person_add" >person_add</mat-icon>
+               &nbsp;Kayıt
+            </ng-template>
+            <section style="margin-top: 3px;" class="signup-form">
+
+                    <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="registerForm"
+                        (ngSubmit)="onSubmitRegister()">
+    
+                        <mat-form-field>
+                            <input  type="email" matInput placeholder="email" formControlName="emailRegister">
+                            <mat-error *ngIf="registerForm.get('emailRegister').hasError('email')">Lütfen doğru bir email adresi
+                                yazınız</mat-error>
+                            <mat-error *ngIf="registerForm.get('emailRegister').hasError('required')">Email boş brıaklımaz!
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field hintLabel="Should be at least 6 characters long.">
+                            <input type="password" matInput placeholder="Şifreniz" formControlName="passwordRegister">
+                            <mat-error>Şifre En az 6 karakterli olmalıdır. </mat-error>
+                        </mat-form-field>
+    
+                        <button type="submit" mat-raised-button color="primary"
+                            [disabled]="registerForm.invalid">Giriş</button>
+                    </form>
+                </section>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="false">No</button> 
+</mat-dialog-actions>

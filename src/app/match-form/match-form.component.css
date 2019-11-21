@@ -1,0 +1,17 @@
+.example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+  }
+
+  .is-success{
+    border:1px solid green;
+    background-color: green;
+}
+.is-warning{
+    border:1px solid black;
+    background-color: black;
+}
+.is-danger{
+    border:1px solid red;
+    background-color: red;
+}
