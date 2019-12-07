@@ -1,4 +1,4 @@
-<!-- <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center ">
+ <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center ">
     <div fxFlex="20%">
         <img mat-card-image class="img" src="https://d2lm6fxwu08ot6.cloudfront.net/img-thumbs/960w/8V46UZCS0V.jpg">
     </div>
@@ -11,7 +11,7 @@
     <div fxFlex="20%">
         <img mat-card-image class="img" src="https://d2lm6fxwu08ot6.cloudfront.net/img-thumbs/960w/U9PP3KXXY2.jpg">
     </div>
-</div> --> 
+</div>
 
 
 
@@ -143,7 +143,7 @@ fill row static
           <div class="containerX">
       
             <div class="colorNested box" fxLayout="row" *ngIf="isVisible">
-              <div [fxLayout]="cols.firstCol"
+              <div [fxLayout]="cols.firstCol" 
                    [fxLayout.xs]="cols.firstColXs"
                    [fxLayout.md]="cols.firstColMd"
                    [fxLayout.lg]="cols.firstColLg"
@@ -152,8 +152,7 @@ fill row static
                    fxFlex.gt-sm="25"
                    fxHide.md
                    (click)="toggleLayoutFor(1)" style="cursor: pointer;">
-                <div fxFlex>Col #1: First item in row</div>
-                <div fxFlex>Col #1: Second item in row</div>
+                   <img src="https://i.pinimg.com/originals/00/fc/cf/00fccf7594ff0822281187d77a132e01.png" alt="">
               </div>
               <div [fxLayout]="cols.secondCol" fxFlex (click)="toggleLayoutFor(2)"
                    style="cursor: pointer;">

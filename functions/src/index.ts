@@ -10,7 +10,7 @@ exports.onUserStatusChanged = functions.database.ref('/status/{uid}').onUpdate(
 
     // Then use other event data to create a reference to the
     // corresponding Firestore document.
-    const userStatusFirestoreRef = firestore.doc(`users/${context.params.uid}`);
+    const userStatusFirestoreRef = firestore.doc(`users/${context.params.uid}/status/${context.params.uid}`);
 
      
 
@@ -32,7 +32,7 @@ exports.onUserStatusChanged = functions.database.ref('/status/{uid}').onUpdate(
     eventStatus.last_changed = new Date(eventStatus.last_changed);
 
     // ... and write it to Firestore.
-    return userStatusFirestoreRef.update(eventStatus);
+    return userStatusFirestoreRef.set(eventStatus);
   });
 
   export {useWildcard} from './uidtherapist-trigger';

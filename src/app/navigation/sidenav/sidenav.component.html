@@ -1,14 +1,30 @@
 <mat-nav-list>
-    <mat-list-item fxLayoutAlign="flex-end" *ngIf="userAuth?.uid && !mobileQuery" (click)="onClose(isExpanded = !isExpanded)">
+    <mat-list-item fxLayoutAlign="flex-end" *ngIf="userAuth?.uid && !mobileQuery && !currentUrl " (click)="onClose(isExpanded = !isExpanded)">
         <mat-icon *ngIf="isExpanded">navigate_before</mat-icon>
         <mat-icon *ngIf="!isExpanded">navigate_next</mat-icon>
-    </mat-list-item>
+        <span>{{isExpanded}}</span>
+    </mat-list-item> 
 
-    <mat-divider *ngIf="userAuth?.uid && !mobileQuery"></mat-divider>
+    <mat-divider *ngIf="userAuth?.uid && !mobileQuery && !currentUrl"></mat-divider>
     <mat-list-item *ngIf="userAuth?.uid">
         <mat-icon >account_circle</mat-icon>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">{{userAuth.displayName ? userAuth.displayName : userEmail }}</span>
     </mat-list-item>
+    <!--therapist-->
+    <mat-list-item *ngIf="userAuth?.uid" (click)="showSubmenu = !showSubmenu">
+        <mat-icon >home</mat-icon>
+        <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Therapists</span>
+        <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || mobileQuery">expand_more</mat-icon>
+    </mat-list-item>
+    <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isExpanded">
+        <a *ngFor="let therapistOfUser of room$ | async" 
+        mat-list-item
+         [routerLink]="['/therapistOfUser',therapistOfUser.therapist.uidtherapist,therapistOfUser.id]">
+          <img class="therapistImg" *ngIf="therapistOfUser.therapist.photoUrl" [src]="therapistOfUser.therapist.photoUrl" alt="">
+          <span>{{therapistOfUser.therapist.therapistname}}</span>  
+        </a>
+    </div>
+    <!--therapist-->
     <a mat-list-item routerLink="/how-work" (click)="onClose()">
         <mat-icon>account_circle</mat-icon>
         <span *ngIf="isExpanded || mobileQuery"  class="nav-caption">Nasıl Çalışır</span>

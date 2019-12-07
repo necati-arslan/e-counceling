@@ -56,45 +56,54 @@ export class RoomService {
     roomRef=roomRef.id;
     switch(ask){
       case "chat":
-      this.creatChat(roomRef).then(chatRef=>{
+      this.creatSeans(roomRef,ask).then(chatRef=>{
         const chatId=chatRef.id;
-        this.creatLastSeans(therapist,user,roomRef,chatId);
+        this.creatLastSeans(therapist,user,roomRef,chatId,ask);
         this.router.navigate(['chats',roomRef,chatId]);  
       });
-      break;
-      case "message":
-        this.creatMessage(roomRef);
     }
     
   }
 
-  creatChat(roomRef) {
+  creatSeans(roomRef,ask) {
     const data = {
       createdAt: Date.now(),
       count: 0,
+      type:ask,
       messages: [],
       state: "continuing"
     };
-    return this.afs.collection(`rooms/${roomRef}/chats`).add(data);
-  }
-  
-  creatMessage(roomRef) {
-    const data = {
-      createdAt: Date.now(),
-      count: 0,
-      messages: 'test',
-      state: "continuing"
-    };
-    return this.afs.collection(`rooms/${roomRef}/messages`).add(data);
+    return this.afs.collection(`rooms/${roomRef}/seans`).add(data);
   }
 
-  creatLastSeans(therapist, user,roomId,chatId){
+  // creatChat(roomRef) {
+  //   const data = {
+  //     createdAt: Date.now(),
+  //     count: 0,
+  //     messages: [],
+  //     state: "continuing"
+  //   };
+  //   return this.afs.collection(`rooms/${roomRef}/chats`).add(data);
+  // }
+  
+  // creatMessage(roomRef) {
+  //   const data = {
+  //     createdAt: Date.now(),
+  //     count: 0,
+  //     messages: 'test',
+  //     state: "continuing"
+  //   };
+  //   return this.afs.collection(`rooms/${roomRef}/messages`).add(data);
+  // }
+
+  creatLastSeans(therapist, user,roomId,chatId,ask){
    const uidTherapist= therapist.uidtherapist;
    const uidUser=user.uid;
 
     const dataTherapist={
         roomId:roomId,
         chatId:chatId,
+        type:ask,
         createdtime:Date.now(),
         seansstate:'continuing',
         userId:uidUser,
@@ -103,6 +112,7 @@ export class RoomService {
     const dataUser={
         roomId:roomId,
         chatId:chatId,
+        type:ask,
         createdtime:Date.now(),
         seansstate:'continuing',
         uidtherapist:uidTherapist,
@@ -134,7 +144,7 @@ export class RoomService {
   getRooms(userId) {//{id: "Staam8232Mvzm1aSqiqH", createdAt: 1573391227287, uidtherapist: "s4LiWMGJSfavBcmg7Zy9UBbCkxH2", uiduser: "XgdaPpePthXbgBToO5TueJXfuio2"}
     return this.afs.collection('rooms', ref => ref.where('uiduser', '==', userId)).snapshotChanges()
       .pipe(
-        map(snaps => {
+        map(snaps => { 
           return snaps.map(snap => {
             return {
               id: snap.payload.doc.id,
@@ -143,6 +153,21 @@ export class RoomService {
           })
         })
       )
+  }
+
+  getSeans(roomId):Observable<any[]>{
+    return this.afs.collection(`rooms/${roomId}/seans/`).snapshotChanges()
+    .pipe(
+      map(snaps=>{
+        return snaps.map(snap=>{
+         return {
+           idSeans:snap.payload.doc.id,
+           ...snap.payload.doc.data()
+          }
+        })
+      })
+    );
+
   }
 
   

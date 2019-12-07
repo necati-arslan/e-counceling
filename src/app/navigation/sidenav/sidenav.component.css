@@ -1,3 +1,42 @@
 .hemenBasla{
     background-color:#49a010;
 }
+.menu-button {
+    -webkit-transition: 300ms ease-in-out;
+    transition: 300ms ease-in-out;
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  .menu-button.rotated {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+
+  .submenu {
+    padding: 0px;
+    margin: 0px;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+    -webkit-transform-origin: top;
+            transform-origin: top;
+    -webkit-transition: -webkit-transform 300ms  ease-out;
+    transition: -webkit-transform 300ms  ease-out;
+    transition: transform 300ms  ease-out;
+    transition: transform 300ms  ease-out, -webkit-transform 300ms  ease-out;
+    height: 0;
+    padding-left: 30px;
+    overflow: hidden;
+  }
+  .expanded {
+  height: auto;
+  -webkit-transform: scaleY(1);
+          transform: scaleY(1);
+  } 
+
+  .therapistImg{
+      width: 50px;
+      height: 50px;
+      overflow: hidden;
+      border-radius: 50%;
+      padding-right: 2px;
+  }

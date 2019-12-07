@@ -11,7 +11,11 @@ import {
     MatTabsModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatListModule
+    MatListModule,
+    MatDividerModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   } from '@angular/material'; 
 
 @NgModule({
@@ -27,7 +31,11 @@ import {
        MatTabsModule,
        MatSelectModule,
        MatSnackBarModule,
-       MatListModule
+       MatListModule,
+       MatDividerModule,
+       MatTableModule,
+       MatPaginatorModule,
+       MatSortModule
     ],
    exports:[
     MatButtonModule, 
@@ -41,7 +49,11 @@ import {
     MatTabsModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatListModule
+    MatListModule,
+    MatDividerModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
    ]
 })
 export class MaterialModule {

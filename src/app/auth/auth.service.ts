@@ -56,7 +56,7 @@ export class AuthService {
             );
         } else {
           return of(null);
-        } 
+        }
       })
     );
   }
@@ -82,6 +82,19 @@ export class AuthService {
       })
     );
 
+  }
+
+  getStatus(uid) {//{createdtime: "232323", state: "offline", seansstate: "finished"}
+    return this.afs.collection(`users/${uid}/status`).valueChanges().pipe(
+      switchMap((status: any) => {
+        return this.afs.collection(`users/${uid}/lastseans`).valueChanges().pipe(
+          map(lastSeans => {
+            let allStatus={...status[0],...lastSeans[0]};
+            return allStatus;
+            })
+        );
+      })
+    );
   }
 
 

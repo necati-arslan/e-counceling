@@ -23,7 +23,9 @@ export class AppComponent implements OnInit, OnDestroy {
   userAuth: any;
   currentUrl:Boolean=false;
   isExpanded:boolean=true;
-  opened:boolean;
+  isOpen:boolean;
+  mdq:boolean;//mediaquery
+ 
 
   @ViewChild('sidenav', {static: false}) sidenav: MatSidenav;
   
@@ -39,12 +41,16 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     private media: MediaMatcher
-
-  ) {
+  ) { 
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this._mobileQueryListener = () => {
+      changeDetectorRef.detectChanges();
+      this.mdq=this.mobileQuery.matches;
+    };
     this.mobileQuery.addListener(this._mobileQueryListener);
-    console.log(this.mobileQuery.matches); 
+    this.mdq=this.mobileQuery.matches;
+ 
+   
     
 
     router.events.subscribe((e: any) => {
@@ -72,7 +78,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   sidenavClose(isExpanded:boolean){
-     this.isExpanded= isExpanded;
+     this.isExpanded= isExpanded;//from sidenav component
+     console.log(this.isExpanded);
     if(this.mobileQuery.matches) this.sidenav.close();
   }
 

@@ -1,20 +1,25 @@
-<mat-sidenav-container [ngClass]="{'container':(!currentUrl && userAuth)}">
+<div fxFlex>
+<app-header  [userAuth]="userAuth$" [ngClass]="{'header':(!currentUrl && userAuth)}"
+      (sidenavToggle)="sidenav.toggle()"></app-header>
+<mat-sidenav-container [ngClass]="{'container':(!currentUrl && userAuth)}" autosize>
   <mat-sidenav [ngClass]="{'sidenavUser':(isExpanded && !currentUrl && userAuth),
-                            'sidenavExpanded':(!currentUrl && userAuth && !isExpanded && !mobileQuery.matches)}"
+                            'sidenavnotExpanded':(!currentUrl && userAuth && !isExpanded)}"
    #sidenav role="navigation"
-   [mode]="mobileQuery.matches ? 'over' : 'side'" 
-   [(opened)]="!mobileQuery.matches && userAuth "
+   [mode]="mobileQuery.matches || currentUrl  ? 'over' : 'side'" 
+   [opened]="!mobileQuery.matches && userAuth"
    fullscreen>
    
-    <app-sidenav [mobileQuery]="mobileQuery.matches"  [userAuth]="userAuth$" (closeSidenav)="sidenavClose($event)"></app-sidenav>
+    <app-sidenav 
+    [mobileQuery]="mdq"
+    [currentUrl]="currentUrl" 
+    [userAuth]="userAuth$"
+    (closeSidenav)="sidenavClose($event)"></app-sidenav>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <app-header [ngClass]="{'header':(!currentUrl && userAuth)}"  [userAuth]="userAuth$"
-      (sidenavToggle)="sidenav.toggle()"></app-header>
-    
     <main>
       <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
+</div>

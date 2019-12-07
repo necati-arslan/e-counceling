@@ -1,7 +1,6 @@
 .toolbarTop{
   background-color:transparent;
   position: fixed;
-  position: -webkit-fixed;
   top: 0; /* Sets the sticky toolbar to be on top */
   height: 80px;
   z-index: 2;
@@ -11,17 +10,16 @@
 .toolbarOffsetY{
   background-color:rgba(0, 0, 0, 0.5);
   position: fixed;
-  position: -webkit-fixed; /* For macOS/iOS Safari */
   top: 0; /* Sets the sticky toolbar to be on top */
   height: 80px;
   z-index: 1000;
   margin: 0;
  
 }
-.toolbarUser{
+.toolbarUser{ 
   background-color:rgba(0, 0, 0, 0.5);
-  position: sticky;
-  position: -webkit-sticky; /* For macOS/iOS Safari */
+ position: fixed;
+   /* For macOS/iOS Safari */
   top: 0; /* Sets the sticky toolbar to be on top */
   height: 80px;
   z-index: 1000;
@@ -55,9 +53,6 @@ a {
     height:3px;
     background:#49a010;
     -webkit-transition:width 0.4s;
-    -moz-transition:width 0.4s;
-    -o-transition:width 0.4s;
-    -ms-transition:width 0.4s;
     transition:width 0.4s;
 }
 

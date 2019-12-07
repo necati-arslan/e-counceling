@@ -18,7 +18,7 @@ export class ChatService {
     chatRef:string;
 
     get(roomId,chatId) {
-      this.chatRef=`rooms/${roomId}/chats`
+      this.chatRef=`rooms/${roomId}/seans`
       return this.afs
         .collection<any>(this.chatRef)
         .doc(chatId)

@@ -2,7 +2,13 @@ mat-sidenav{
   width: 250px;
   z-index: 1000;
 }
-  
+app-header{
+  z-index: 100;
+}
+mat-sidenav-container{
+  position: unset;
+}
+
   .sidenavUser {
     width: 250px;
     position: fixed;
@@ -10,13 +16,13 @@ mat-sidenav{
     bottom: 0px;
     z-index: 1000;
   }
-  .sidenavExpanded{
+  .sidenavnotExpanded{
     width: auto;
     position: fixed;
     top:80px;
     bottom: 0px;
     z-index: 1000;
-  }
+    }
   
   mat-sidenav-content{
       

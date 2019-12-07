@@ -20,9 +20,9 @@ export class TherapistComponent implements OnInit {
   room$:Observable<any>;
   ask:string='chat';
   constructor(private route: ActivatedRoute,private roomService:RoomService,private authService:AuthService) { }
- 
+  
   ngOnInit() {
-
+ 
     this.uidTherapist = this.route.snapshot.paramMap.get('id');
     this.therapist$ = this.roomService.getTherapistAllInfoById(this.uidTherapist );//therapist
     
