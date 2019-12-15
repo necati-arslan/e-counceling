@@ -18,17 +18,19 @@ export class RoomService {
     private router:Router 
     ) { }
 
-  getTherapistAllInfoById(uidTherapist) {
+  getTherapistAllInfoById(uidTherapist):Observable<any> {
     return this.afs.collection('users').doc(uidTherapist).valueChanges()
       .pipe(
         switchMap((user: any) => {
-          return this.afs.collection('therapists').doc(user.uid).valueChanges()
+          if(user){
+            return this.afs.collection('therapists').doc(user.uid).valueChanges()
             .pipe(
               map(therapist => {
                 let therapistAllInfo = { ...user, ...therapist };
                 return therapistAllInfo;
               })
             )
+          }else {return of(null)}
         })
       );
   }
@@ -167,8 +169,9 @@ export class RoomService {
         })
       })
     );
-
   }
+
+  
 
   
 

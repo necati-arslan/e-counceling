@@ -1,19 +1,22 @@
-
-    <div fxFlexFill fxLayout="row" *ngIf="therapistCard$ |async as therapist">
+     <div fxFlexFill fxLayout="row" *ngFor="let therapist of therapistCard$ | async" ><!-- -->
         <mat-card fxLayout fxFlexFill fxLayoutGap="10px" fxLayout.lt-sm="column">
             <div fxFlex="0 1 auto">
                 <!--image and online-->
                 <div fxLayout="column" fxLayoutAlign="start center" fxLayout.lt-sm="row">
-                    <div style="margin: 0px;">
-                        <img class="card-img"
-                            src="https://i.pinimg.com/originals/00/fc/cf/00fccf7594ff0822281187d77a132e01.png" alt="">
-                        <p class="online"><strong>Online</strong></p>
-                    </div> 
+                  <div style="margin: 0px;">
+                        <img class="card-img " 
+                            [ngClass]="{'img-offline':status==='offline',
+                                        'img-online':status==='online',
+                                        'img-busy':status==='busy'}"
+                            *ngIf="therapist?.photoURL" 
+                            [src]="therapist?.photoURL" alt="">
+                        <p *ngIf="status==='online'" class="online"><strong>Online</strong></p>
+                        <p *ngIf="status==='busy'" class="busy"><strong>Meşgul</strong></p>
+                        <p *ngIf="status==='offline'" class="offline"><strong>Offline</strong></p>
+                    </div>  
                     <div fxLayout="column" fxHide.gt-xs fxFlex fxLayoutAlign="center center">
-                        <mat-card-title>{{therapist.displayName}} </mat-card-title>
-                        <mat-card-subtitle>Sifu Masterxy
-
-                        </mat-card-subtitle>
+                        <mat-card-title>{{therapist?.displayName}} </mat-card-title>
+                        <mat-card-subtitle>{{therapist?.type}}</mat-card-subtitle>
                         <div class="card-button" fxFlex="1 1 auto" fxLayout >
                             <button class=" card-button-online card-item" mat-raised-button>Hemen Başla</button>
                             <button class=" card-button-randevu card-item" mat-raised-button>Randevu Al</button>
@@ -28,8 +31,8 @@
                 <div fxLayout="column">
                     <div fxFlex fxLayout>
                         <div fxFlex="0 1 auto" fxHide.lt-sm>
-                            <mat-card-title>{{therapist.displayName}}</mat-card-title>
-                            <mat-card-subtitle>Sifu Master</mat-card-subtitle>
+                            <mat-card-title>{{therapist?.displayName}}</mat-card-title>
+                            <mat-card-subtitle>{{therapist?.type}}</mat-card-subtitle>
                         </div>
                         <div class="card-button" fxFlex="1 1 auto" fxLayout fxLayoutAlign="flex-end"
                             fxLayoutAlign.lt-sm="center center" fxHide.lt-sm>
@@ -42,10 +45,7 @@
                     </div>
                     <div fxFlex>
                         <p><strong>Uzmanlık Alanları:</strong></p>
-                        <p style="margin-bottom: 0px; text-align: justify;">Lorem ipsum, dolor sit amet consectetur
-                            adipisicing elit. Exercitationem temporibus quasi et
-                            ipsa atque porro assumenda eveniet totam at illum voluptates, libero ducimus aperiam placeat
-                            voluptatum consequatur, nobis sequi amet!</p>
+                        <p style="margin-bottom: 0px; text-align: justify;">{{therapist?.expertise}}</p>
                         <span style="margin: 0;" class="info-T">
                             <button mat-icon-button>
                                 <mat-icon>search</mat-icon>Detaylı Bilgi
@@ -56,6 +56,7 @@
             </div>
             <!--uzmanlık alanı-->
         </mat-card>
+        <div> {{therapist.uid}}</div>
     </div>
 
 

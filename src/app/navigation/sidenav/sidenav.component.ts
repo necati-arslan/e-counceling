@@ -12,7 +12,7 @@ import { RoomService } from 'src/app/services/room.service';
   styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent implements OnInit {
-
+ 
   @Output() closeSidenav = new EventEmitter<boolean>();//app te tanımlı bi event
   @Input('userAuth') userAuth$:Observable<any>;
   @Input('mobileQuery') mobileQuery:boolean;
@@ -34,6 +34,7 @@ export class SidenavComponent implements OnInit {
 
 
   ngOnInit() {
+    console.log(this.currentUrl)
     this.userAuth$.subscribe((user:any)=>{
       if(user){
       this.userAuth=user;
@@ -48,6 +49,7 @@ export class SidenavComponent implements OnInit {
         this.userAuth=null;
       }
     });
+
 
    
   }

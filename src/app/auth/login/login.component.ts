@@ -13,11 +13,12 @@ export class LoginComponent implements OnInit {
 
   loginForm:FormGroup;
   registerForm:FormGroup;
+  user;
  
 
   constructor(private authService:AuthService,
               private dialogRef: MatDialogRef<LoginComponent >
-              ) { }
+             ) {   }
  
   ngOnInit() {
 
@@ -49,8 +50,6 @@ export class LoginComponent implements OnInit {
 
    
     //setInterval(()=>{this.dialogRef.close();},3000)
-    
-    
     
   }
 

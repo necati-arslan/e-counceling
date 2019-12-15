@@ -6,9 +6,10 @@
                             'sidenavnotExpanded':(!currentUrl && userAuth && !isExpanded)}"
    #sidenav role="navigation"
    [mode]="mobileQuery.matches || currentUrl  ? 'over' : 'side'" 
-   [opened]="!mobileQuery.matches && userAuth"
+   [opened]="!mobileQuery.matches && userAuth && !currentUrl "
+   (closed)="closeSidenav()"
    fullscreen>
-   
+    
     <app-sidenav 
     [mobileQuery]="mdq"
     [currentUrl]="currentUrl" 

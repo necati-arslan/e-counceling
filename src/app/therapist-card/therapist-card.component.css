@@ -12,8 +12,6 @@
         width: 80px!important;
         height:80px!important;
         border-radius: 50%;
-        border: 2px solid green;
-        overflow: hidden;
       }
       button{
           font-size: 13px;
@@ -25,17 +23,46 @@
     width: 150px;
     height:150px;
     border-radius: 50%;
+  
+  }
+
+  .img-online{
     border: 2px solid green;
     overflow: hidden;
   }
+  .online{
+    text-align: center;
+    color:#49a010 ;
+    margin: 0;
+    padding: 0;
+}
+  .img-busy{
+    border: 2px solid rgb(195, 20, 20);
+    overflow: hidden;
+  }
+  .busy{
+    text-align: center;
+    color: rgb(195, 20, 20) ;
+    margin: 0;
+    padding: 0;
+}
+  .img-offline{
+    border: 2px solid #05284B;
+    overflow: hidden;
+  }
+  .offline{
+    text-align: center;
+    color: #05284B;
+    margin: 0;
+    padding: 0;
+}
+
 
   @media screen and (max-width: 758px) and (min-width: 600px){
     .card-img {
         width: 100px;
         height:100px;
         border-radius: 50%;
-        border: 2px solid green;
-        overflow: hidden;
       }
       .card-button{
          -webkit-box-orient: vertical!important;
@@ -57,12 +84,7 @@
       }
   }
 
-.online{
-    text-align: center;
-    color:#49a010 ;
-    margin: 0;
-    padding: 0;
-}
+
 
 .info-T{
     color: #05284B;

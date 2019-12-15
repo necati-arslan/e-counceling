@@ -38,7 +38,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private presence: PresenceService,
     private afAuth:AngularFireAuth,
     private afsService: AngularFirestore,
-    private router: Router,
+    private router: Router, 
     private changeDetectorRef: ChangeDetectorRef,
     private media: MediaMatcher
   ) { 
@@ -55,8 +55,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
-        if(e.url=='/') this.currentUrl=true;
-        else this.currentUrl=false;
+        if(e.url=='/') {this.currentUrl=true;}
+        else {
+          this.currentUrl=false;
+          
+        }
         console.log(this.currentUrl);
       }
     });
@@ -85,6 +88,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  closeSidenav(){
+    console.log('xxxxxx')
   }
  
 }

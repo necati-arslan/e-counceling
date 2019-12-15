@@ -1,7 +1,7 @@
 <div class="container">
     <app-therapist-card [uidTherapist]="uidTherapist"  style="margin-bottom: 3px;"></app-therapist-card>
     
-    <mat-form-field>
+    <mat-form-field> 
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtre">
     </mat-form-field>
     <table mat-table [dataSource]="dataSource" matSort>
