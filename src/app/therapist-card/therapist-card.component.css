@@ -3,6 +3,12 @@
     margin-top: 10px;
     margin:15px;
 }
+.mainRow{
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+}
 @media screen and (max-width: 599px) {
     .container{ 
         height: 100%;
@@ -26,7 +32,7 @@
   
   }
 
-  .img-online{
+  .img-online{ 
     border: 2px solid green;
     overflow: hidden;
   }

@@ -1,18 +1,18 @@
-     <div fxFlexFill fxLayout="row" *ngFor="let therapist of therapistCard$ | async" ><!-- -->
-        <mat-card fxLayout fxFlexFill fxLayoutGap="10px" fxLayout.lt-sm="column">
+     <div class="mainRow"  fxLayout="row" *ngFor="let therapist of therapistCard$ | async" ><!-- -->
+        <mat-card *ngIf="therapist.uid"  fxLayout fxFlexFill fxLayoutGap="10px" fxLayout.lt-sm="column">
             <div fxFlex="0 1 auto">
                 <!--image and online-->
                 <div fxLayout="column" fxLayoutAlign="start center" fxLayout.lt-sm="row">
                   <div style="margin: 0px;">
                         <img class="card-img " 
-                            [ngClass]="{'img-offline':status==='offline',
-                                        'img-online':status==='online',
-                                        'img-busy':status==='busy'}"
+                            [ngClass]="{'img-offline':therapist?.status==='offline',
+                                        'img-online':therapist?.status==='online',
+                                        'img-busy':therapist?.status==='busy'}"
                             *ngIf="therapist?.photoURL" 
                             [src]="therapist?.photoURL" alt="">
-                        <p *ngIf="status==='online'" class="online"><strong>Online</strong></p>
-                        <p *ngIf="status==='busy'" class="busy"><strong>Meşgul</strong></p>
-                        <p *ngIf="status==='offline'" class="offline"><strong>Offline</strong></p>
+                        <p *ngIf="therapist?.status==='online'" class="online"><strong>Online</strong></p>
+                        <p *ngIf="therapist?.status==='busy'" class="busy"><strong>Meşgul</strong></p>
+                        <p *ngIf="therapist?.status==='offline'" class="offline"><strong>Offline</strong></p>
                     </div>  
                     <div fxLayout="column" fxHide.gt-xs fxFlex fxLayoutAlign="center center">
                         <mat-card-title>{{therapist?.displayName}} </mat-card-title>
@@ -56,8 +56,9 @@
             </div>
             <!--uzmanlık alanı-->
         </mat-card>
-        <div> {{therapist.uid}}</div>
     </div>
+
+    
 
 
 

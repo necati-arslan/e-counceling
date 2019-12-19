@@ -2,8 +2,9 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { AuthService } from '../auth/auth.service';
 import { Observable, of, forkJoin, combineLatest, concat, merge, zip } from 'rxjs';
 import { RoomService } from '../services/room.service';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map,filter,tap} from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { ElementSchemaRegistry } from '@angular/compiler';
 
 
 interface Status {
@@ -30,7 +31,17 @@ export class TherapistCardComponent implements OnInit, OnChanges {
     private authService: AuthService,
     private roomService: RoomService,
     private afs: AngularFirestore
-  ) { }
+  ) {
+
+    // let arr = ['WdFWd0Q7YGV4A3xiAZ53MS2fEWR2', 's4LiWMGJSfavBcmg7Zy9UBbCkxH2']
+    // combineLatest(arr.map(y => {
+    //   return merge(this.roomService.getTherapistAllInfoById(y),
+    //     this.getStatus(y)
+    //   );
+    // })).subscribe(x => console.log(x))
+
+    // this.roomService.getTherapistAllInfoById("s4LiWMGJSfavBcmg7Zy9UBbCkxH2").subscribe(x => console.log(x));
+  }
 
   ngOnInit() {
     // this.therapistCard$.subscribe(x=>console.log(x));
@@ -42,49 +53,34 @@ export class TherapistCardComponent implements OnInit, OnChanges {
     // changes.prop contains the old and the new value...
     let uidTherapist = changes.uidTherapist.currentValue;
     console.log(uidTherapist)
-    this.therapistCard$ = combineLatest(
-      uidTherapist.map((element: any) => {
-        return zip(this.roomService.getTherapistAllInfoById(element.uidtherapist),
-                      this.getStatus("s4LiWMGJSfavBcmg7Zy9UBbCkxH2")
-                      );
-
-      })).pipe(map(x => {
-       
-        console.log(x)
-        return x.filter(Boolean);
-        
-      
-      }));
-
-
-
-    // uidTherapist.forEach((element:any)=>{
-    //   let tStatus;
-    //   let infoTherapist;
-    //   console.log(element.uidtherapist)
-
-    // if (element.uidtherapist){
-    //  this.roomService.getTherapistAllInfoById(element.uidtherapist).subscribe(therapist=>{
-    //    console.log(typeof therapist);
-    //   // if(therapist){
-    //   //     this.therapistCard.push(...therapist);
-    //   // }
-
-
-    //  });
-    // }
-
-    // })
-
+    this.therapistCard$=combineLatest(
+     uidTherapist.map((element: any) => {
+        return this.roomService.getTherapistAllInfoById(element.uidtherapist).pipe(
+          switchMap((infoTherapist:any) => {
+              //console.log(infoTherapist);
+              return this.getStatus(element.uidtherapist).pipe(map(status=>{
+                  console.log(status)
+                  let dataStatus;
+                  status ? dataStatus=status : dataStatus={status:'offline'};
+                   return {...infoTherapist,...dataStatus};
+                     }))
+         }));
+      })).pipe(
+               map(x=>{
+                  return x.filter(Boolean)
+                  }),
+               tap(x=>console.log(x))
+               );
+ 
 
   }
 
   getStatus(uid) {
     return this.authService.getStatus(uid).pipe(
       map((status: Status) => {
-        if (status.state == 'offline') { return 'offline'; };
-        if (status.state == "online" && status.seansstate == "finished") return 'online';
-        if (status.state == "away" || (status.seansstate == "continuing" && status.state == "online")) return'busy';
+        if (status.state == 'offline') { return { status: 'offline' }; };
+        if (status.state == "online" && status.seansstate == "finished") return { status: 'online' };
+        if (status.state == "away" || (status.seansstate == "continuing" && status.state == "online")) return { status: 'busy' };
       }));
   }
 
