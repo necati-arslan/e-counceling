@@ -36,10 +36,11 @@ export class RoomService {
   }
 
 
-  async creatRoom(therapist: any, user: any,ask:any) {
+  async creatRoom(therapist: any, user: any,seansType:any,bilgi,question) {
     const uiduser = user.uid;
     const uidtherapist = therapist.uidtherapist;
     let roomRef:any;
+    console.log(seansType);
 
     const dataRoom = {
       therapist: {
@@ -55,65 +56,58 @@ export class RoomService {
     
     if (checkRoom!='') roomRef= checkRoom[0];
     else roomRef = await this.afs.collection('rooms').add(dataRoom);
+    console.log('roomref',roomRef);///////////
     roomRef=roomRef.id;
-    switch(ask){
-      case "chat":
-      this.creatSeans(roomRef,ask).then(chatRef=>{
-        const chatId=chatRef.id;
-        this.creatLastSeans(therapist,user,roomRef,chatId,ask);
-        this.router.navigate(['chats',roomRef,chatId]);  
-      });
-    }
+    let seansId;
     
+    await this.creatSeans(roomRef,seansType,bilgi,question).then(chatRef=>{
+        console.log('chatRef',chatRef);
+        seansId=chatRef.id;
+        console.log('senasRefxxx',seansId);
+
+        if(seansType!="message")
+        this.creatLastSeans(therapist,user,roomRef,seansId,seansType);
+      });
+      
+     const seansData={
+        seansType,
+        roomRef,
+        seansId
+      }
+      return seansData;
+   
   }
 
-  creatSeans(roomRef,ask) {
+  creatSeans(roomRef,seansType,bilgi,question) {
     const data = {
       createdAt: Date.now(),
       count: 0,
-      type:ask,
+      type:seansType,
       messages: [],
-      state: "continuing"
+      state: "continuing",
+      bilgi:bilgi?bilgi:null,
+      question:question?question:null
     };
     return this.afs.collection(`rooms/${roomRef}/seans`).add(data);
   }
 
-  // creatChat(roomRef) {
-  //   const data = {
-  //     createdAt: Date.now(),
-  //     count: 0,
-  //     messages: [],
-  //     state: "continuing"
-  //   };
-  //   return this.afs.collection(`rooms/${roomRef}/chats`).add(data);
-  // }
   
-  // creatMessage(roomRef) {
-  //   const data = {
-  //     createdAt: Date.now(),
-  //     count: 0,
-  //     messages: 'test',
-  //     state: "continuing"
-  //   };
-  //   return this.afs.collection(`rooms/${roomRef}/messages`).add(data);
-  // }
-
-  creatLastSeans(therapist, user,roomId,chatId,ask){
+  creatLastSeans(therapist, user,roomId,seansId,ask){
    const uidTherapist= therapist.uidtherapist;
    const uidUser=user.uid;
 
     const dataTherapist={
         roomId:roomId,
-        chatId:chatId,
+        chatId:seansId,
         type:ask,
         createdtime:Date.now(),
         seansstate:'continuing',
         userId:uidUser,
-        userdisplayname:user.displayName
+        userdisplayname:user.displayName?user.displayName:''
     }
     const dataUser={
         roomId:roomId,
-        chatId:chatId,
+        chatId:seansId,
         type:ask,
         createdtime:Date.now(),
         seansstate:'continuing',
@@ -121,8 +115,8 @@ export class RoomService {
         therapistname:therapist.name
     }
 
-    this.afs.doc(`therapists/${uidTherapist}/lastseans/chat`).set(dataTherapist);
-    this.afs.doc(`users/${uidUser}/lastseans/chat`).set(dataUser);
+    this.afs.doc(`therapists/${uidTherapist}/lastseans/seansLive`).set(dataTherapist);
+    this.afs.doc(`users/${uidUser}/lastseans/seansLive`).set(dataUser);
 
   }
 
@@ -132,7 +126,7 @@ export class RoomService {
       .where('therapist.uidtherapist', '==', uidtherapist)).snapshotChanges()
       .pipe(take(1),
         map(snaps => {
-          return snaps.map(snap => {
+          return snaps.map((snap:any) => {
             return {
               id: snap.payload.doc.id,
               ...snap.payload.doc.data()
@@ -142,12 +136,15 @@ export class RoomService {
       ).toPromise()
   }
 
+  getRoomById(roomId){
+    return this.afs.doc(`rooms/${roomId}`).valueChanges()
+  }
 
   getRooms(userId) {//{id: "Staam8232Mvzm1aSqiqH", createdAt: 1573391227287, uidtherapist: "s4LiWMGJSfavBcmg7Zy9UBbCkxH2", uiduser: "XgdaPpePthXbgBToO5TueJXfuio2"}
     return this.afs.collection('rooms', ref => ref.where('uiduser', '==', userId)).snapshotChanges()
       .pipe(
         map(snaps => { 
-          return snaps.map(snap => {
+          return snaps.map((snap:any) => {
             return {
               id: snap.payload.doc.id,
               ...snap.payload.doc.data()
@@ -172,7 +169,7 @@ export class RoomService {
   }
 
   
-
+  
   
 
 

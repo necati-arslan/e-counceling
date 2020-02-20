@@ -1,0 +1,253 @@
+<div fxLayout="row" fxLayoutAlign="start">
+    <div fxFlex="0 1 auto">
+        <img class="card-img " *ngIf="data?.therapist?.photoURL" [src]="data?.therapist?.photoURL" alt="">
+    </div>
+    <div fxFlex="0 1 auto" fxFlexAlign="center">
+        <span class="card-text"><strong>{{data?.therapist?.displayName}}</strong></span>
+        <span style="color: rgb(128, 126, 126);font-size: 15px;"> &nbsp;/&nbsp; Therapist</span>
+    </div>
+</div>
+
+<div>
+    <mat-card>
+        <mat-horizontal-stepper [linear]="true" #stepper>
+            <mat-step>
+                <ng-template matStepLabel>Fill out your address</ng-template>
+                <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                    [(ngModel)]="seansType">
+                    <div class="step1" fxLayout="column">
+                        <div class="section" fxFlex>
+                            <div [ngClass]="{'color_change':seansType==='video'}" fxLayout="row">
+                                <mat-radio-button [checked]="true" value="video" class="example-radio-button">
+                                    <div fxFlex>
+                                        <div class="type">
+                                            <i style="font-size: 30px;" class="material-icons">
+                                                contact_phone
+                                            </i>
+                                            <span style="margin-left: 5px;">
+                                                <strong>Videolu Görüşme</strong>
+                                            </span>
+                                        </div>
+                                        <div class="price">
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum quae
+                                            atque
+                                        </div>
+                                    </div>
+                                </mat-radio-button>
+                            </div>
+                        </div>
+                        <div class="section" fxFlex>
+                            <hr class="card-divider">
+                        </div>
+                        <div class="section" fxFlex>
+                            <div [ngClass]="{'color_change':seansType==='chat'}" fxLayout="row">
+                                <mat-radio-button class="example-radio-button" value="chat">
+                                    <div fxFlex>
+                                        <div class="type">
+                                            <i style="font-size: 30px;" class="material-icons">
+                                                mic
+                                            </i>
+                                            <span style="margin-left: 5px;">
+                                                <strong>chat Görüşme</strong>
+                                            </span>
+                                        </div>
+                                        <div class="price">
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum quae
+                                            atque
+                                        </div>
+                                    </div>
+                                </mat-radio-button>
+                            </div>
+                        </div>
+                        <div class="section" fxFlex>
+                            <hr class="card-divider">
+                        </div>
+                        <div class="section" fxFlex>
+                            <div [ngClass]="{'color_change':seansType==='message'}" fxLayout="row">
+                                <mat-radio-button value="message" class="example-radio-button">
+                                    <div fxFlex>
+                                        <div class="type">
+                                            <i style="font-size: 30px;" class="material-icons">
+                                                message
+                                            </i>
+                                            <span style="margin-left: 5px;">
+                                                <strong>Message</strong>
+                                            </span>
+                                        </div>
+                                        <div class="price">
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum quae
+                                            atque
+                                        </div>
+                                    </div>
+                                </mat-radio-button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div>
+                        {{seansType}}
+                    </div>
+
+                </mat-radio-group>
+
+                <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;">
+                    <button class="banner-button" mat-button matStepperNext>Devam</button>
+                </div>
+
+
+            </mat-step>
+            <mat-step *ngIf="seansType==='message'" [stepControl]="messageForm">
+                <div>
+                    {{favoriteSeason}}
+                </div>
+
+                <form *ngIf="seansType==='message'" [formGroup]="messageForm">
+                    <ng-template matStepLabel>Fill out your address</ng-template>
+                    <div fxLayout="row" fxLayoutAlign="center">
+                        <div fxFlex="80%" fxLayoutGap="10px">
+                            <div fxLayout="column">
+                                <div fxFlex>
+                                    <h3 class="explain">Formda verdiğiniz cevaplara göre,
+                                        size
+                                        en
+                                        iyi şekilde yardım edebilecek tarapistler
+                                        önerilecektirr </h3>
+                                </div>
+                                <mat-form-field fxFlex>
+                                    <input matInput formControlName="konu" placeholder="Konu">
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex>
+                                    <textarea formControlName="message" matInput
+                                        placeholder="Mesajınızı Yazınız..."></textarea>
+                                </mat-form-field>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;">
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button class="banner-button" mat-button matStepperNext>Devam</button>
+                    </div>
+
+
+                </form>
+
+            </mat-step>
+            <mat-step *ngIf="seansType==='chat'">
+                <div *ngIf="seansType==='chat'">
+                    <div fxLayout="row" fxLayoutAlign="center">
+                        <div fxFlex="80%" fxLayoutGap="10px">
+                            <div fxLayout="column">
+                                <div fxFlex>
+                                    <h3 class="explain">Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                                        Nostrum, doloremque? Aperiam atque tempora quod quisquam. Non, porro?
+                                        Voluptatem qui, tempore perspiciatis officiis fugit, neque, quibusdam
+                                        molestiae nulla minus hic tempora.</h3>
+                                </div>
+                                <div fxFlex>
+                                    <mat-form-field fxFlex>
+                                        <textarea matInput [(ngModel)]="bilgi"
+                                            placeholder="Ön bilgilendirme"></textarea>
+                                    </mat-form-field>
+                                </div>
+                                <div>{{bilgi}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;">
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button class="banner-button" mat-button matStepperNext>Devam</button>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Done</ng-template>
+
+                <div fxLayout="row" fxLayoutAlign="center">
+                    <div fxFlex="80%" fxLayoutGap="10px">
+                        <form fxLayout="column" [formGroup]="paymentForm">
+                            <div fxFlex>
+                                <h3 class="explain">Payment</h3>
+                            </div>
+                            <mat-form-field fxFlex hintLabel="Should be at least 6 characters long.">
+                                <input type="tel" matInput placeholder="card Number" formControlName="cardNumber"
+                                    appCardNumber>
+                                <mat-error *ngIf="paymentForm.get('cardNumber').hasError('required')">Lütfen
+                                    bir
+                                    kard
+                                    numarası giriniz</mat-error>
+                            </mat-form-field>
+                            <mat-form-field fxFlex hintLabel="Should be at least 6 characters long.">
+                                <input type="text" matInput placeholder="Card Name" formControlName="cardName">
+                                <mat-error>Lütfen kard üzerinde yazılı ismi
+                                    giriniz</mat-error>
+                            </mat-form-field>
+
+                            <div fxFlex>
+                                <div fxLayout="row wrap">
+                                    <div fxFlex>
+                                        <mat-form-field>
+                                            <mat-label>expration</mat-label>
+                                            <select matNativeControl required>
+                                                <option value="">Month</option>
+                                                <option value="1">01</option>
+                                                <option value="2">02</option>
+                                                <option value="3">03</option>
+                                                <option value="4">04</option>
+                                                <option value="5">05</option>
+                                                <option value="6">06</option>
+                                                <option value="7">07</option>
+                                                <option value="8">08</option>
+                                                <option value="9">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex>
+                                        <mat-form-field>
+                                            <mat-label>expration</mat-label>
+                                            <select matNativeControl required>
+                                                <option value="">Year</option>
+                                                <option value="20">2020</option>
+                                                <option value="21">2021</option>
+                                                <option value="22">2022</option>
+                                                <option value="23">2023</option>
+                                                <option value="24">2024</option>
+                                                <option value="25">2025</option>
+                                                <option value="26">2026</option>
+                                                <option value="27">2027</option>
+                                                <option value="28">2028</option>
+                                                <option value="29">2029</option>
+                                                <option value="30">2030</option>
+                                            </select>
+                                        </mat-form-field>
+
+                                    </div>
+                                    <div fxFlex>
+                                        <mat-form-field hintLabel="Should be at least 6 characters long.">
+                                            <input type="text" matInput placeholder="CVV" formControlName="cardCVV"
+                                                appCardCvv>
+                                            <mat-error>Lütfen kard üzerinde yazılı ismi
+                                                giriniz</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;">
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button (click)="stepper.reset()">Reset</button>
+                    <button class="banner-button" (click)="onSubmitPayment()" mat-button matStepperNext>Öde</button>
+                </div>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </mat-card>
+</div>

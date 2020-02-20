@@ -23,7 +23,7 @@ export class MatchFormComponent implements OnInit {
   askHelp$: Observable<any>;
   user:any;
   matching:boolean;
-  uidTherapist="s4LiWMGJSfavBcmg7Zy9UBbCkxH2";
+  uidTherapist="s4LiWMGJSfavBcmg7Zy9UBbCkxH2"; 
 
   constructor(private frService: FirestoreService,
     private afStore: AngularFirestore,
@@ -41,13 +41,6 @@ export class MatchFormComponent implements OnInit {
 
 
   ngOnInit() {
-
-    this.afStore.collection('users').doc('kriLpM9VVyMn8s2LJcjXk8xuutkL2').valueChanges().subscribe(x=>{
-      console.log(x)
-      if(typeof(x)!==undefined){
-        console.log('xxxx');
-      }
-    });
 
     this.matchingForm = new FormGroup({
       askHelp: new FormControl('', {
@@ -102,7 +95,7 @@ export class MatchFormComponent implements OnInit {
 
 
 
-    this.recommendedTherapist = therapistOrder;
+    this.recommendedTherapist = therapistOrder; 
 
     console.log(this.recommendedTherapist);
 

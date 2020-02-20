@@ -38,15 +38,22 @@
         overflow: hidden;
       }
       .card-button{
-         flex-direction: column!important;
-          align-items: flex-start;
-          align-content: space-between;
+         -webkit-box-orient: vertical!important;
+         -webkit-box-direction: normal!important;
+             -ms-flex-direction: column!important;
+                 flex-direction: column!important;
+          -webkit-box-align: start;
+              -ms-flex-align: start;
+                  align-items: flex-start;
+          -ms-flex-line-pack: justify;
+              align-content: space-between;
       }
       .card-item{
           margin-bottom: 2px;
           margin-left: 1px;
           width: 125px;
-          align-self: flex-end;
+          -ms-flex-item-align: end;
+              align-self: flex-end;
       }
   }
 
@@ -78,6 +85,7 @@
  .card-divider{ 
         border: 0;
         height: 1px;
+        background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0)), color-stop(rgba(0, 0, 0, 0.75)), to(rgba(0, 0, 0, 0)));
         background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
   }
 

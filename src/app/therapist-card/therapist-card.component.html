@@ -1,64 +1,66 @@
-     <div class="mainRow"  fxLayout="row" *ngFor="let therapist of therapistCard$ | async" ><!-- -->
-        <mat-card *ngIf="therapist.uid"  fxLayout fxFlexFill fxLayoutGap="10px" fxLayout.lt-sm="column">
-            <div fxFlex="0 1 auto">
-                <!--image and online-->
-                <div fxLayout="column" fxLayoutAlign="start center" fxLayout.lt-sm="row">
-                  <div style="margin: 0px;">
-                        <img class="card-img " 
-                            [ngClass]="{'img-offline':therapist?.status==='offline',
+<div class="mainRow" fxLayout="row" *ngFor="let therapist of therapistCard$ | async">
+    <!-- -->
+    <mat-card *ngIf="therapist.uid" fxLayout fxFlexFill fxLayoutGap="10px" fxLayout.lt-sm="column">
+        <div fxFlex="0 1 auto">
+            <!--image and online-->
+            <div fxLayout="column" fxLayoutAlign="start center" fxLayout.lt-sm="row">
+                <div style="margin: 0px;">
+                    <img class="card-img " [ngClass]="{'img-offline':therapist?.status==='offline',
                                         'img-online':therapist?.status==='online',
-                                        'img-busy':therapist?.status==='busy'}"
-                            *ngIf="therapist?.photoURL" 
-                            [src]="therapist?.photoURL" alt="">
-                        <p *ngIf="therapist?.status==='online'" class="online"><strong>Online</strong></p>
-                        <p *ngIf="therapist?.status==='busy'" class="busy"><strong>Meşgul</strong></p>
-                        <p *ngIf="therapist?.status==='offline'" class="offline"><strong>Offline</strong></p>
-                    </div>  
-                    <div fxLayout="column" fxHide.gt-xs fxFlex fxLayoutAlign="center center">
-                        <mat-card-title>{{therapist?.displayName}} </mat-card-title>
-                        <mat-card-subtitle>{{therapist?.type}}</mat-card-subtitle>
-                        <div class="card-button" fxFlex="1 1 auto" fxLayout >
-                            <button class=" card-button-online card-item" mat-raised-button>Hemen Başla</button>
-                            <button class=" card-button-randevu card-item" mat-raised-button>Randevu Al</button>
-                        </div>
+                                        'img-busy':therapist?.status==='busy'}" *ngIf="therapist?.photoURL"
+                        [src]="therapist?.photoURL" alt="">
+                    <p *ngIf="therapist?.status==='online'" class="online"><strong>Online</strong></p>
+                    <p *ngIf="therapist?.status==='busy'" class="busy"><strong>Meşgul</strong></p>
+                    <p *ngIf="therapist?.status==='offline'" class="offline"><strong>Offline</strong></p>
+                </div>
+                <div fxLayout="column" fxHide.gt-xs fxFlex fxLayoutAlign="center center">
+                    <mat-card-title>{{therapist?.displayName}} </mat-card-title>
+                    <mat-card-subtitle>{{therapist?.type}}</mat-card-subtitle>
+                    <div class="card-button" fxFlex="1 1 auto" fxLayout>
+                        <button class=" card-button-online card-item"
+                         mat-raised-button
+                         [routerLink]="['/therapist',therapist?.uid]"
+                         >Hemen Başla</button>
+                        <button class=" card-button-randevu card-item" mat-raised-button>Randevu Al</button>
                     </div>
                 </div>
             </div>
-            <!--image and online-->
+        </div>
+        <!--image and online-->
 
-            <div fxFlex>
-                <!--uzmanlık alanı-->
-                <div fxLayout="column">
-                    <div fxFlex fxLayout>
+        <div fxFlex>
+            <!--uzmanlık alanı-->
+            <div fxLayout="column">
+                <div fxFlex>
+                    <div fxLayout="row">
                         <div fxFlex="0 1 auto" fxHide.lt-sm>
                             <mat-card-title>{{therapist?.displayName}}</mat-card-title>
                             <mat-card-subtitle>{{therapist?.type}}</mat-card-subtitle>
                         </div>
                         <div class="card-button" fxFlex="1 1 auto" fxLayout fxLayoutAlign="flex-end"
                             fxLayoutAlign.lt-sm="center center" fxHide.lt-sm>
-                            <button class=" card-button-online card-item" mat-raised-button>Hemen Başla</button>
+                            <button class=" card-button-online card-item" 
+                            mat-raised-button
+                            (click)="seansPayment(therapist)"
+                            >Hemen Başla</button>
                             <button class=" card-button-randevu card-item" mat-raised-button>Randevu Al</button>
                         </div>
-                    </div>
-                    <div fxFlex>
-                        <hr class="card-divider">
-                    </div>
-                    <div fxFlex>
-                        <p><strong>Uzmanlık Alanları:</strong></p>
-                        <p style="margin-bottom: 0px; text-align: justify;">{{therapist?.expertise}}</p>
-                        <span style="margin: 0;" class="info-T">
-                            <button mat-icon-button>
-                                <mat-icon>search</mat-icon>Detaylı Bilgi
-                            </button>
-                        </span>
-                    </div>
+                    </div> 
+                </div>
+                <div fxFlex>
+                    <hr class="card-divider">
+                </div> 
+                <div fxFlex>
+                    <p><strong>Uzmanlık Alanları:</strong></p>
+                    <p style="margin-bottom: 0px; text-align: justify;">{{therapist?.expertise}}</p>
+                    <span style="margin: 0;" class="info-T">
+                        <button mat-icon-button>
+                            <mat-icon>search</mat-icon>Detaylı Bilgi
+                        </button>
+                    </span>
                 </div>
             </div>
-            <!--uzmanlık alanı-->
-        </mat-card>
-    </div>
-
-    
-
-
-
+        </div>
+        <!--uzmanlık alanı-->
+    </mat-card>
+</div>

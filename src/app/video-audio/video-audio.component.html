@@ -1,0 +1,32 @@
+<div class="remoteStream" [id]="remoteCallId">
+    <div class="spinBar" *ngIf="rtc.waiting===true" >
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="localStream" [id]="localCallId"></div>
+
+
+    <div class="callBar" fxLayout="row">
+        <div fxFlex="0 1 auto">
+            <button (click)="clientInit()" mat-icon-button color="warn"
+                aria-label="Example icon-button with a heart icon">
+                <mat-icon class="iconCall">phone</mat-icon>
+            </button>
+        </div>
+        <div fxFlex="0 1 auto">
+            <button (click)="leave()" mat-icon-button color="warn" aria-label="Example icon-button with a heart icon">
+                <mat-icon class="iconClose">phone_disabled</mat-icon>
+            </button>
+        </div>
+        <div class="closeChat" fxFlex>
+            <button (click)="fullscreen()" mat-icon-button color="warn"
+                aria-label="Example icon-button with a heart icon">
+                <mat-icon class="iconFull">fullscreen</mat-icon>
+            </button>
+        </div>
+
+    </div>
+
+
+</div>
+

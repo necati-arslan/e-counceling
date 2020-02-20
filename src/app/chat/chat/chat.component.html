@@ -1,32 +1,65 @@
-<ng-container *ngIf="chat$ | async as chat">
+<ng-container *ngIf="chat$ | async as seans">
+  <div class="container">
+    <div fxLayout="column" class="card">
+      <div fxFlex>
+        <div fxLayout=row fxLayout.lt-sm="column" >
+          <div fxFlex class="videoRes"  name="video" >
+            <app-video-audio  [seansId]="seansId"></app-video-audio>
+          </div>
+          <div fxFlex name=chat> 
+            <div fxLayout="column">
+              <div fxFlex="1 0 auto" class="header">
+                <div *ngIf="headerUser$ | async as headerUser">
+                  <div fxLayout="row">
+                    <div fxFlex="0 1 auto">
+                      <img class="imgHeader" [src]="headerUser?.photoURL" alt="">
+                    </div>
+                    <div style="padding-left: 5px;" fxFlex="0 1 auto" fxFlexAlign="center">
+                      <span>{{headerUser?.displayName}}</span>
+                    </div>
+                    <div fxFlex fxLayoutAlign="end center" style="padding-right: 20px;">
+                      <div class="countDown"><span>Kalan Süre:</span>{{countDownText}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="content" fxFlex class="content">
+                <div fxLayout="column">
+                  <div fxFlex style="margin-bottom: 10px;" *ngFor="let msg of seans.messages; trackBy: trackByCreated">
+                    <div class="chatMessageMain" [ngClass]="{'chatMessageMainEnd':msg?.uid===userId}">
+                      <div class="chatMessage">
+                        <span>{{msg?.content}}<span class="msgDate">&nbsp;{{msg?.createdAt | date:'H:mm'}}</span></span>
+                        <img class="imgChat" [src]="msg.user?.photoURL" alt="">
 
-    <div class="top">
-      <p>
-          ecouncel/{{ chat.id }}
-      </p>
-    </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div fxFlex="1 0 auto" class="sendMessage">
+                <div fxLayout="row">
+                  <mat-form-field fxFlex="50%" class="messageInput">
+                    <input matInput placeholder="mesajınız..." [(ngModel)]="newMsg" (keydown.enter)="submit(seans.id)">
+                    <button mat-icon-button matSuffix>
+                      <mat-icon (click)="submit(seans.id)" style="color: #05284B;padding: 0;margin: 0px;">send
+                      </mat-icon>
+                    </button>
+                  </mat-form-field>
+
+                </div>
 
 
-    <div class="chat">
-
-
-      <div fxLayout  *ngFor="let msg of chat.messages; trackBy: trackByCreated">
-
-        <div  fxFlex="100px" class="user">
-          <img style="width:100px;height:100px;" [src]="msg.user?.photoURL">  
+              </div>
+            </div>
+          </div>
         </div>
-        <div fxLayoutAlign="center center"><span>{{ msg.user?.displayName }}</span>:</div>
-        <div fxLayoutAlign="start center"><p>{{ msg.content }}</p></div>
-        
-
       </div>
 
+
+
     </div>
 
-    <div class="form">
-      <input [(ngModel)]="newMsg" (keydown.enter)="submit(chat.id)">
-
-      <button (click)="submit(chat.id)">Send</button>
-    </div>
+  </div>
 
 </ng-container>

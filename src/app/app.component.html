@@ -8,7 +8,7 @@
    [mode]="mobileQuery.matches || currentUrl  ? 'over' : 'side'" 
    [opened]="!mobileQuery.matches && userAuth && !currentUrl "
    (closed)="closeSidenav()"
-   fullscreen>
+   fullscreen><!--sidenavUser sidenav genişlik expand a göre 250-->  
     
     <app-sidenav 
     [mobileQuery]="mdq"

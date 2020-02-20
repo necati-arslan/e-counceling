@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { RoomService } from '../services/room.service';
@@ -19,9 +19,21 @@ export class TherapistComponent implements OnInit {
   paymentForm:FormGroup;
   room$:Observable<any>;
   ask:string='chat';
-  constructor(private route: ActivatedRoute,private roomService:RoomService,private authService:AuthService) { }
+
+  isLinear = false;
+  messageForm: FormGroup;
+
+  favoriteSeason:string="video";
+ 
+  constructor(private route: ActivatedRoute,private roomService:RoomService,private authService:AuthService,private _formBuilder: FormBuilder) { }
   
   ngOnInit() {
+
+  
+    this.messageForm = this._formBuilder.group({
+      konu: ['', Validators.required],
+      message:['',Validators.required]
+    });
  
     this.uidTherapist = this.route.snapshot.paramMap.get('id');
     this.therapist$ = this.roomService.getTherapistAllInfoById(this.uidTherapist );//therapist
@@ -30,6 +42,8 @@ export class TherapistComponent implements OnInit {
          this.room$= this.roomService.getRooms(user.uid)
       
     });//user
+
+    
 
     this.paymentForm=new FormGroup({
       cardNumber:new FormControl('',{
@@ -50,18 +64,22 @@ export class TherapistComponent implements OnInit {
       ]})
       
     });
-
   }
 
-  onSubmitPayment(therapist){
-   this.roomService.creatRoom(therapist,this.user,this.ask).then(x=>console.log(x));
 
-  }
 
   askType(type){
     this.ask=type;
   }
 
+  onItemChange(value:any){
+    console.log(value.target.value);
+  }
+
+  messageSubmit(){
+    
+  }
+  
 
   
 }

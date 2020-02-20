@@ -11,6 +11,7 @@ import { TherapistComponent } from './therapist/therapist.component';
 import { TDashboardComponent } from './t-dashboard/t-dashboard/t-dashboard.component';
 import { TGuard } from './auth/t-quard';
 import { TherapistOfUserComponent } from './therapist-of-user/therapist-of-user.component';
+import { VideoAudioComponent } from './video-audio/video-audio.component';
 
 
 const routes: Routes = [
@@ -19,10 +20,11 @@ const routes: Routes = [
   { path:'matching',component:MatchFormComponent},
   { path:'presence',component:UserComponent},
   { path:'dashboard',component:DashboardUserComponent,canActivate:[AuthGuard]},
-  { path: 'chats/:roomId/:chatId', component: ChatComponent },
+  { path: 'chat/:roomId/:seansId', component: ChatComponent },
   { path: 'therapistOfUser/:uidTherapist/:roomId', component: TherapistOfUserComponent},
   { path: 'therapist/:id', component: TherapistComponent },
-  { path: 't-dashboard', component: TDashboardComponent,canActivate:[TGuard] }
+  { path: 't-dashboard', component: TDashboardComponent,canActivate:[TGuard] },
+  { path: 'video', component: VideoAudioComponent },
 
   
 

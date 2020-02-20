@@ -36,6 +36,8 @@ import { THomeComponent } from './t-dashboard/t-home/t-home.component';
 import { TDashboardComponent } from './t-dashboard/t-dashboard/t-dashboard.component';
 import { TherapistOfUserComponent } from './therapist-of-user/therapist-of-user.component';
 import { TherapistCardComponent } from './therapist-card/therapist-card.component';
+import { SeansPaymentComponent } from './seans-payment/seans-payment.component';
+import { VideoAudioComponent } from './video-audio/video-audio.component';
 
 
 @NgModule({
@@ -57,6 +59,8 @@ import { TherapistCardComponent } from './therapist-card/therapist-card.componen
     TDashboardComponent,
     TherapistOfUserComponent,
     TherapistCardComponent,
+    SeansPaymentComponent,
+    VideoAudioComponent,
     
     
   ],
@@ -77,6 +81,6 @@ import { TherapistCardComponent } from './therapist-card/therapist-card.componen
   ],
   providers: [AuthService, FirestoreService,RoomService],
   bootstrap: [AppComponent],
-  entryComponents: [LoginComponent]
+  entryComponents: [LoginComponent,SeansPaymentComponent]
 })
 export class AppModule { }

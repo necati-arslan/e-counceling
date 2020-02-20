@@ -1,8 +1,8 @@
 <div class="container" fxLayout="column" fxLayoutGap="5px">
-    
+
     <mat-card fxLayout="column" fxFlexFill fxLayoutGap="3px">
-        <div fxLayout fxFlex="80%" fxLayoutAlign="center center">
-            <div fxLayout="column" >
+        <div fxLayout fxLayoutAlign="center center">
+            <div fxFlex="80%" fxLayout="column">
                 <div fxFlex>
                     <h3 class="explain">Formda verdiğiniz cevaplara göre,
                         size
@@ -10,33 +10,45 @@
                         iyi şekilde yardım edebilecek tarapistler
                         önerilecektirr </h3>
                 </div>
-                <form fxFlex fxLayout="column" [formGroup]="matchingForm" (ngSubmit)="onSubmitMatch()">
-                    <div fxFlex  fxLayout="row" fxLayoutAlign="center center">
-                        <mat-form-field fxFlex="80%">
-                            <mat-label>Aradığınız yardım konusu nedir?</mat-label>
-                            <mat-select formControlName="askHelp" multiple>
-                                <mat-option *ngFor="let help of askHelp$ | async" [value]="help.name">{{help.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div *ngIf="!matching" fxFlex fxLayoutAlign="center center">
-                        <div fxLayout="row" fxFlex="80%" fxLayoutGap.gt-xs="15px" fxLayout.lt-sm="column">
-                            <mat-form-field fxFlex.gt-xs="50%">
-                                <input formControlName="nickName" matInput placeholder="Kulanıcı İsmi">
-                            </mat-form-field>
-                            <mat-form-field fxFlex.gt-xs="50%">
-                                <mat-select formControlName="gender" placeholder="Cinsiyet">
-                                    <mat-option value="Bay">Bay</mat-option>
-                                    <mat-option value="Bayan">Bayan</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                <div fxFlex>
+                    <form fxLayout="column" [formGroup]="matchingForm" (ngSubmit)="onSubmitMatch()">
+                        <div fxFlex>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <mat-form-field fxFlex="80%">
+                                    <mat-label>Aradığınız yardım konusu nedir?</mat-label>
+                                    <mat-select formControlName="askHelp" multiple>
+                                        <mat-option *ngFor="let help of askHelp$ | async" [value]="help.name">
+                                            {{help.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
                         </div>
-                    </div>
-                    <div fxFlex fxLayoutAlign="center center">
-                            <button class="match" type="submit" mat-raised-button [disabled]="matchingForm.invalid">Ara</button>
-                    </div>
-                </form>
+                        <div *ngIf="!matching" fxFlex>
+                            <div fxLayout="row" fxLayoutAlign="center center" >
+                                <div fxFlex="80%" fxLayout.lt-sm="column" fxLayout.gt-xs="row" fxLayoutGap="10px" >
+
+                                    <mat-form-field fxFlex.gt-xs="50%" fxFlex.lt-sm="100%"> 
+                                        <input formControlName="nickName" matInput placeholder="Kulanıcı İsmi">
+                                    </mat-form-field>
+
+                                    <mat-form-field fxFlex.gt-xs="50%" fxFlex.lt-sm="100%">
+                                        <mat-select formControlName="gender" placeholder="Cinsiyet">
+                                            <mat-option value="Bay">Bay</mat-option>
+                                            <mat-option value="Bayan">Bayan</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div fxFlex fxFlexAlign="center">
+                            <button class="match" type="submit" mat-raised-button
+                                [disabled]="matchingForm.invalid">Ara</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -45,8 +57,9 @@
 
 
     <div>
-        <app-therapist-card *ngIf="recommendedTherapist" [uidTherapist]="recommendedTherapist"  style="margin-bottom: 3px;"></app-therapist-card>
+        <app-therapist-card *ngIf="recommendedTherapist" [userAuth]="user" [uidTherapist]="recommendedTherapist"
+            style="margin-bottom: 3px;"></app-therapist-card>
     </div>
-    
-  
+
+
 </div>

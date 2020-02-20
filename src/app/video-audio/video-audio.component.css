@@ -1,0 +1,78 @@
+.remoteStream{
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    background-color: black;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    margin-right: 0px;
+    padding-right: 0px;
+    z-index: 1;
+}
+
+@media screen and (max-width: 599px) {
+    .remoteStream{ 
+        height: 400px;
+    }
+  }
+
+.spinBar{
+    position: absolute;
+    top:40%;
+    left:40% ;
+
+}
+
+.localStream{
+
+    width: 100px;
+    height: 100px;
+    bottom: 0px;
+    right: 0px;
+    position: absolute;
+   
+    z-index: 2;
+}
+
+.callBar{
+    width:100%;
+    background-color: rgba(0, 0, 0, 0.5);;
+    z-index: 3;
+    position: absolute;
+    bottom: -90px;
+    transition: 0.3s;
+    padding: 5px;
+    padding-left: 10px;
+    margin-right: 0px;
+    padding-right: 0px;
+    
+  
+   
+}
+
+.remoteStream:hover .callBar{
+    bottom: 0px;
+}
+
+.callBar .iconCall{
+    font-size: 30px;
+    color: #49a010;
+    padding-right: 3px;
+}
+
+.callBar .iconClose{
+    font-size: 30px;
+    
+}
+
+.iconFull{
+    font-size: 30px;
+    color: #49a010;
+}
+
+
+.closeChat{
+    text-align: right;
+}

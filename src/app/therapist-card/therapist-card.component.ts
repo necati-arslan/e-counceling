@@ -2,9 +2,10 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { AuthService } from '../auth/auth.service';
 import { Observable, of, forkJoin, combineLatest, concat, merge, zip } from 'rxjs';
 import { RoomService } from '../services/room.service';
-import { switchMap, map,filter,tap} from 'rxjs/operators';
+import { switchMap, map, filter, tap } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { ElementSchemaRegistry } from '@angular/compiler';
+import { SeansPaymentComponent } from '../seans-payment/seans-payment.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 interface Status {
@@ -23,6 +24,7 @@ export class TherapistCardComponent implements OnInit, OnChanges {
 
   therapistCard$: Observable<any>;
   @Input() uidTherapist: any[];
+  @Input() userAuth: any;
 
 
   status: string = "offline";
@@ -30,7 +32,8 @@ export class TherapistCardComponent implements OnInit, OnChanges {
   constructor(
     private authService: AuthService,
     private roomService: RoomService,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private dialog:MatDialog
   ) {
 
     // let arr = ['WdFWd0Q7YGV4A3xiAZ53MS2fEWR2', 's4LiWMGJSfavBcmg7Zy9UBbCkxH2']
@@ -51,27 +54,35 @@ export class TherapistCardComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges) {
     // changes.prop contains the old and the new value...
-    let uidTherapist = changes.uidTherapist.currentValue;
+    let value = changes.uidTherapist.currentValue;
+    let uidTherapist;
+    if (typeof value == 'string') {//for single therapist
+      let data = { uidtherapist: value }
+      uidTherapist = Array.from(new Set([data]));
+    } else {
+      uidTherapist = value;
+    } 
     console.log(uidTherapist)
-    this.therapistCard$=combineLatest(
-     uidTherapist.map((element: any) => {
+    this.therapistCard$ = combineLatest(
+      uidTherapist.map((element: any) => {
+        console.log(element.uidtherapist)
         return this.roomService.getTherapistAllInfoById(element.uidtherapist).pipe(
-          switchMap((infoTherapist:any) => {
-              //console.log(infoTherapist);
-              return this.getStatus(element.uidtherapist).pipe(map(status=>{
-                  console.log(status)
-                  let dataStatus;
-                  status ? dataStatus=status : dataStatus={status:'offline'};
-                   return {...infoTherapist,...dataStatus};
-                     }))
-         }));
-      })).pipe(
-               map(x=>{
-                  return x.filter(Boolean)
-                  }),
-               tap(x=>console.log(x))
-               );
- 
+          switchMap((infoTherapist: any) => {
+            //console.log(infoTherapist);
+            return this.getStatus(element.uidtherapist).pipe(map(status => {
+              console.log(status)
+              let dataStatus;
+              status ? dataStatus = status : dataStatus = { status: 'offline' };
+              return { ...infoTherapist, ...dataStatus };
+            }))
+          }));
+      })).pipe( 
+        map(x => {
+          return x.filter(Boolean)
+        }),
+        tap(x => console.log(x))
+      );
+
 
   }
 
@@ -82,6 +93,21 @@ export class TherapistCardComponent implements OnInit, OnChanges {
         if (status.state == "online" && status.seansstate == "finished") return { status: 'online' };
         if (status.state == "away" || (status.seansstate == "continuing" && status.state == "online")) return { status: 'busy' };
       }));
+  }
+
+  seansPayment(therapist){
+
+    const dialogRef = this.dialog.open(SeansPaymentComponent,{
+      data:{therapist,user:this.userAuth}
+    }) 
+    .afterClosed()
+    .subscribe(result=>{
+      if (result) {
+        console.log(result);
+        //this.router.navigate(['/dashboard']);
+      };
+    })
+
   }
 
 

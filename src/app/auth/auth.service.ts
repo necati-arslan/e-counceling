@@ -25,14 +25,12 @@ export class AuthService {
 
     this.user$ = this.afauth.authState.pipe(
       switchMap(user => {
-        if (user) {
+        if (user) { 
           return this.afs.doc<any>(`users/${user.uid}`).valueChanges().pipe(take(1));
         } else {
           return of(null);
         }
-      })
-    );
-
+      }));
   }
 
   saveuser(data) {
@@ -41,6 +39,9 @@ export class AuthService {
 
   getUser() {
     return this.user$.pipe(first()).toPromise();
+  }
+  getUserById(userId){
+    return this.afs.doc(`users/${userId}`).valueChanges()
   }
 
   getLastSeans(userType) {

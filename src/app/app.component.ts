@@ -50,9 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.mdq=this.mobileQuery.matches;
  
-   
-    
-
+  
     router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
         if(e.url=='/') {this.currentUrl=true;}
@@ -75,13 +73,13 @@ export class AppComponent implements OnInit, OnDestroy {
         if (user.type == "user" && user.matching == false) this.router.navigate(['dashboard']);
         return this.userAuth = user;
      }else{return this.userAuth=null}
-   }));
+   })); 
 
   
   }
 
   sidenavClose(isExpanded:boolean){
-     this.isExpanded= isExpanded;//from sidenav component
+     this.isExpanded= isExpanded;//from sidenav component to width for sidenav
      console.log(this.isExpanded);
     if(this.mobileQuery.matches) this.sidenav.close();
   }

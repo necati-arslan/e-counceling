@@ -25,9 +25,10 @@ export class DashboardUserComponent implements OnInit {
     this.authService.getUser().then(user => {
       this.userinfo = user;
       console.log(user);
-    if (!this.userinfo.matching) return this.router.navigate(['/matching']);
+    if (!this.userinfo.matching) return;
+     this.router.navigate(['/matching']);
       
-    });
+    }); 
 
     this.authService.checkLastSeans('users')
     .subscribe((lastSeans:any)=>{
