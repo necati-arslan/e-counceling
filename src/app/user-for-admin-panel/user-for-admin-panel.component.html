@@ -1,0 +1,175 @@
+<h5 class="cardSectionHeader">Kullanıcı Güncelleme</h5>
+<div fxLayout="column" fxLayoutGap="10px">
+    <div fxFlex>
+        <span><img style="width:60px;height:60px;vertical-align: middle;" [src]="data?.user?.photoURL" alt="">
+            {{data?.user?.displayName}} / {{data?.user?.email}}
+        </span>
+        <span class="cardSectionHeader" style="float: right;vertical-align: middle;">Kayıt
+            Tarihi:{{data?.user?.createdAt |  date:'dd/MM/yyyy H:mm'}} </span>
+    </div>
+    <div>
+        <mat-divider></mat-divider>
+    </div>
+    <div fxFlex>
+        <fieldset>
+            <legend>Kayıt Bilgileri</legend>
+            <div>
+                <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px">
+
+                    <mat-form-field fxFlex appearance="fill">
+                        <mat-label>Display Name</mat-label>
+                        <input [(ngModel)]="displayName" matInput>
+                    </mat-form-field>
+
+
+                    <mat-form-field fxFlex style="width: 100px;">
+                        <mat-label>Kullanıcı Türü</mat-label>
+                        <mat-select [(ngModel)]="userType">
+                            <mat-option value="user">User</mat-option>
+                            <mat-option value="therapist">Therapist</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <div>
+                <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
+                    <div *ngIf="alert" fxFlex fxFlexAlign="start">
+                        <span  style="color: darkgreen;">Güncelleme Yapıldı!</span>
+                    </div>
+                    <div fxFlex="0 1 auto">
+                        <button (click)="updateUser()" mat-stroked-button>Güncelle</button>
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+
+
+    </div>
+
+    <div fxFlex *ngIf="userTypeFire==='therapist'">
+        <fieldset>
+            <legend>Therapist Bilgileri</legend>
+            <div fxLayout="column" fxLayoutGap="10px">
+                <div fxFlex>
+                    <mat-form-field fxFlex appearance="fill">
+                        <mat-label>Mesleki Özet</mat-label>
+                        <textarea class="textArea" matInput [(ngModel)]="meslekOzet" placeholder="mesleki özgeçmiş...">
+
+                        </textarea>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlex>
+                    <div>
+                        <h6 class="cardSectionHeader">Expertise(Therapist araması bu alandaki bilgilere göre yapılır!)
+                        </h6>
+                    </div>
+
+                    <div>
+                        <mat-form-field fxFlex appearance="fill">
+                            <mat-select [(ngModel)]="expertiseT" multiple>
+                                <mat-option *ngFor="let help of askHelp$ | async" [value]="help.value">
+                                    {{help.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex>
+                    <mat-form-field fxFlex appearance="fill">
+                        <mat-label>Uzmanlık(uzaman olduğunuz alanları sırasıyla satır başı yaparak giriniz)</mat-label>
+                        <textarea class="textArea" matInput [(ngModel)]="uzmanlik"
+                            placeholder="uzman olduğunuz alanlar...">
+
+                        </textarea>
+                    </mat-form-field>
+
+                </div>
+                <div fxFlex>
+                    <!--eğitim sertifikalar-->
+                    <mat-form-field fxFlex appearance="fill">
+                        <mat-label>Eğitim ve Sertifikalar(Eğitim ve sertifikalarınızı sırasıyla satır başı yaparak
+                            giriniz)</mat-label>
+                        <textarea class="textArea" matInput [(ngModel)]="education"
+                            placeholder="eğitim ve sertifikalar...">
+
+                        </textarea>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlex>
+                    <div fxLayout="row" fxLayoutAlign="end">
+                        <div fxFlex="0 1 auto">
+                            <button (click)="updateTherapist()" mat-stroked-button>Kaydet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<!-- <div fxLayout="row" >
+    <div fxFlex fxFlexAlign="center">
+        <mat-form-field fxFlex appearance="fill">
+            <mat-label>Eğitim ve Sertifikalar</mat-label>
+            <input matInput [(ngModel)]="education" placeholder="eğiitim...">
+        </mat-form-field>
+    </div>
+    <div fxFlex="0 0 auto" fxFlexAlign="center" >
+        <button mat-stroked-button>Ekle</button>
+    </div>
+    <div class="greyBorder" fxFlex>
+        <mat-list dense>
+            
+            <h3 mat-subheader>Eğitim ve Sertifikalar:</h3>
+            <mat-list-item role="listitem">
+              <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+              </mat-list-item>
+
+              <mat-list-item role="listitem">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+              </mat-list-item>
+        </mat-list>
+    </div>
+    
+</div> -->

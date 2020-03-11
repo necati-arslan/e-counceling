@@ -1,0 +1,16 @@
+ .borderOut{
+     border:1px solid red;
+ }
+
+ table {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+ 
+  .row-link:hover {
+    background-color: rgba(0, 0, 0, .05);
+    cursor: pointer;
+  }
+
+ 

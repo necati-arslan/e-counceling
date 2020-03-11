@@ -28,3 +28,16 @@ body{
       background-color:rgb(255, 37, 37,.26)
   }
 
+  .custom-dialog-container .mat-dialog-container {
+    padding: 0px !important;
+}
+
+.cardSectionHeader{
+  margin:0px;
+  padding: 0px;
+  color: rgba(163, 163, 163, 0.911);
+}
+
+.testBorder{
+  border: 1px solid red;
+}

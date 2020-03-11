@@ -43,60 +43,34 @@ export class AuthService {
   getUserById(userId){
     return this.afs.doc(`users/${userId}`).valueChanges()
   }
-
-  getLastSeans(userType) {
-    return this.user$.pipe(
-      switchMap(user => {
-        if (user) {
-          console.log(userType)
-          return this.afs.doc<any>(`${userType}/${user.uid}/lastseans/chat`).valueChanges()
-            .pipe(
-              map(snaps => {
-                return { ...snaps, ...user }
-              })
-            );
-        } else {
-          return of(null);
-        }
-      })
-    );
+  getUserByIdPromise(userId){
+    return this.afs.doc(`users/${userId}`).valueChanges().toPromise();
   }
 
-  checkLastSeans(userType) {//map kullanılacak
-    return this.getLastSeans(userType).pipe(
-      map((lastSeans: any) => {
-        if (lastSeans != null) {
-          let timeNow = Date.now();
-          let createdtime = lastSeans.createdtime;
-          let elapsedTime = Math.floor((timeNow - createdtime) / (1000 * 60 * 60));
-          let seansState = lastSeans.seansstate;
-          console.log(lastSeans)
-          if (elapsedTime > 1 && seansState == 'continuing') {
-            this.afs.doc(`${userType}/${lastSeans.uid}/lastseans/chat`).update({ seansstate: 'finished' });
-            return lastSeans;
-          }
-          if (elapsedTime < 1) {
-            console.log('mevcut görüşmeniz var!!');
-            return lastSeans;
-          };
-        }
-      })
-    );
 
-  }
+  
 
-  getStatus(uid) {//{createdtime: "232323", state: "offline", seansstate: "finished"}
-    return this.afs.collection(`users/${uid}/status`).valueChanges().pipe(
+  getStatus(uid,userType='therapist') {//{createdtime: "232323", state: "offline", seansstate: "finished"}
+      let whichUser=this.getWhichUser(userType);
+     console.log(whichUser)
+  return this.afs.collection(`users/${uid}/status`).valueChanges().pipe(
       switchMap((status: any) => {
-        return this.afs.collection(`users/${uid}/lastseans`).valueChanges().pipe(
-          map(lastSeans => {
-            let allStatus={...status[0],...lastSeans[0]};
+        return this.afs.doc(`${whichUser}/${uid}/lastseans/seansLive`).valueChanges().pipe(
+          map((lastSeans:any) => {
+            //let stateLive=status[0].state
+            let allStatus={...status[0],...lastSeans};
             return allStatus;
             })
         );
       })
     );
   }
+
+  getWhichUser(userType){
+    if(userType=='user') return 'users';
+    if(userType=='therapist') return 'therapists';
+  }
+
 
 
   initAuthListener() {

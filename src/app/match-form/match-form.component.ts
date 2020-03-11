@@ -8,6 +8,7 @@ import { Therapist } from '../models/therapist-model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ChatService } from '../chat/chat.service';
 import { AuthService } from '../auth/auth.service';
+import { RoomService } from '../services/room.service';
 
 
 
@@ -25,12 +26,13 @@ export class MatchFormComponent implements OnInit {
   matching:boolean;
   uidTherapist="s4LiWMGJSfavBcmg7Zy9UBbCkxH2"; 
 
-  constructor(private frService: FirestoreService,
-    private afStore: AngularFirestore,
+  constructor(
     private authService:AuthService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private roomService:RoomService
   ) {
-    this.authService.getUser().then((user:any)=>{
+
+    this.authService.user$.subscribe((user:any)=>{
       this.user=user;
       this.matching=user.matching;
     });
@@ -47,12 +49,10 @@ export class MatchFormComponent implements OnInit {
         validators: [
           Validators.required
         ]
-      }),
-      nickName:new FormControl(),
-      gender:new FormControl()
+      })
     });
 
-    this.askHelp$ = this.frService.getAskHelp();
+    this.askHelp$ = this.roomService.getAskHelp();
 
 
     //console.log(this.uidTherapist);
@@ -64,22 +64,14 @@ export class MatchFormComponent implements OnInit {
     let result: Therapist[];
     let therapistOrder: Therapist[] = [];
     let askHelp: any[];
-    let gender=this.matchingForm.value.gender;
-    let nickName=this.matchingForm.value.nickName
-
-    if(this.user){
-      this.afStore.doc(`users/${this.user.uid}/`).update({gender,nickName,matching:true});
-    }
-
+  
     
-          
-
 
     //get therapist from firestore and get form selection
 
     askHelp = this.matchingForm.value.askHelp;
     console.log(askHelp);
-    result = await this.frService.getTherapist().toPromise();
+    result = await this.roomService.getTherapist().toPromise();
  
     //create score fieald each item
     result.forEach((item) => {
@@ -114,10 +106,7 @@ export class MatchFormComponent implements OnInit {
  
   }
 
-  creatChat() {
-    this.chatService.create();
-  }
-
+  
 
 
 

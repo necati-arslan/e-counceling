@@ -1,0 +1,13 @@
+<div fxLayout=column>
+    <div fxFlex>
+        <h3>{{data?.header}}</h3>
+    </div>
+    <div fxFlex>
+        <mat-divider></mat-divider>
+    </div>
+    <div class="content" fxFlex>
+        <p *ngIf="data?.content">{{data?.content}}</p>
+        <p *ngIf="!data?.content">Herhangi bir içerik bulunmamaktadır</p>
+    </div>
+
+</div>

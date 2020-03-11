@@ -1,4 +1,14 @@
- 
+@media screen and (max-width: 599px) {
+  .container{ 
+      height: 100%;
+      margin: 2px;
+  }
+ h3.explain{
+      font-size: 14px;
+  }
+}
+  
+  
   .example-radio-group {
     display: flex;
     flex-direction: column;
@@ -74,3 +84,25 @@
       margin-left: 5px;
       font-size: 20px;
   }
+  .textAreaShow{
+    height:130px ;
+   text-align: left;
+}
+
+fieldset{
+  margin-top: 15px;
+  border: 1px solid rgb(205, 207, 207);
+  border-radius: 3px;
+}
+legend{
+  color: rgba(163, 163, 163, 0.911);
+}
+
+
+@media screen and (max-width: 599px) {
+ 
+.allcontent{
+  font-size: 12px!important;
+}
+
+}

@@ -38,6 +38,15 @@ import { TherapistOfUserComponent } from './therapist-of-user/therapist-of-user.
 import { TherapistCardComponent } from './therapist-card/therapist-card.component';
 import { SeansPaymentComponent } from './seans-payment/seans-payment.component';
 import { VideoAudioComponent } from './video-audio/video-audio.component';
+import { UserOfTherapistComponent } from './user-of-therapist/user-of-therapist.component';
+import { ReusabalDialogComponent } from './reusabal-dialog/reusabal-dialog.component';
+import { SeansComponent } from './seans/seans.component';
+import { SeansForTherapistComponent } from './seans-for-therapist/seans-for-therapist.component';
+import { QuestionToTherapistComponent } from './question-to-therapist/question-to-therapist.component';
+import { QuestionTemplateComponent } from './question-template/question-template.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { UserForAdminPanelComponent } from './user-for-admin-panel/user-for-admin-panel.component';
+import { ProfileTherapistComponent } from './profile-therapist/profile-therapist.component';
 
 
 @NgModule({
@@ -61,6 +70,15 @@ import { VideoAudioComponent } from './video-audio/video-audio.component';
     TherapistCardComponent,
     SeansPaymentComponent,
     VideoAudioComponent,
+    UserOfTherapistComponent,
+    ReusabalDialogComponent,
+    SeansComponent,
+    SeansForTherapistComponent,
+    QuestionToTherapistComponent,
+    QuestionTemplateComponent,
+    AdminPanelComponent,
+    UserForAdminPanelComponent,
+    ProfileTherapistComponent,
     
     
   ],
@@ -81,6 +99,11 @@ import { VideoAudioComponent } from './video-audio/video-audio.component';
   ],
   providers: [AuthService, FirestoreService,RoomService],
   bootstrap: [AppComponent],
-  entryComponents: [LoginComponent,SeansPaymentComponent]
+  entryComponents: [LoginComponent,
+    SeansPaymentComponent,
+    ReusabalDialogComponent,
+    UserForAdminPanelComponent,
+    ProfileTherapistComponent
+  ]
 })
 export class AppModule { }

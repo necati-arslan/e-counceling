@@ -38,10 +38,7 @@ export class TherapistComponent implements OnInit {
     this.uidTherapist = this.route.snapshot.paramMap.get('id');
     this.therapist$ = this.roomService.getTherapistAllInfoById(this.uidTherapist );//therapist
     
-    this.authService.getUser().then((user:any)=>{this.user=user;
-         this.room$= this.roomService.getRooms(user.uid)
-      
-    });//user
+ 
 
     
 

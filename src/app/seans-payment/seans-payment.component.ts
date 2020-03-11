@@ -17,17 +17,20 @@ export class SeansPaymentComponent implements OnInit {
   messageForm: FormGroup;
   seansType:string="video";
   bilgi:string;
+  displayName="";
+  gender="";
+  matching;
   constructor(private _formBuilder: FormBuilder,
     private roomService:RoomService,
     private router:Router ,
-    public dialogRef: MatDialogRef<TherapistCardComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any
+    public dialogRef: MatDialogRef<SeansPaymentComponent>,
+    @Inject(MAT_DIALOG_DATA) public data:any 
     ) {}
-
+ 
   ngOnInit() {
-
+ 
     console.log(this.data)
-
+    this.matching=this.data.user.matching;
     this.messageForm = this._formBuilder.group({
       konu: ['', Validators.required],
       message:['',Validators.required]
@@ -56,22 +59,29 @@ export class SeansPaymentComponent implements OnInit {
 
   }
   
-  onSubmitPayment(){
+  onSubmitPayment(){ 
     
-    let a = this.paymentForm.value;
+    let a = this.paymentForm.value; 
     let question =this.messageForm.value;
+    let uidUser = this.data.user.uid
   
     console.log(a);
     console.log(question);
     console.log(this.bilgi);
     console.log(this.seansType);
-    console.log(this.data.user);
-    console.log(this.data.therapist);
+    console.log("display>>>>>",this.displayName);
+    console.log("gender>>>",this.gender);
 
+    if(!this.matching){
+     this.roomService.updateUserInfo(uidUser,this.displayName,this.gender);
+    }
+    
     this.roomService.creatRoom(this.data.therapist,this.data.user,this.seansType,this.bilgi,question)
     .then((seansRef:any)=>{
+      if (seansRef.seansType=='video' || seansRef.seansType=='audio' ) seansRef.seansType="chat";
+       
       this.router.navigate([seansRef.seansType,seansRef.roomRef,seansRef.seansId]);
-      
+      this.dialogRef.close();
     });
 
     //this.router.navigate([seansType,roomRef,seansId]);  

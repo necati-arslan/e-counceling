@@ -6,11 +6,13 @@ import { switchMap, map, filter, tap } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { SeansPaymentComponent } from '../seans-payment/seans-payment.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ProfileTherapistComponent } from '../profile-therapist/profile-therapist.component';
 
 
 interface Status {
-  state: string,
-  seansstate: string
+  stateLive: string,
+  seansstate: string,
+  state:string
 }
 
 @Component({
@@ -25,7 +27,7 @@ export class TherapistCardComponent implements OnInit, OnChanges {
   therapistCard$: Observable<any>;
   @Input() uidTherapist: any[];
   @Input() userAuth: any;
-
+ 
 
   status: string = "offline";
 
@@ -89,12 +91,14 @@ export class TherapistCardComponent implements OnInit, OnChanges {
   getStatus(uid) {
     return this.authService.getStatus(uid).pipe(
       map((status: Status) => {
-        if (status.state == 'offline') { return { status: 'offline' }; };
-        if (status.state == "online" && status.seansstate == "finished") return { status: 'online' };
-        if (status.state == "away" || (status.seansstate == "continuing" && status.state == "online")) return { status: 'busy' };
+        console.log('>>>>>>>>>>',uid,status)
+        if (status.stateLive == 'offline') { return { status: 'offline' }; };
+        if ((status.stateLive == "online" || status.stateLive == "away") && status.state == "finished") return { status: 'online' };
+        if ( status.state == "continuing" && (status.stateLive == "online" || status.stateLive == "away")) return { status: 'busy' };
+        if ( !status.state && (status.stateLive == "online" || status.stateLive == "away")) return { status: 'online' };
       }));
   }
-
+  
   seansPayment(therapist){
 
     const dialogRef = this.dialog.open(SeansPaymentComponent,{
@@ -110,5 +114,23 @@ export class TherapistCardComponent implements OnInit, OnChanges {
 
   }
 
+  profileTherapist(therapist){
+    console.log(therapist.uid);
+    const dialogRef = this.dialog.open(ProfileTherapistComponent,{
+      width:'800px',
+      height:'90%',
+      panelClass: 'custom-dialog-container',
+      data:{therapist}
+    }) 
+    .afterClosed()
+    .subscribe(result=>{
+      if (result) {
+        console.log(result);
+        //this.router.navigate(['/dashboard']);
+      };
+    })
+
+  }
+ 
 
 }

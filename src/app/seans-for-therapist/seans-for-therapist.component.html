@@ -1,0 +1,38 @@
+<div class="container">
+
+    <mat-form-field> 
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtre">
+    </mat-form-field>
+        <h5 style="color: rgb(149, 149, 149);">{{displayName}} / {{email}} :</h5>
+        <table mat-table [dataSource]="dataSource"  matSort>
+            <ng-container matColumnDef="no">
+                <th mat-header-cell *matHeaderCellDef  > No. </th>
+                <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
+            </ng-container>
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header>Görüşme Türü</th>
+                <td mat-cell *matCellDef="let element"> {{element?.type}} </td>
+            </ng-container>
+            <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header>Tarih</th>
+                <td mat-cell *matCellDef="let element"> {{element?.createdAt |  date:'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="state">
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header>Durum</th>
+                <td mat-cell *matCellDef="let element"> {{element?.state}} </td>
+            </ng-container>
+           
+            <ng-container matColumnDef="seansNote">
+                <th mat-header-cell *matHeaderCellDef > Seans Note </th>
+                <td mat-cell *matCellDef="let element"><button mat-stroked-button (click)="openDialog(element?.seansNote)">Not Göster</button></td>
+            </ng-container>
+            <ng-container matColumnDef="seans">
+                <th mat-header-cell *matHeaderCellDef > Seans </th>
+                <td mat-cell *matCellDef="let element"><a *ngIf="element?.type!='message'" [routerLink]="['/chat',roomId,element?.idSeans]">Seansa Git</a></td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row class="row-link" *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator itemsPerPageLabel="xx" [pageSizeOptions]="[50, 100, 150, 200]"></mat-paginator>
+</div>

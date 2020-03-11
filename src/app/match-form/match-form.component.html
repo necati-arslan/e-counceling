@@ -17,32 +17,14 @@
                                 <mat-form-field fxFlex="80%">
                                     <mat-label>Aradığınız yardım konusu nedir?</mat-label>
                                     <mat-select formControlName="askHelp" multiple>
-                                        <mat-option *ngFor="let help of askHelp$ | async" [value]="help.name">
+                                        <mat-option *ngFor="let help of askHelp$ | async" [value]="help.value">
                                             {{help.name}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                            </div>
+                            </div> 
                         </div>
-                        <div *ngIf="!matching" fxFlex>
-                            <div fxLayout="row" fxLayoutAlign="center center" >
-                                <div fxFlex="80%" fxLayout.lt-sm="column" fxLayout.gt-xs="row" fxLayoutGap="10px" >
-
-                                    <mat-form-field fxFlex.gt-xs="50%" fxFlex.lt-sm="100%"> 
-                                        <input formControlName="nickName" matInput placeholder="Kulanıcı İsmi">
-                                    </mat-form-field>
-
-                                    <mat-form-field fxFlex.gt-xs="50%" fxFlex.lt-sm="100%">
-                                        <mat-select formControlName="gender" placeholder="Cinsiyet">
-                                            <mat-option value="Bay">Bay</mat-option>
-                                            <mat-option value="Bayan">Bayan</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-
-                                </div>
-
-                            </div>
-                        </div>
+                       
                         <div fxFlex fxFlexAlign="center">
                             <button class="match" type="submit" mat-raised-button
                                 [disabled]="matchingForm.invalid">Ara</button>
@@ -52,7 +34,7 @@
             </div>
         </div>
 
-    </mat-card>
+    </mat-card> 
 
 
 

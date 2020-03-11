@@ -1,0 +1,22 @@
+fieldset{
+    margin-top: 15px;
+    border: 1px solid rgb(205, 207, 207);
+    border-radius: 3px;
+  }
+  legend{
+    color: rgba(163, 163, 163, 0.911);
+  }
+
+  .greyBorder{
+    border: 1px solid rgb(205, 207, 207);
+    border-radius: 3px;
+    padding: 10px;
+    margin-top: 10px;
+    height: 150px;
+    text-align: justify;
+    overflow: auto;
+  }
+
+  .textArea{
+    height:100px;
+  }

@@ -1,0 +1,186 @@
+.container{
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+  } 
+  @media screen and (max-width: 599px) {
+    .container{ 
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+    }
+  }
+
+  .card{
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card .header{
+    
+    margin: 0px;
+    padding: 0px;
+    background-color: #49a010;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    box-shadow: 0 0px 3px rgba(0,0,0,0.12), 0 0px 2px rgba(0,0,0,0.24);
+    padding: 10px;
+}
+
+.header .main{
+    width: 100%;
+    height: 80px;
+    position: relative;
+    text-align: center;
+}
+
+.imgHeader{
+    position: absolute;
+     left: 50%;
+     bottom:-70px;
+     transform: translate(-50%);
+}
+
+
+.imgProfile {
+    width: 120px;
+    height:120px;
+    border-radius: 50%;
+    border: 3px solid #49a010;
+  }
+
+  .content{
+  padding-top: 58px;
+  padding-right:15px ;
+  padding-left:15px ;
+  padding-bottom:10px ;
+  background-color: #F5F9FA;
+ 
+  
+    }
+.displayName{
+    text-align: center;
+    
+    margin-bottom:5px;
+}
+
+.content .head{
+    color: #4F5A65;;
+}
+
+
+.content .field{
+    color: #4F5A65;
+    text-align: justify;
+}
+.footer{
+   background-color:rgb(230, 235, 235);
+   color: #2E343B;
+   padding: 15px;
+}
+
+.hrProfile{
+    border-top: 2px solid #49a010;
+    width: 70px;
+    padding: 5px;
+    margin:0px;
+    padding-top: 3px;
+  
+   
+ }
+
+
+ ul {
+    
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    font-size: 13px;
+  
+  }
+  li{
+      margin-bottom: 3px;
+  }
+
+
+.uzmanlik{
+    -webkit-columns: 2;
+    -moz-columns: 2;
+    columns: 2;
+    -webkit-column-gap:5px;
+    -moz-column-gap: 5px;
+    column-gap: 5px;  
+    list-style-type: none;
+}
+
+
+
+
+
+
+
+ /* .contentProfile{
+     padding: 0px;
+     padding-left: 10px;
+
+ }
+
+ .unvan{
+    margin-top:0px;
+ }
+
+ .headerProfile{
+     padding-left: 15px;
+     margin-bottom: 5px;
+ }
+
+
+
+ .sectionExpertise{
+   
+    padding: 10px;
+    margin-top: 10px;
+    text-align: start;
+
+ }
+
+
+
+ .uzmanlik ul {
+    -webkit-columns: 2;
+    -moz-columns: 2;
+    columns: 2;
+    -webkit-column-gap: 10px;
+    -moz-column-gap: 10px;
+    column-gap: 10px;  
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    margin-top: 10px;
+    padding-left: 15px;
+  }
+
+  .uzmanlik li{
+    width: 150px;
+    margin-bottom: 5px;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    color: #95a5a6;
+  
+}
+
+fieldset{
+    border: 1px solid rgb(205, 207, 207);
+    border-radius: 3px;
+  }
+  legend{
+    color: rgba(163, 163, 163, 0.911);
+  } */

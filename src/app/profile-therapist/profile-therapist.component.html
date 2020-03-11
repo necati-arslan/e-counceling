@@ -1,0 +1,121 @@
+<div class="container">
+    <div fxLayout="column" class="card">
+
+        <div fxFlex="0 1 auto" class="header">
+            <div class="main">
+                <div class="imgHeader">
+                    <img *ngIf="data?.therapist?.photoURL" class="imgProfile" [src]="data?.therapist?.photoURL" alt="">
+
+                </div>
+            </div>
+        </div>
+        <div fxFlex class="content">
+            <div class="displayName head">
+                <span><strong>{{data?.therapist?.displayName}}</strong> / <em>Terapist</em></span>
+            </div>
+
+            <div class="field">
+               <p>
+                   {{data?.therapist?.meslekOzet}}
+               </p>
+            </div>
+        </div>
+        <div fxFlex class="footer">
+            <div fxLayout.gt-xs="row" fxLayout.lt-sm="column" fxLayoutGap.lt-sm="8px">
+                <div fxFlex>
+                    <span><strong>Uzmanlık Alanları:</strong></span>
+                    <hr class="hrProfile">
+                    <ul class="uzmanlik">
+                        <li *ngFor="let uzmanlik of uzmanlikAlan" ><span>{{uzmanlik}}</span> </li>
+                    </ul>
+                </div>
+                <div fxFlex>
+                    <span><strong>Eğitim ve Sertifikalar:</strong></span>
+                    <hr class="hrProfile">
+                    <ul>
+                        <li *ngFor="let education of education"><span>{{education}}</span> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div fxLayout="row">
+    <div fxFlex="0 1 auto">
+        <img *ngIf="data?.therapist?.photoURL" class="imgProfile" [src]="data?.therapist?.photoURL" alt="">
+    </div>
+    <div fxFlex>
+        <div class="contentProfile" fxLayout="column">
+            <div fxFlex>
+                <p style="margin-bottom:3px;">{{data?.therapist?.displayName}}</p>
+                <p class="unvan">Therapist</p>
+                <mat-divider></mat-divider>
+            </div>
+            <div fxFlex>
+                <h3></h3>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis quia non, ad blanditiis, enim
+                    consectetur aliquam hic eligendi reiciendis nostrum odio nihil ipsa autem, incidunt consequatur
+                    quisquam sint at iure.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut ipsum doloremque quibusdam doloribus
+                    unde dolorum, est assumenda porro exercitationem nam dolor, eius similique! Molestias eius obcaecati
+                    saepe, quae quo quod!
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus quasi ipsum consequatur tempora
+                    adipisci reiciendis commodi nulla doloremque corrupti? Cum adipisci laudantium magni repellat maxime
+                    nam aliquam natus culpa est.
+                </p>
+            </div>
+            <div fxFlex>
+                <fieldset>
+                    <legend>Uzmanlık ve Eğitim </legend>
+                    <div class="sectionExpertise" fxLayout="row" fxLayoutAlign="start">
+                        <div class="uzmanlik" fxFlex="0 1 auto">
+                            <h5 class="headerProfile">Uzmanlık Alanları:</h5>
+                            <hr class="hrProfile">
+
+                            <ul>
+                                <li><span>ilişkiler</span> </li>
+                                <li><span>öfke kontrolü</span> </li>
+                                <li><span>ilişkiler</span> </li>
+                                <li><span>öfke kontrolü</span> </li>
+
+                            </ul>
+                        </div>
+                        <div fxFlex>
+
+                            <h5 class="headerProfile">Eğitim ve Sertifikalar:</h5>
+                            <hr class="hrProfile">
+                            <ul>
+                                <li><span>2011-2015 / LİSANS / HACETTEPE ÜNİVERSİTESİ / PSİKOLOJİK DANIŞMANLIK VE REHBERLİK</span> </li>
+                                <li><span>2011-2015 / LİSANS / HACETTEPE ÜNİVERSİTESİ / PSİKOLOJİK DANIŞMANLIK VE REHBERLİK</span> </li>
+                                <li><span>2011-2015 / LİSANS / HACETTEPE ÜNİVERSİTESİ / PSİKOLOJİK DANIŞMANLIK VE REHBERLİK</span> </li>
+                                
+
+                            </ul>
+
+                        </div>
+                    </div>
+                </fieldset>
+
+            </div>
+        </div>
+    </div>
+</div> -->

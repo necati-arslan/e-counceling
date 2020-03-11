@@ -40,3 +40,12 @@
     border:1px solid red;
     background-color: red;
 }
+
+fieldset{
+  margin-top: 15px;
+  border: 1px solid rgb(205, 207, 207);
+  border-radius: 3px;
+}
+legend{
+  color: rgba(163, 163, 163, 0.911);
+}

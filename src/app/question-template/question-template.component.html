@@ -1,0 +1,67 @@
+<div class="container">
+    <div fxLayout="column" class="card">
+        <div fxFlex="0 1 auto" class="header">
+            <div fxLayout="row wrap">
+                <div fxFlex="0 1 auto">
+                    <img class="imgHeader" [src]="data?.row?.photoURL" alt="">
+                </div>
+                <div class="headerText" *ngIf="data?.usertype==='therapist'" style="padding-left: 5px;"
+                    fxFlex="0 1 auto" fxFlexAlign="center">
+                    <span *ngIf="data?.row?.userdisplayname">{{data?.row?.userdisplayname}} / {{data?.row?.usermail}} </span>
+                    <span *ngIf="data?.row?.displayName">{{data?.row?.displayName}} / {{data?.row?.email}} </span>
+                </div>
+                <div class="headerText" *ngIf="data?.usertype==='user'" style="padding-left: 5px;" fxFlex="0 1 auto"
+                    fxFlexAlign="center">
+                    <span *ngIf="data?.row?.therapistname">{{data?.row?.therapistname}} </span>
+                    <span *ngIf="data?.row?.displayName">{{data?.row?.displayName}} </span>
+                </div>
+                <div fxFlex fxLayoutAlign="end center" style="padding-right: 20px;">
+                    <div *ngIf="data?.row?.createdtime" class="headerText"><span>Soru Tarihi:&nbsp;</span>{{data?.row?.createdtime | date:'dd/MM/yyyy H:mm'}}</div>
+                    <div *ngIf="data?.row?.createdAt" class="headerText"><span>Soru Tarihi:&nbsp;</span>{{data?.row?.createdAt | date:'dd/MM/yyyy H:mm'}}</div>
+                </div>
+            </div>
+        </div>
+        <div fxFlex class="content">
+            <div>
+                <div fxLayout="row">
+                    <mat-form-field fxFlex="1 0 100%"  appearance="fill">
+                      <mat-label>Soru</mat-label>
+                      <textarea  class="textAreaShow" matInput [value]="data?.row?.question?.message" placeholder="soru">
+                      </textarea>
+                    </mat-form-field>
+                  </div>
+                 
+                  <fieldset>
+                    <legend>Cevap:</legend>
+                    
+                    <div style="margin-bottom:3px;" *ngIf="answerState!=='success'">
+                        <div  fxLayout=row fxLayoutAlign="start center">
+                            <div fxFlex="auto" class="warningMain">
+                                <span style="text-align: left;">Sorunuz Henüz Cevaplanmamıştır. </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="(answerState==='success' && data?.usertype==='therapist')" style="margin-bottom:3px;">
+                        <div  fxLayout=row fxLayoutAlign="start center">
+                            <div fxFlex="auto" class="alert-success">
+                                <span style="text-align: left;">Cevap kaydedilmiştir. </span>
+                            </div>
+                        </div>
+                    </div>    
+                    <div *ngIf="data?.row?.answer || data?.usertype==='therapist' "> 
+                        <div fxLayout="row">
+                            <mat-form-field fxFlex="1 0 100%"  appearance="fill">
+                              <mat-label>Uzman Cevabı</mat-label>
+                              <textarea  class="textAreaShow" matInput [(ngModel)]="answer"  placeholder="cevap">
+            
+                              </textarea>
+                            </mat-form-field>
+                          </div>
+                          <button *ngIf="data?.usertype==='therapist' " (click)="answerClick()" class="banner-button" mat-button >Cevapla</button>
+                    </div>
+                    
+                </fieldset>
+            </div>          
+        </div>
+    </div>
+</div>

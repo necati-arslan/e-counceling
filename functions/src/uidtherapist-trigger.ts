@@ -26,7 +26,7 @@ export const useWildcard = functions.firestore
                         uidtherapist: uid
                     }
                 }
-                roomRef.update({ ...data });
+                roomRef.update({ ...data }); 
             });
         });
     }

@@ -30,13 +30,13 @@ export class DashboardUserComponent implements OnInit {
       
     }); 
 
-    this.authService.checkLastSeans('users')
-    .subscribe((lastSeans:any)=>{
-      if(lastSeans!=null && lastSeans.seansstate=='continuing') {
-        this.lastInfo=lastSeans;
-        console.log(lastSeans);
-       } 
-     });
+    // this.authService.checkLastSeans('users')
+    // .subscribe((lastSeans:any)=>{
+    //   if(lastSeans!=null && lastSeans.seansstate=='continuing') {
+    //     this.lastInfo=lastSeans;
+    //     console.log(lastSeans);
+    //    } 
+    //  });
   }
 
 }

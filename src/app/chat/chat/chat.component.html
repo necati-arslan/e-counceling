@@ -2,11 +2,11 @@
   <div class="container">
     <div fxLayout="column" class="card">
       <div fxFlex>
-        <div fxLayout=row fxLayout.lt-sm="column" >
-          <div fxFlex class="videoRes"  name="video" >
-            <app-video-audio  [seansId]="seansId"></app-video-audio>
+        <div fxLayout=row fxLayout.lt-sm="column">
+          <div fxFlex class="videoRes" name="video">
+            <app-video-audio [seansId]="seansId"></app-video-audio>
           </div>
-          <div fxFlex name=chat> 
+          <div fxFlex name=chat>
             <div fxLayout="column">
               <div fxFlex="1 0 auto" class="header">
                 <div *ngIf="headerUser$ | async as headerUser">
@@ -15,7 +15,12 @@
                       <img class="imgHeader" [src]="headerUser?.photoURL" alt="">
                     </div>
                     <div style="padding-left: 5px;" fxFlex="0 1 auto" fxFlexAlign="center">
-                      <span>{{headerUser?.displayName}}</span>
+                      <span>{{headerUser?.displayName?headerUser?.displayName:headerUser?.email}}</span>
+                      <span *ngIf="userId===roomInfo?.therapist?.uidtherapist"><span class="countDown"
+                          *ngIf="newUserofTherapist===true">
+                          Yeni Danışan. İlk Seansınız!!
+                        </span></span>
+
                     </div>
                     <div fxFlex fxLayoutAlign="end center" style="padding-right: 20px;">
                       <div class="countDown"><span>Kalan Süre:</span>{{countDownText}}</div>
@@ -30,7 +35,6 @@
                       <div class="chatMessage">
                         <span>{{msg?.content}}<span class="msgDate">&nbsp;{{msg?.createdAt | date:'H:mm'}}</span></span>
                         <img class="imgChat" [src]="msg.user?.photoURL" alt="">
-
                       </div>
                     </div>
                   </div>
@@ -56,9 +60,113 @@
         </div>
       </div>
 
-
+ 
 
     </div>
+
+    <mat-card *ngIf="userId===roomInfo?.therapist?.uidtherapist" style="margin-top: 5px;"><!--Danışan bilgi-seans Note-->
+      <mat-card-header>
+        <mat-card-subtitle>Bu kısmı sadece seans therapisti görebilmektedir!</mat-card-subtitle>
+      </mat-card-header>
+      <mat-tab-group>
+        <mat-tab label="Seans Bilgi">
+          <div fxLayout="column" class="tabPanelTherapist">
+            <div fxFlex>
+              <div fxLayout=row>
+                <div fxFlex>
+                  <!-- danışan bilgisi-->
+                  <mat-list dense>
+                    <h3 mat-subheader>Danışan Bilgileri:</h3>
+                    <mat-list-item *ngIf="newUserofTherapist===true" role="listitem">
+                      Danışanın sizinle ilk seansıdır.
+                    </mat-list-item>
+                    <mat-list-item *ngIf="otherUser?.email" role="listitem">
+                      <span>email: {{otherUser?.email}}</span>
+                    </mat-list-item>
+                    <mat-list-item *ngIf="otherUser?.displayName" role="listitem">
+                      <span>İsim: {{otherUser?.displayName}}</span>
+                    </mat-list-item>
+                    <mat-list-item *ngIf="otherUser?.gender" role="listitem">
+                      <span>Cinsiyet: {{otherUser?.gender}}</span>
+                    </mat-list-item>
+                    <mat-list-item *ngIf="otherUser?.type" role="listitem">
+                      <span>Kullanıcı Türü: {{otherUser?.type}}</span>
+                    </mat-list-item>
+
+                  </mat-list>
+                </div>
+                <div fxFlex>
+                  <!-- Seans bilgisi-->
+                  <mat-list dense>
+                    <h3 mat-subheader>Seans Bilgileri:</h3>
+                    <mat-list-item role="listitem">
+                      <span>Ön Bilgi: {{seansInfo?.bilgi?seansInfo?.bilgi:'Her hangibir bilgi girilmemiştir.'}}</span>
+                    </mat-list-item>
+                    <mat-list-item role="listitem">
+                      <span>Başlama tarihi: {{seansInfo?.createdAt | date:'d/M/yyyy H:mm'}}</span>
+                    </mat-list-item>
+                    <mat-list-item role="listitem">
+                      <span>Durum: {{seansInfo?.state}}</span>
+                    </mat-list-item>
+                    <mat-list-item role="listitem">
+                      <span>Seans Türü: {{seansInfo?.type}}</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+              </div>
+            </div>
+            <div fxFlex>
+              <mat-list dense *ngIf="roomInfo?.roomNote">
+                <h3 mat-subheader>Therapist Genel Notu;</h3>
+                <div class="roomNote"   role="listitem">
+                  {{roomInfo?.roomNote}}
+                </div>
+              </mat-list>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Not Ekle">
+          <div fxLayout=column class="tabPanelTherapist">
+            <div fxFlex>
+              <p>Şuan ki seans ile ilglig notlarınızı buradan ekleyebilirsiniz:</p>
+
+              <p id="seansMessage" style="color:#49a010"></p>
+            </div>
+            <div fxFlex>
+              <div fxLayout="row">
+                <mat-form-field fxFlex.gt-xs="80%" fxFlex.lt-sm="90%" appearance="fill">
+                  <mat-label>Seans Notu</mat-label>
+                  <textarea matInput [(ngModel)]="seansNote" placeholder="Seans Notu">
+
+                  </textarea>
+                </mat-form-field>
+              </div>
+              <button (click)="addSeansNote()" mat-stroked-button>Seans Notu Ekle</button>
+            </div>
+            <div style="margin-top:3px;" fxFLex>
+              <div fxLayout="row">
+                <mat-divider fxFlexOffset="10%" fxFlex="80%"></mat-divider>
+              </div>
+            </div>
+            <div fxFlex>
+              <p>Danışan hakkında genel notu bu bölümden ekleyebilirsiniz:</p>
+              <p id="roomMessage" style="color:#49a010"></p>
+            </div>
+            <div fxFlex>
+              <div fxLayout="row">
+                <mat-form-field fxFlex.gt-xs="80%" fxFlex.lt-sm="90%" appearance="fill">
+                  <mat-label>Genel Not</mat-label>
+                  <textarea matInput [(ngModel)]="roomNote" placeholder="Genel Not"></textarea>
+                </mat-form-field>
+              </div>
+              <button (click)="addRoomNote()" mat-stroked-button>Genel Not Ekle</button>
+            </div>
+
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+
+    </mat-card>
 
   </div>
 

@@ -1,8 +1,8 @@
 <div class="mainRow" fxLayout="row" *ngFor="let therapist of therapistCard$ | async">
-    <!-- -->
+    <!-- --> 
     <mat-card *ngIf="therapist.uid" fxLayout fxFlexFill fxLayoutGap="10px" fxLayout.lt-sm="column">
         <div fxFlex="0 1 auto">
-            <!--image and online-->
+            <!--image and online--> 
             <div fxLayout="column" fxLayoutAlign="start center" fxLayout.lt-sm="row">
                 <div style="margin: 0px;">
                     <img class="card-img " [ngClass]="{'img-offline':therapist?.status==='offline',
@@ -17,9 +17,9 @@
                     <mat-card-title>{{therapist?.displayName}} </mat-card-title>
                     <mat-card-subtitle>{{therapist?.type}}</mat-card-subtitle>
                     <div class="card-button" fxFlex="1 1 auto" fxLayout>
-                        <button class=" card-button-online card-item"
+                        <button *ngIf="therapist?.status==='online'"  class=" card-button-online card-item"
                          mat-raised-button
-                         [routerLink]="['/therapist',therapist?.uid]"
+                         (click)="seansPayment(therapist)"
                          >Hemen Başla</button>
                         <button class=" card-button-randevu card-item" mat-raised-button>Randevu Al</button>
                     </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="card-button" fxFlex="1 1 auto" fxLayout fxLayoutAlign="flex-end"
                             fxLayoutAlign.lt-sm="center center" fxHide.lt-sm>
-                            <button class=" card-button-online card-item" 
+                            <button *ngIf="therapist?.status==='online'"  class=" card-button-online card-item" 
                             mat-raised-button
                             (click)="seansPayment(therapist)"
                             >Hemen Başla</button>
@@ -54,7 +54,7 @@
                     <p><strong>Uzmanlık Alanları:</strong></p>
                     <p style="margin-bottom: 0px; text-align: justify;">{{therapist?.expertise}}</p>
                     <span style="margin: 0;" class="info-T">
-                        <button mat-icon-button>
+                        <button (click)="profileTherapist(therapist)" mat-icon-button>
                             <mat-icon>search</mat-icon>Detaylı Bilgi
                         </button>
                     </span>

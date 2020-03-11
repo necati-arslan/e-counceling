@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 interface StatusData {
-  state:string,
+  stateLive:string,
   last_changed:any
 }
 
@@ -45,16 +45,16 @@ export class PresenceService {
   }
 
   isOfflineForDatabase = {
-    state: 'offline',
+    stateLive: 'offline',
     last_changed: firebase.database.ServerValue.TIMESTAMP,
 };
 
  isOnlineForDatabase = {
-    state: 'online',
+    stateLive: 'online',
     last_changed: firebase.database.ServerValue.TIMESTAMP,
 };
 isAwayForDatabase = {
-  state: 'away',
+  stateLive: 'away',
   last_changed: firebase.database.ServerValue.TIMESTAMP,
 };
   

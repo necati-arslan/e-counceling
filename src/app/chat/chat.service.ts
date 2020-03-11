@@ -70,7 +70,7 @@ export class ChatService {
     const joinKeys = {};
 
     return chat$.pipe(
-      switchMap((c: any) => {
+      switchMap((c: any) => { 
         // Unique User IDs
         chat = c;
         const uids = Array.from(new Set(c.messages.map(v => v.uid)));//contain user and other users uid
@@ -97,16 +97,7 @@ export class ChatService {
   }
 
 
-  checkChatHeader(roomId) {
-    this.roomService.getRoomById(roomId).pipe(
-      map((room: any) => {
-        let roo = room;
-        console.log('room', roo);
-        return roo;
 
-      })
-    );
-  }
 
   chatHeader(roomId, userId) {
     return this.roomService.getRoomById(roomId).pipe(

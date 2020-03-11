@@ -8,11 +8,11 @@
     </div>
 </div>
 
-<div>
+<div class="allcontent">
     <mat-card>
         <mat-horizontal-stepper [linear]="true" #stepper>
             <mat-step>
-                <ng-template matStepLabel>Fill out your address</ng-template>
+                <ng-template matStepLabel>Görüşme Türü</ng-template>
                 <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
                     [(ngModel)]="seansType">
                     <div class="step1" fxLayout="column">
@@ -40,15 +40,15 @@
                             <hr class="card-divider">
                         </div>
                         <div class="section" fxFlex>
-                            <div [ngClass]="{'color_change':seansType==='chat'}" fxLayout="row">
-                                <mat-radio-button class="example-radio-button" value="chat">
+                            <div [ngClass]="{'color_change':seansType==='audio'}" fxLayout="row">
+                                <mat-radio-button class="example-radio-button" value="audio">
                                     <div fxFlex>
                                         <div class="type">
                                             <i style="font-size: 30px;" class="material-icons">
                                                 mic
                                             </i>
                                             <span style="margin-left: 5px;">
-                                                <strong>chat Görüşme</strong>
+                                                <strong>Sesli Görüşme</strong>
                                             </span>
                                         </div>
                                         <div class="price">
@@ -97,12 +97,8 @@
 
             </mat-step>
             <mat-step *ngIf="seansType==='message'" [stepControl]="messageForm">
-                <div>
-                    {{favoriteSeason}}
-                </div>
-
                 <form *ngIf="seansType==='message'" [formGroup]="messageForm">
-                    <ng-template matStepLabel>Fill out your address</ng-template>
+                    <ng-template matStepLabel>Soru Formu</ng-template>
                     <div fxLayout="row" fxLayoutAlign="center">
                         <div fxFlex="80%" fxLayoutGap="10px">
                             <div fxLayout="column">
@@ -117,9 +113,12 @@
                                     <input matInput formControlName="konu" placeholder="Konu">
                                 </mat-form-field>
 
-                                <mat-form-field fxFlex>
-                                    <textarea formControlName="message" matInput
-                                        placeholder="Mesajınızı Yazınız..."></textarea>
+                                <mat-form-field fxFlex appearance="fill">
+                                    <mat-label>Sorunuz</mat-label>
+                                    <textarea class="textAreaShow" matInput formControlName="message"
+                                        placeholder="sorunuzu yazınız...">
+
+                                    </textarea>
                                 </mat-form-field>
 
                             </div>
@@ -135,16 +134,38 @@
                 </form>
 
             </mat-step>
-            <mat-step *ngIf="seansType==='chat'">
-                <div *ngIf="seansType==='chat'">
+            <mat-step *ngIf="(seansType==='video'||seansType==='audio')">
+                <div *ngIf="(seansType==='video'||seansType==='audio')">
+                    <ng-template matStepLabel>Bilgi Formu</ng-template>
                     <div fxLayout="row" fxLayoutAlign="center">
                         <div fxFlex="80%" fxLayoutGap="10px">
                             <div fxLayout="column">
                                 <div fxFlex>
-                                    <h3 class="explain">Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                                        Nostrum, doloremque? Aperiam atque tempora quod quisquam. Non, porro?
-                                        Voluptatem qui, tempore perspiciatis officiis fugit, neque, quibusdam
-                                        molestiae nulla minus hic tempora.</h3>
+                                    <div *ngIf="!matching" fxLayout="row" ><!--matching if-->
+                                        <fieldset fxFlexFill>
+                                            <legend> Kendiniz hakkında bilgi giriniz(İsteğe bağlı);</legend>
+                                            <div fxLayout="row" fxLayoutAlign="center center">
+                                                <div fxFlex="80%" fxLayout.lt-sm="column" fxLayout.gt-xs="row"
+                                                    fxLayoutGap="10px">
+
+                                                    <mat-form-field fxFlex.gt-xs="50%" fxFlex.lt-sm="100%">
+                                                        <input  [(ngModel)]="displayName" matInput
+                                                            placeholder="Kulanıcı İsmi">
+                                                    </mat-form-field>
+
+                                                    <mat-form-field fxFlex.gt-xs="50%" fxFlex.lt-sm="100%">
+                                                        <mat-select [(ngModel)]="gender" placeholder="Cinsiyet">
+                                                            <mat-option value="Bay">Bay</mat-option>
+                                                            <mat-option value="Bayan">Bayan</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+
+                                                </div>
+
+                                            </div>
+                                        </fieldset>
+
+                                    </div>
                                 </div>
                                 <div fxFlex>
                                     <mat-form-field fxFlex>
@@ -157,13 +178,13 @@
                         </div>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;">
-                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperPrevious>Geri</button>
                         <button class="banner-button" mat-button matStepperNext>Devam</button>
                     </div>
                 </div>
             </mat-step>
             <mat-step>
-                <ng-template matStepLabel>Done</ng-template>
+                <ng-template matStepLabel>Tamamlama</ng-template>
 
                 <div fxLayout="row" fxLayoutAlign="center">
                     <div fxFlex="80%" fxLayoutGap="10px">
@@ -242,7 +263,7 @@
 
                     </div>
                 </div>
-                <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;">
+                <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;"> 
                     <button mat-button matStepperPrevious>Back</button>
                     <button mat-button (click)="stepper.reset()">Reset</button>
                     <button class="banner-button" (click)="onSubmitPayment()" mat-button matStepperNext>Öde</button>

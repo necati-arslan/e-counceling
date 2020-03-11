@@ -19,6 +19,7 @@ export class TherapistOfUserComponent implements OnInit {
   dataSource;
   uidTherapist;
   therapistCard$:Observable<any>;
+  roomId;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -29,8 +30,9 @@ export class TherapistOfUserComponent implements OnInit {
     private roomService:RoomService,
     private authService:AuthService
   ) { 
-    const roomId = this.route.paramMap.subscribe((params:ParamMap)=>{
+     this.route.paramMap.subscribe((params:ParamMap)=>{
       let roomId =params.get('roomId');
+      this.roomId=roomId;
       this.uidTherapist=params.get('uidTherapist');
       if(roomId){
         this.roomService.getSeans(roomId).subscribe((seans:any)=>{

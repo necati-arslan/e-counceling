@@ -1,7 +1,6 @@
 import { Component, OnInit, HostListener, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { AuthService } from './auth/auth.service';
 import { User } from './auth/user.model';
-import { PresenceService } from './presence/services/presence.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RoomService } from './services/room.service';
@@ -35,7 +34,6 @@ export class AppComponent implements OnInit, OnDestroy {
   
 
   constructor(private authService: AuthService,
-    private presence: PresenceService,
     private afAuth:AngularFireAuth,
     private afsService: AngularFirestore,
     private router: Router, 
