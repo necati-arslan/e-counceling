@@ -1,4 +1,4 @@
-<div class="mainRow" fxLayout="row" *ngFor="let therapist of therapistCard$ | async">
+<div class="mainRow" fxLayout="row" *ngIf="(therapistCard$ | async) as therapist">
     <!-- --> 
     <mat-card *ngIf="therapist.uid" fxLayout fxFlexFill fxLayoutGap="10px" fxLayout.lt-sm="column">
         <div fxFlex="0 1 auto">
@@ -17,7 +17,7 @@
                     <mat-card-title>{{therapist?.displayName}} </mat-card-title>
                     <mat-card-subtitle>{{therapist?.type}}</mat-card-subtitle>
                     <div class="card-button" fxFlex="1 1 auto" fxLayout>
-                        <button *ngIf="therapist?.status==='online'"  class=" card-button-online card-item"
+                        <button  class=" card-button-online card-item"
                          mat-raised-button
                          (click)="seansPayment(therapist)"
                          >Hemen Başla</button>
@@ -27,7 +27,7 @@
             </div>
         </div>
         <!--image and online-->
-
+ 
         <div fxFlex>
             <!--uzmanlık alanı-->
             <div fxLayout="column">
@@ -39,7 +39,7 @@
                         </div>
                         <div class="card-button" fxFlex="1 1 auto" fxLayout fxLayoutAlign="flex-end"
                             fxLayoutAlign.lt-sm="center center" fxHide.lt-sm>
-                            <button *ngIf="therapist?.status==='online'"  class=" card-button-online card-item" 
+                            <button   class=" card-button-online card-item" 
                             mat-raised-button
                             (click)="seansPayment(therapist)"
                             >Hemen Başla</button>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { switchMap, map, take, first } from 'rxjs/operators';
+import { switchMap, map, take, first, filter, mergeMap } from 'rxjs/operators';
 import { combineLatest, of, Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -24,18 +24,20 @@ export class RoomService {
   getTherapistAllInfoById(uidTherapist): Observable<any> {
     return this.afs.collection('users').doc(uidTherapist).valueChanges()
       .pipe(
-        switchMap((user: any) => {
-          if (user) {
-            return this.afs.collection('therapists').doc(user.uid).valueChanges()
-              .pipe(
-                map(therapist => {
-                  let therapistAllInfo = { ...user, ...therapist };
-                  return therapistAllInfo;
-                })
-              )
-          } else { return of(null) }
-        })
+        filter(user => !!user),
+        switchMap((user: any) => this.getTherapistById(user.uid, user))
       );
+  }
+
+  getTherapistById(userId, data?: any) {//tick
+    return this.afs.collection('therapists').doc(userId).valueChanges()
+      .pipe(
+        map((therapist: any) => {
+          if (!therapist) return null
+          let therapistAllInfo = { ...data ? data : null, ...therapist };
+          return therapistAllInfo;
+        })
+      )
   }
 
 
@@ -46,10 +48,7 @@ export class RoomService {
     console.log(seansType);
 
     const dataRoom = {
-      therapist: {
-        uidtherapist: uidtherapist,
-        therapistname: therapist.name
-      },
+      uidtherapist: uidtherapist,
       uiduser: uiduser,
       createdAt: Date.now()
     }
@@ -63,9 +62,9 @@ export class RoomService {
     roomRef = roomRef.id;
     let seansId;
 
-    await this.creatSeans(roomRef, seansType, bilgi, question).then(chatRef => {
-      console.log('chatRef', chatRef);
-      seansId = chatRef.id;
+    await this.creatSeans(roomRef, seansType, bilgi, question).then(seansRef => {
+      console.log('seansRef', seansRef);
+      seansId = seansRef.id;
       console.log('senasRefxxx', seansId);
 
       if (seansType != "message") {
@@ -107,7 +106,7 @@ export class RoomService {
 
     const dataTherapist = {
       roomId: roomId,
-      chatId: seansId,
+      seansId: seansId,
       type: seansType,
       createdtime: Date.now(),
       state: 'continuing',
@@ -116,12 +115,12 @@ export class RoomService {
     }
     const dataUser = {
       roomId: roomId,
-      chatId: seansId,
+      seansId: seansId,
       type: seansType,
       createdtime: Date.now(),
       state: 'continuing',
       uidtherapist: uidTherapist,
-      therapistname: therapist.name
+      therapistname: therapist.displayName
     }
 
     this.afs.doc(`therapists/${uidTherapist}/lastseans/seansLive`).set(dataTherapist);
@@ -132,10 +131,9 @@ export class RoomService {
   creatLastMessageSeans(therapist, user, roomId, seansId, seansType, question) {
     const uidTherapist = therapist.uidtherapist;
     const uidUser = user.uid;
-    console.log(therapist);
     const dataTherapist = {
       roomId: roomId,
-      chatId: seansId,
+      seansId: seansId,
       type: seansType,
       createdtime: Date.now(),
       state: 'continuing',
@@ -148,7 +146,7 @@ export class RoomService {
     }
     const dataUser = {
       roomId: roomId,
-      chatId: seansId,
+      seansId: seansId,
       type: seansType,
       createdtime: Date.now(),
       state: 'continuing',
@@ -171,7 +169,7 @@ export class RoomService {
 
   checkRoom(uidtherapist, uiduser) {
     return this.afs.collection('rooms', ref => ref.where('uiduser', '==', uiduser)
-      .where('therapist.uidtherapist', '==', uidtherapist)).snapshotChanges()
+      .where('uidtherapist', '==', uidtherapist)).snapshotChanges()
       .pipe(take(1),
         map(snaps => {
           return snaps.map((snap: any) => {
@@ -184,7 +182,34 @@ export class RoomService {
       ).toPromise()
   }
 
-  getRoomsByUid(uiduser, userType): Observable<any> {
+  getAllMessage(uiduser,userType){
+
+    return this.getRooms(uiduser,userType).pipe(
+      switchMap(rooms=>this.getQuestionFromRooms(rooms)),
+      map((seans: any) => {
+        let seansInfo = []
+        console.log(seans);
+        seans = seans.filter(s => {
+          console.log(s[0]);
+          return s[0] != null;
+        })
+        seans.forEach((s1: any) => {
+          s1.forEach((s2: any) => {
+            seansInfo.push(s2);
+          })
+        })
+
+        seansInfo.sort(function (a, b) {
+          return b.createdAt - a.createdAt;
+        });
+        console.log(seansInfo)
+        return seansInfo
+      })
+    )
+  }
+
+  getRoomsByUid(uiduser, userType): Observable<any> {//silinecek
+
     let roomsInfo = {}
     let whichUser;
     if (userType == 'user') whichUser = 'uiduser';
@@ -208,6 +233,7 @@ export class RoomService {
         }),
         map((seans: any) => {
           let seansInfo = []
+          console.log(seans);
           seans = seans.filter(s => {
             console.log(s[0]);
             return s[0] != null;
@@ -230,6 +256,18 @@ export class RoomService {
 
   }
 
+
+
+  getQuestionFromRooms(rooms) {
+    let roomId;
+    let seansInfo = rooms.map((rooms: any) => {
+      roomId = rooms.roomId
+      return this.getQuestion(roomId, rooms)
+    })
+    return seansInfo.length ? combineLatest(seansInfo) : of([]);
+
+  }
+
   getQuestion(roomId, data) {
     return this.afs.collection(`rooms/${roomId}/seans`, ref => ref.where('type', '==', 'message')).snapshotChanges()
       .pipe(
@@ -237,7 +275,7 @@ export class RoomService {
           return snaps.map((snap: any) => {
             return {
               uiduser: data.uiduser,
-              uidtherapist: data.therapist.uidtherapist,
+              uidtherapist: data.uidtherapist,
               room: data,
               roomId: roomId,
               seansId: snap.payload.doc.id,
@@ -268,7 +306,7 @@ export class RoomService {
 
   getRefLastMessage(seansId, uiduser, whichUser = 'users') {
 
-    return this.afs.collection(`${whichUser}/${uiduser}/lastquestion`, ref => ref.where('chatId', '==', seansId))
+    return this.afs.collection(`${whichUser}/${uiduser}/lastquestion`, ref => ref.where('seansId', '==', seansId))
       .snapshotChanges().pipe(
         take(1),
         map((snaps: any) => {
@@ -306,30 +344,24 @@ export class RoomService {
     return observe$.pipe(
       switchMap((snaps: any) => {
         data = snaps;
-        console.log(data);
         const userInfo = snaps.map((snap: any) => {
           if (!snap) return;
-
           let uid;
-          if (userType == "user") uid = snap.uidtherapist?snap.uidtherapist:snap.therapist.uidtherapist;
+          if (userType == "user") uid = snap.uidtherapist ? snap.uidtherapist : snap.therapist.uidtherapist;//not check
           if (userType != "user") uid = snap.uiduser;
-          console.log(uid)
           return this.auth.getUserById(uid);
         })
         return userInfo.length ? combineLatest(userInfo) : of([]);
       }),
       map((users: any) => {
-        console.log(users);
         users.forEach(user => {
           joinKey[user.uid] = user;
         });
-        console.log(joinKey)
         let uid;
 
         return data.map((element: any) => {
-          if (userType == "user") uid = element.uidtherapist?element.uidtherapist:element.therapist.uidtherapist;
+          if (userType == "user") uid = element.uidtherapist ? element.uidtherapist : element.therapist.uidtherapist;// not check
           if (userType != "user") uid = element.uiduser;
-          console.log(joinKey[uid])
           return { ...element, ...joinKey[uid] }
         });
       })
@@ -342,7 +374,8 @@ export class RoomService {
 
   getRooms(userId, userType = 'uiduser') {//{id: "Staam8232Mvzm1aSqiqH", createdAt: 1573391227287, uidtherapist: "s4LiWMGJSfavBcmg7Zy9UBbCkxH2", uiduser: "XgdaPpePthXbgBToO5TueJXfuio2"}
 
-    if (userType == "therapist") userType = 'therapist.uidtherapist'
+    if (userType == "therapist") userType = 'uidtherapist';
+    if (userType == "user") userType = 'uiduser';
     return this.afs.collection('rooms', ref => ref.where(userType, '==', userId)).snapshotChanges()
       .pipe(
         map(snaps => {
@@ -389,7 +422,7 @@ export class RoomService {
           return snaps.map((snap: any) => {
             return {
               idSeans: snap.payload.doc.id,
-              ...snap.payload.doc.data()
+              ...snap.payload.doc.data() 
             }
           })
         })
@@ -413,7 +446,7 @@ export class RoomService {
             console.log(lastSeans)
             console.log(elapsedTime);
             if (elapsedTime > 1) {
-              if (seansState == 'continuing')
+              if (seansState == 'continuing' && userType == "user")
                 this.afs.doc(`${typeCollection}/${uid}/lastseans/seansLive`).update({ state: 'finished' });
 
               return lastSeans;
@@ -423,8 +456,6 @@ export class RoomService {
               console.log('mevcut görüşmeniz var!!');
               return lastSeans;
             };
-
-
           }
           return of(null);
         })
@@ -443,7 +474,7 @@ export class RoomService {
   }
 
   getAskHelp() {
-    return this.afs.collection('askhelp',ref => ref.orderBy('createdAt', "desc")).snapshotChanges().pipe(
+    return this.afs.collection('askhelp', ref => ref.orderBy('createdAt', "desc")).snapshotChanges().pipe(
       map(snaps => {
         return snaps.map((snap: any) => {
           return {
@@ -454,11 +485,11 @@ export class RoomService {
       })
     );
   }
-  
-  addAskHelp(name,value,createdAt){
-    return this.afs.collection(`askhelp`).add({name,value,createdAt});
+
+  addAskHelp(name, value, createdAt) {
+    return this.afs.collection(`askhelp`).add({ name, value, createdAt });
   }
-  deleteAskHelp(askId){
+  deleteAskHelp(askId) {
     return this.afs.doc(`askhelp/${askId}`).delete();
   }
 
@@ -470,30 +501,30 @@ export class RoomService {
   updateUserInfo(userId, displayName?: string, gender?: string) {
     return this.afs.doc(`users/${userId}/`).update({ gender, displayName, matching: true })
   }
-  
-  updateUserAllInfo(userId,obj:object){
+
+  updateUserAllInfo(userId, obj: object) {
     return this.afs.doc(`users/${userId}/`).update({ ...obj })
   }
 
-  updateTherapistInfo(userId,meslekOzet="",expertise="",uzmanlik="",education=""){
+  updateTherapistInfo(userId, meslekOzet = "", expertise = "", uzmanlik = "", education = "") {
     return this.afs.doc(`therapists/${userId}`).update({
-      meslekOzet:meslekOzet,
-      expertise:expertise,
-      uzmanlik:uzmanlik,
-      education:education
+      meslekOzet: meslekOzet,
+      expertise: expertise,
+      uzmanlik: uzmanlik,
+      education: education
     });
 
   }
 
 
-  getAllUser(){//check is in auth
+  getAllUser() {//check is in auth
     return this.afs.collection('users/').valueChanges()
   }
-  getAllTherapist(){
-    return this.afs.collection('users/',ref=>ref.where('type','==','therapist')).valueChanges();
+  getAllTherapist() {
+    return this.afs.collection('users/', ref => ref.where('type', '==', 'therapist')).valueChanges();
   }
 
-  
+
 
 }
 

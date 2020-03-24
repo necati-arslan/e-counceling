@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material';
 import { Router, NavigationEnd } from '@angular/router';
 import { LoginComponent } from 'src/app/auth/login/login.component';
 import { Observable } from 'rxjs';
+import { UserInfo } from 'src/app/models/userInfo-model';
 
 @Component({
   selector: 'app-header',
@@ -14,12 +15,13 @@ import { Observable } from 'rxjs';
 export class HeaderComponent implements OnInit {
 
   @Output() sidenavToggle = new EventEmitter<void>();//app te tanımlı bi event
-  @Input('userAuth') userAuth$: Observable<any>;
+  
  
 
-  toolbarColor: boolean = false;
-  userAuth: any;
-  userEmail: string;
+  toolbarColor: boolean = false; 
+  isLoggedIn$: Observable<boolean>;
+  isLoggedOut$: Observable<boolean>;
+  user$:Observable<UserInfo>
 
   @HostListener('window:scroll', ['$event'])
   checkScroll() {
@@ -48,18 +50,10 @@ export class HeaderComponent implements OnInit {
 
 
   ngOnInit() {
-    this.userAuth$.subscribe((user: any) => {
-      if (user) {
-        this.userAuth = user;
-        let email = user.email;
-        this.userEmail = email.substring(0, email.lastIndexOf("@"));
-        console.log(this.userEmail);
-      } else {
-        this.userAuth = null;
-        console.log(this.userAuth);
-      }
-    })
 
+    this.user$= this.authService.userSubject$
+    this.isLoggedIn$= this.authService.isLoggedIn$;
+    this.isLoggedOut$=this.authService.isLoggedOut$;
 
   }
 
@@ -78,8 +72,14 @@ export class HeaderComponent implements OnInit {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          console.log(result);
-          this.router.navigate(['/dashboard']);
+          console.log(result)
+          let user = result.user
+          this.authService.getUserById(user.uid)
+          .subscribe((user:any)=>{
+            console.log(user)
+            if(user.type=="therapist") this.router.navigate(['t-dashboard']);
+            if(user.type=="user") this.router.navigate(['dashboard']);
+          }) 
         };
       })
 

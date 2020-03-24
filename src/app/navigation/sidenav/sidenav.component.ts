@@ -15,7 +15,6 @@ import { tap } from 'rxjs/operators';
 export class SidenavComponent implements OnInit {
 
   @Output() closeSidenav = new EventEmitter<boolean>();//app te tanımlı bi event
-  @Input('userAuth') userAuth$: Observable<any>;
   @Input('mobileQuery') mobileQuery: boolean;
   @Input('currentUrl') currentUrl: boolean;
 
@@ -34,21 +33,20 @@ export class SidenavComponent implements OnInit {
     private router: Router) {
 
   }
- 
+  
 
   ngOnInit() {
     console.log(this.currentUrl)
-    this.userAuth$.subscribe((user: any) => {
-      if (user) {
+    this.authService.userSubject$.subscribe((user: any) => {
+      if (user.uid) {
         this.userAuth = user;
-        let email = user.email;
-        this.userEmail = email.substring(0, email.lastIndexOf("@"));
+        
 
         ///////////get therapists of User //////
 
         this.roomService.getRooms(user.uid).subscribe(rooms=>{
           this.source$=of(rooms);
-          this.rooms$= this.roomService.joinUser(this.source$).pipe(tap(console.log))
+          this.rooms$= this.roomService.joinUser(this.source$);
         });
 
 
@@ -75,7 +73,7 @@ export class SidenavComponent implements OnInit {
 
         this.lastSeans$= this.roomService.getLastSeans(user.type,user.uid,user)
 
-
+ 
       } else {
         this.userAuth = null;
       }

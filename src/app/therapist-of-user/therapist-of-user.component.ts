@@ -7,7 +7,7 @@ import {MatSort} from '@angular/material/sort';
 import { of, Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
-
+ 
 @Component({
   selector: 'app-therapist-of-user',
   templateUrl: './therapist-of-user.component.html',
@@ -17,7 +17,7 @@ export class TherapistOfUserComponent implements OnInit {
 
   displayedColumns: string[] = ['no','type', 'date', 'state','detay'];
   dataSource;
-  uidTherapist;
+  therapist;
   therapistCard$:Observable<any>;
   roomId;
 
@@ -33,7 +33,9 @@ export class TherapistOfUserComponent implements OnInit {
      this.route.paramMap.subscribe((params:ParamMap)=>{
       let roomId =params.get('roomId');
       this.roomId=roomId;
-      this.uidTherapist=params.get('uidTherapist');
+      let uidtherapist=params.get('uidTherapist');
+      this.therapist=[{uidtherapist:uidtherapist}];
+      console.log(this.therapist)
       if(roomId){
         this.roomService.getSeans(roomId).subscribe((seans:any)=>{
           this.dataSource=new MatTableDataSource(seans);//for filter

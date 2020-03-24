@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ReusabalDialogComponent } from '../reusabal-dialog/reusabal-dialog.component';
-
+ 
 @Component({
   selector: 'app-user-of-therapist',
   templateUrl: './user-of-therapist.component.html',
@@ -29,7 +29,7 @@ export class UserOfTherapistComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.auth.user$.subscribe((user) => {
+    this.auth.userSubject$.subscribe((user) => {
       this.user = user;
       console.log(user)
       this.roomService.joinRoomsUsers(user.uid, user.type).subscribe((rooms) => {

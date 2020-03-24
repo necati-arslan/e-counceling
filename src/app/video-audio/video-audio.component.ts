@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { VideoAudioService } from './video-audio.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-video-audio',
@@ -8,10 +9,17 @@ import { VideoAudioService } from './video-audio.service';
 })
 export class VideoAudioComponent implements OnInit {
 
+
+
   @Input('seansId') seansId:string;
+
+  @Input('seansInfo') seansInfo:any;
+  @Input('roomId') roomId:any;
+
   localCallId:string="localStream";
   remoteCallId:string="remoteStream";
 
+  user:any;
 
   rtc: any = {
     client: null,
@@ -20,7 +28,8 @@ export class VideoAudioComponent implements OnInit {
     localStream: null,
     remoteStreams: [],
     waiting:false,
-    params: {}
+    params: {},
+    romoteChatch:false
   };
 
   // Options for joining a channel
@@ -31,20 +40,36 @@ export class VideoAudioComponent implements OnInit {
   };
 
   constructor(
-    private videoService:VideoAudioService
+    private videoService:VideoAudioService,
+    private authService:AuthService
   ) { }
 
   ngOnInit() {
     
     this.videoService.createClient(this.rtc);
     this.videoService.handleEvents(this.rtc,this.remoteCallId);
+
+    this.authService.userSubject$.subscribe(user=>{
+      this.user=user
+      if(user.type=='user') this.clientInit();
+    })
     
 
   }
 
 
   clientInit(){
-    this.videoService.clientInit(this.rtc,this.seansId,this.localCallId);  
+    console.log(this.rtc)
+
+    if(this.user.type=="therapist"){
+      if(!this.seansInfo.startedTime){
+        let data= {startedTime:Date.now()};
+        this.videoService.updateSeans(this.roomId,this.seansId,data);
+      }
+    }
+    
+
+    this.videoService.clientInit(this.rtc,this.seansId,this.localCallId,this.seansInfo.type);  
   }
 
   leave(){
@@ -57,7 +82,7 @@ export class VideoAudioComponent implements OnInit {
       webkitRequestFullscreen(): Promise<void>;
       msRequestFullscreen(): Promise<void>;
     };
-    
+     
     //let elem = document.querySelector("#remoteStream");
    // console.log(elem.innerHTML)
     if (docElmWithBrowsersFullScreenFunctions.requestFullscreen) {
@@ -71,6 +96,7 @@ export class VideoAudioComponent implements OnInit {
     }
     
   }
+
 
 }
  

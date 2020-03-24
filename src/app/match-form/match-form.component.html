@@ -8,7 +8,7 @@
                         size
                         en
                         iyi şekilde yardım edebilecek tarapistler
-                        önerilecektirr </h3>
+                        önerilecektir. </h3>
                 </div>
                 <div fxFlex>
                     <form fxLayout="column" [formGroup]="matchingForm" (ngSubmit)="onSubmitMatch()">
@@ -36,10 +36,11 @@
 
     </mat-card> 
 
-
+ 
 
     <div>
-        <app-therapist-card *ngIf="recommendedTherapist" [userAuth]="user" [uidTherapist]="recommendedTherapist"
+        <app-therapist-card *ngFor="let therapist of recommendedTherapist "
+         [therapist]="therapist"  [userAuth]="user" 
             style="margin-bottom: 3px;"></app-therapist-card>
     </div>
 

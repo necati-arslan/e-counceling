@@ -39,11 +39,11 @@ export class SeansForTherapistComponent implements OnInit {
      
     console.log(roomId);
  
-    this.auth.user$.subscribe((user) => {
+    this.auth.userSubject$.subscribe((user) => {
       this.user = user;
       this.roomService.getRoomById(roomId).subscribe((room: any) => {
         console.log(room)
-        if (this.user.uid == room.therapist.uidtherapist) {
+        if (this.user.uid == room.uidtherapist) {
           this.roomService.getSeans(roomId).subscribe((seans: any) => {
             console.log(seans);
             this.dataSource = new MatTableDataSource(seans);//for filter
@@ -57,7 +57,7 @@ export class SeansForTherapistComponent implements OnInit {
       })
 
     })
-
+ 
   }
 
   applyFilter(filterValue: string) {

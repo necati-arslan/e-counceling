@@ -28,7 +28,6 @@ import { FirestoreService } from './services/firestore.service';
 import { DashboardUserComponent } from './dashboard-user/dashboard-user.component';
 import { UserComponent } from './presence/user/user.component';
 import { ChatComponent } from './chat/chat/chat.component';
-import { TherapistComponent } from './therapist/therapist.component';
 import { CardNumberDirective } from './directives/card-number.directive';
 import { CardCvvDirective } from './directives/card-cvv.directive';
 import { RoomService } from './services/room.service';
@@ -47,6 +46,8 @@ import { QuestionTemplateComponent } from './question-template/question-template
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { UserForAdminPanelComponent } from './user-for-admin-panel/user-for-admin-panel.component';
 import { ProfileTherapistComponent } from './profile-therapist/profile-therapist.component';
+import { ProfileEditComponent } from './profile-edit/profile-edit.component';
+import { EmailPipe } from './pipes/email.pipe';
 
 
 @NgModule({
@@ -61,7 +62,6 @@ import { ProfileTherapistComponent } from './profile-therapist/profile-therapist
     DashboardUserComponent,
     UserComponent,
     ChatComponent,
-    TherapistComponent,
     CardNumberDirective,
     CardCvvDirective,
     THomeComponent,
@@ -79,6 +79,8 @@ import { ProfileTherapistComponent } from './profile-therapist/profile-therapist
     AdminPanelComponent,
     UserForAdminPanelComponent,
     ProfileTherapistComponent,
+    ProfileEditComponent,
+    EmailPipe,
     
     
   ],

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import AgoraRTC from "agora-rtc-sdk";
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -7,29 +8,37 @@ import AgoraRTC from "agora-rtc-sdk";
 export class VideoAudioService {
   // rtc object
   appID:string="d8088c13d6504ce2abedb4cf2c02d559"
-  constructor() { }
+  constructor(private afs: AngularFirestore) { }
  
   
   
 createClient(rtc){
-    rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "h264" });
+    rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "h264" });//mode is channel profile which determine roles(one-to-one)
   
   }
 
-  clientInit(rtc,channel,localCallId){
+  clientInit(rtc,channel,localCallId,seansType){
+    console.log(rtc);
     if(!rtc.client) {
       console.log('client not created');
       return;
     }
+    if(rtc.joined){
+      console.log('already joined');
+      return;
+    }
+
+    
+
     rtc.client.init(
       this.appID,
       () => {
         //client init callback
         console.log("init success");
         rtc.client.join(
-          null,
-          channel,
-          null,
+          null,//token
+          channel,//seansId
+          null,//custom uid
           uid => {
             //client join callback
             console.log(
@@ -44,7 +53,7 @@ createClient(rtc){
             rtc.localStream = AgoraRTC.createStream({
               streamID: rtc.params.uid,
               audio: true,
-              video: true,
+              video: seansType=='video'? true:false,
               screen: false
             });
 
@@ -74,7 +83,7 @@ createClient(rtc){
         );
         
       }, //client.init function
-      err => {
+      err => { 
         //client.init error
         console.error(err);
       }
@@ -125,6 +134,7 @@ createClient(rtc){
           //removeView(id);
         }
         rtc.remoteStreams = [];
+        rtc.romoteChatch=false;
       
       }
       //Toast.notice("peer leave")
@@ -150,6 +160,7 @@ createClient(rtc){
     // Occurs when a user subscribes to a remote stream.
     rtc.client.on("stream-subscribed", evt => {
       rtc.waiting=false;
+      rtc.romoteChatch=true;
       var remoteStream = evt.stream;
       var id = remoteStream.getId();
       rtc.remoteStreams.push(remoteStream);
@@ -168,6 +179,7 @@ createClient(rtc){
       // })
       //removeView(id);
       console.log("stream-removed remote-uid: ", id);
+
     });
     // rtc.client.on("onTokenPrivilegeWillExpire", function(){
     //   // After requesting a new token
@@ -215,6 +227,7 @@ createClient(rtc){
         console.log("client leaves channel success");
         rtc.published = false;
         rtc.joined = false;
+        rtc.romoteChatch=false;
         //Toast.notice("leave success");
       },
       (err)=> {
@@ -223,6 +236,13 @@ createClient(rtc){
         console.error(err);
       }
     );
+  }
+
+  updateSeans(roomId,seansId,data){     
+   return this.afs.doc(`rooms/${roomId}/seans/${seansId}`).update(data);
+  }
+  updateLastSeansTherapist(userId){
+    this.afs.doc(`therapists/${userId}/lastseans/seansLive`).update({ state: 'finished' })
   }
 
 }

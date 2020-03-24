@@ -2,10 +2,10 @@ import { Component, OnInit, HostListener, ChangeDetectorRef, ViewChild, OnDestro
 import { AuthService } from './auth/auth.service';
 import { User } from './auth/user.model';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { RoomService } from './services/room.service';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Router,NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material';
@@ -17,69 +17,60 @@ import { MatSidenav } from '@angular/material';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'e-counceling';
-  userAuth$: Observable<User>;
-  lastSeans$: Observable<any>;
-  userAuth: any;
-  currentUrl:Boolean=false;
-  isExpanded:boolean=true;
-  isOpen:boolean;
-  mdq:boolean;//mediaquery
- 
+  userAuth$: Observable<User>;//temizlencek
+  currentUrl: Boolean = false;
+  isExpanded: boolean = true;
+  isOpen: boolean;//?
+  mdq: boolean;//mediaquery
+  isLoggedIn$: Observable<boolean>;
+  isLoggedOut$: Observable<boolean>;
 
-  @ViewChild('sidenav', {static: false}) sidenav: MatSidenav;
-  
+
+  @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
-  
-  
+
+
 
   constructor(private authService: AuthService,
-    private afAuth:AngularFireAuth,
-    private afsService: AngularFirestore,
-    private router: Router, 
+    private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     private media: MediaMatcher
-  ) { 
+  ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => {
       changeDetectorRef.detectChanges();
-      this.mdq=this.mobileQuery.matches;
+      this.mdq = this.mobileQuery.matches;
     };
     this.mobileQuery.addListener(this._mobileQueryListener);
-    this.mdq=this.mobileQuery.matches;
- 
-  
+    this.mdq = this.mobileQuery.matches;
+
+
     router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
-        if(e.url=='/') {this.currentUrl=true;}
+        if (e.url == '/') { this.currentUrl = true; }
         else {
-          this.currentUrl=false;
-          
+          this.currentUrl = false;
         }
-        console.log(this.currentUrl);
       }
     });
-   }
-
-  
-
-  ngOnInit() {
-
-   this.userAuth$= this.authService.user$.pipe(map(user => { 
-     if (user) {
-        if (user.type == "therapist") this.router.navigate(['t-dashboard']);
-        if (user.type == "user" && user.matching == false) this.router.navigate(['dashboard']);
-        return this.userAuth = user;
-     }else{return this.userAuth=null}
-   })); 
-
-  
   }
 
-  sidenavClose(isExpanded:boolean){
-     this.isExpanded= isExpanded;//from sidenav component to width for sidenav
-     console.log(this.isExpanded);
-    if(this.mobileQuery.matches) this.sidenav.close();
+
+
+  ngOnInit() {
+    
+    //this.authService.userSubject$.subscribe(user=>console.log(user))
+    this.isLoggedIn$ = this.authService.isLoggedIn$;
+    this.authService.isLoggedOut$;
+
+  }
+
+  sidenavClose(isExpanded: boolean) {
+    this.isExpanded = isExpanded;//from sidenav component to width for sidenav
+    console.log(this.isExpanded);
+    if (this.mobileQuery.matches) this.sidenav.close();
   }
 
   ngOnDestroy(): void {
@@ -87,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   closeSidenav(){
-    console.log('xxxxxx')
+    
   }
- 
+
 }

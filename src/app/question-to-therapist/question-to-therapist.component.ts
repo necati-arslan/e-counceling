@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ReusabalDialogComponent } from '../reusabal-dialog/reusabal-dialog.component';
 import { AuthService } from '../auth/auth.service';
 import { QuestionTemplateComponent } from '../question-template/question-template.component';
+import { switchMap } from 'rxjs/operators';
 
 
 
@@ -40,7 +41,7 @@ export class QuestionToTherapistComponent implements OnInit {
   ngOnInit() {
     console.log('yyyy')
     
-    this.auth.user$.subscribe((user:any)=>{
+    this.auth.userSubject$.subscribe((user:any)=>{
       const uiduser=user.uid;
       const userType=user.type;
       this.userType=user.type
@@ -50,11 +51,11 @@ export class QuestionToTherapistComponent implements OnInit {
           console.log(lastMessages);
           this.lastMessageLength=lastMessages.length;
           this.dataSourceLast = new MatTableDataSource(lastMessages);//for filter
-      })
+      }) 
        
       
 
-      this.roomService.getRoomsByUid(uiduser,userType).subscribe((seansMessages: any) => {
+      this.roomService.getAllMessage(uiduser,userType).subscribe((seansMessages: any) => {
         console.log(seansMessages);
         this.seansMessagesLength=seansMessages.length
         this.source$ = of(seansMessages);
@@ -68,6 +69,7 @@ export class QuestionToTherapistComponent implements OnInit {
           this.paginator._intl.itemsPerPageLabel = 'Gösterilen satır satısı:'
         })
       })
+
     
     })
 

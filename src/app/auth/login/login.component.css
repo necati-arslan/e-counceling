@@ -13,3 +13,20 @@
     height: 20px;
 }
 
+ .errMessage{
+     font-size: 12px;
+     color: red; 
+     text-align: left;
+     margin:0px;
+     padding:0px;
+     width: 180px;
+ }
+
+ .forgotPassword{
+     display: inline;
+     font-size: 12px;
+     margin: 0px;
+     padding: 0px;
+     cursor: pointer;
+    
+ }

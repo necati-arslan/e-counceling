@@ -3,8 +3,8 @@
     <div fxLayout="column" class="card">
       <div fxFlex>
         <div fxLayout=row fxLayout.lt-sm="column">
-          <div fxFlex class="videoRes" name="video">
-            <app-video-audio [seansId]="seansId"></app-video-audio>
+          <div *ngIf="(seans?.type=='video') || (seans?.type=='audio') " fxFlex class="videoRes" name="video">
+            <app-video-audio [seansInfo]="seansInfo" [roomId]="roomId" [seansId]="seansId"></app-video-audio>
           </div>
           <div fxFlex name=chat>
             <div fxLayout="column">
@@ -16,7 +16,7 @@
                     </div>
                     <div style="padding-left: 5px;" fxFlex="0 1 auto" fxFlexAlign="center">
                       <span>{{headerUser?.displayName?headerUser?.displayName:headerUser?.email}}</span>
-                      <span *ngIf="userId===roomInfo?.therapist?.uidtherapist"><span class="countDown"
+                      <span *ngIf="userId===roomInfo?.uidtherapist"><span class="countDown"
                           *ngIf="newUserofTherapist===true">
                           Yeni Danışan. İlk Seansınız!!
                         </span></span>
@@ -43,8 +43,10 @@
               </div>
               <div fxFlex="1 0 auto" class="sendMessage">
                 <div fxLayout="row">
-                  <mat-form-field fxFlex="50%" class="messageInput">
-                    <input matInput placeholder="mesajınız..." [(ngModel)]="newMsg" (keydown.enter)="submit(seans.id)">
+                  <mat-form-field fxFlex="80%" appearance="fill" class="messageInput">
+                    <mat-label>mesajınız</mat-label>
+                    <textarea matInput  [(ngModel)]="newMsg" (keydown.enter)="submit(seans.id)">
+                    </textarea>
                     <button mat-icon-button matSuffix>
                       <mat-icon (click)="submit(seans.id)" style="color: #05284B;padding: 0;margin: 0px;">send
                       </mat-icon>
@@ -64,16 +66,22 @@
 
     </div>
 
-    <mat-card *ngIf="userId===roomInfo?.therapist?.uidtherapist" style="margin-top: 5px;"><!--Danışan bilgi-seans Note-->
+    <mat-card *ngIf="userId===roomInfo?.uidtherapist" style="margin-top: 5px;"><!--Danışan bilgi-seans Note-->
       <mat-card-header>
         <mat-card-subtitle>Bu kısmı sadece seans therapisti görebilmektedir!</mat-card-subtitle>
+        <div style="text-align: right;">
+            <button (click)="finishSeans()" mat-raised-button color="warn">Seansı Bitir</button>
+            <span style="color: red;" id="finishMessage"></span>
+        </div>
+        
+        
       </mat-card-header>
       <mat-tab-group>
         <mat-tab label="Seans Bilgi">
           <div fxLayout="column" class="tabPanelTherapist">
             <div fxFlex>
               <div fxLayout=row>
-                <div fxFlex>
+                <div fxFlex> 
                   <!-- danışan bilgisi-->
                   <mat-list dense>
                     <h3 mat-subheader>Danışan Bilgileri:</h3>

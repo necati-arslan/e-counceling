@@ -20,21 +20,18 @@ import { RoomService } from '../services/room.service';
 export class MatchFormComponent implements OnInit {
   recommendedTherapist: Therapist[];
   matchingForm: FormGroup;
-  recommendedTherapist$: Observable<any>;
   askHelp$: Observable<any>;
   user:any;
   matching:boolean;
-  uidTherapist="s4LiWMGJSfavBcmg7Zy9UBbCkxH2"; 
+ 
 
   constructor(
     private authService:AuthService,
-    private chatService: ChatService,
     private roomService:RoomService
-  ) {
+  ) { 
 
-    this.authService.user$.subscribe((user:any)=>{
+    this.authService.userSubject$.subscribe((user:any)=>{
       this.user=user;
-      this.matching=user.matching;
     });
    }
 
@@ -55,29 +52,26 @@ export class MatchFormComponent implements OnInit {
     this.askHelp$ = this.roomService.getAskHelp();
 
 
-    //console.log(this.uidTherapist);
-
   }
 
   async onSubmitMatch() {
 
-    let result: Therapist[];
+    let therapists: Therapist[];
     let therapistOrder: Therapist[] = [];
     let askHelp: any[];
   
     
-
     //get therapist from firestore and get form selection
 
     askHelp = this.matchingForm.value.askHelp;
     console.log(askHelp);
-    result = await this.roomService.getTherapist().toPromise();
+    therapists = await this.roomService.getTherapist().toPromise();//mutlaka promise olmalı
  
     //create score fieald each item
-    result.forEach((item) => {
-      let intersection = item.expertise.filter(element => askHelp.includes(element));
+    therapists.forEach((therapist) => {
+      let intersection = therapist.expertise.filter(element => askHelp.includes(element));
       let score = intersection.length * 10;
-      therapistOrder.push({ ...item, score });
+      therapistOrder.push({ ...therapist, score });
     });
 
     //sort therapist by score
@@ -89,21 +83,7 @@ export class MatchFormComponent implements OnInit {
 
     this.recommendedTherapist = therapistOrder; 
 
-    console.log(this.recommendedTherapist);
-
-    // this.recommendedTherapist$ = this.afStore.collection('users', ref => ref.where('type', '==', 'therapist')).valueChanges()
-    //   .pipe(
-    //     map(snaps => snaps.map((snap: any) => {
-    //       console.log(this.recommendedTherapist);
-    //       let user = this.recommendedTherapist.find(element => element.uidtherapist == snap.uid)
-    //       console.log(user);
-    //       return { ...snap, ...user }
-    //     }))
-    //   );
-
-
- 
- 
+    console.log(this.recommendedTherapist); 
   }
 
   

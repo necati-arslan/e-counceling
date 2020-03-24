@@ -30,10 +30,16 @@ export class HomeComponent implements OnInit {
 
     const dialogRef = this.dialog.open(LoginComponent) 
     .afterClosed()
-    .subscribe(result=>{
+    .subscribe((result:any)=>{
       if (result) {
-        console.log(result);
-        this.router.navigate(['/dashboard']);
+        let user = result.user
+        this.authService.getUserById(user.uid)
+        .subscribe((user:any)=>{
+          console.log(user)
+          if(user.type=="therapist") this.router.navigate(['t-dashboard']);
+          if(user.type=="user") this.router.navigate(['dashboard']);
+        })
+        
       };
     })
  

@@ -36,7 +36,7 @@ export class QuestionTemplateComponent implements OnInit {
     if (this.userType == 'user' && this.answer && !this.allMessage) {
       const readState = true
       const roomId = this.data.row.roomId;
-      const seansId = this.data.row.chatId;
+      const seansId = this.data.row.seansId;
       const uiduser = this.data.row.uiduser
       this.roomService.addReadState(roomId, seansId, readState).pipe(
         concatMap(() => this.roomService.getRefLastMessage(seansId, uiduser)),
@@ -49,7 +49,7 @@ export class QuestionTemplateComponent implements OnInit {
 
   answerClick() {
     const roomId = this.data.row.roomId;
-    const seansId = this.data.row.chatId;
+    const seansId = this.data.row.seansId;
     const uiduser = this.data.row.uiduser
     const uidTherapist = this.data.row.uidtherapist
     const whichUser = "therapists"

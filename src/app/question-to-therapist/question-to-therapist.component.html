@@ -1,7 +1,7 @@
 <div class="container">
     <h5 class="tableHeader" *ngIf="user?.type==='user'">Cevap Bekleyen Sorularınız</h5>
     <h5 class="tableHeader" *ngIf="user?.type==='therapist'">Cevap Bekleyen Sorular</h5>
-    <div *ngIf="lastMessageLength>0">
+    <div *ngIf="lastMessageLength>0;else lastMessageEmpty">
         <table mat-table [dataSource]="dataSourceLast">
             <ng-container matColumnDef="no">
                 <th mat-header-cell *matHeaderCellDef> No. </th>
@@ -30,14 +30,18 @@
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumnsLast"></tr>
-            <tr mat-row class="row-link" (click)="openQuestion(row)" *matRowDef="let row; columns: displayedColumnsLast;"></tr>
+            <tr mat-row class="row-link" (click)="openQuestion(row)"
+                *matRowDef="let row; columns: displayedColumnsLast;"></tr>
         </table>
     </div>
-    <div *ngIf="lastMessageLength===0" fxLayout=row fxLayoutAlign="start center">
-        <div fxFlex="0 1 50%" fxFlex.lt-sm="100%" class="warningMain">
-            <span style="text-align: left;">Yeni sorulmuş  soru yoktur. </span>
+    <ng-template #lastMessageEmpty>
+        <div fxLayout=row fxLayoutAlign="start center">
+            <div fxFlex="0 1 50%" fxFlex.lt-sm="100%" class="warningMain">
+                <span style="text-align: left;">Yeni sorulmuş soru yoktur. </span>
+            </div>
         </div>
-    </div>
+    </ng-template>
+
 
 
     <mat-form-field>
@@ -78,8 +82,9 @@
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row class="row-link" (click)="openQuestion(row,'allMessage')" *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row class="row-link" (click)="openQuestion(row,'allMessage')"
+            *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
     <mat-paginator itemsPerPageLabel="xx" [pageSizeOptions]="[50, 100, 150, 200]"></mat-paginator>
-       
+
 </div>

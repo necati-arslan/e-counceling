@@ -22,21 +22,10 @@ export class DashboardUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.getUser().then(user => {
-      this.userinfo = user;
-      console.log(user);
-    if (!this.userinfo.matching) return;
+  
      this.router.navigate(['/matching']);
       
-    }); 
-
-    // this.authService.checkLastSeans('users')
-    // .subscribe((lastSeans:any)=>{
-    //   if(lastSeans!=null && lastSeans.seansstate=='continuing') {
-    //     this.lastInfo=lastSeans;
-    //     console.log(lastSeans);
-    //    } 
-    //  });
   }
 
 }
+ 

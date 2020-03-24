@@ -1,20 +1,20 @@
-
-<mat-toolbar [ngClass]="{'toolbarTop':(userAuth===null)||(currentUrl && userAuth),
+<mat-toolbar [ngClass]="{'toolbarTop':(isLoggedOut$ | async)||(currentUrl && (isLoggedIn$ | async)),
                           'toolbarOffsetY':toolbarColor,
-                          'toolbarUser':!currentUrl && userAuth }">
+                          'toolbarUser':!currentUrl && (isLoggedIn$ | async)}">
   <div fxFlexFill fxLayout=row fxLayoutAlign="center center" fxLayoutGap="5px">
 
     <div fxFlex="0 1 auto" fxHide.gt-xs fxLayoutAlign="start">
-      <button  mat-icon-button (click)="onToggleSidenav()">
+      <button mat-icon-button (click)="onToggleSidenav()">
         <mat-icon>menu</mat-icon>
       </button>
     </div>
     <div fxFlex="0 1 auto" fxLayoutAlign="start center" fxFlex.lt-sm fxLayoutAlign.lt-sm="flex-end">
       <div>
-        <a style="cursor: pointer;"  routerLink="/"><img src="/assets/payandamini.png" alt=""></a> 
-      </div> 
+        <a style="cursor: pointer;" routerLink="/"><img src="/assets/payandamini.png" alt=""></a>
+      </div>
       <div>
-        <a style="cursor: pointer;"  routerLink="/"><img style="padding-top:7px;" src="/assets/payandamintext.png" alt=""></a>
+        <a style="cursor: pointer;" routerLink="/"><img style="padding-top:7px;" src="/assets/payandamintext.png"
+            alt=""></a>
       </div>
     </div>
     <div class="menu" fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.lt-sm>
@@ -28,22 +28,30 @@
         <li class="toolbarLink">
           <a routerLink="/about-us">Hakkımızda</a>
         </li>
-        <li *ngIf="!userAuth?.uid">
+        <li *ngIf="(isLoggedOut$ | async)">
           <button mat-raised-button class="banner-button" (click)="startCounceling()">Hemen Başla</button>
         </li>
 
-        <li class="toolbarLink" *ngIf="userAuth?.uid">
+        <li class="toolbarLink" *ngIf="(isLoggedIn$ | async)">
           <a (click)="onLogout()">Logout</a>
         </li>
       </ul>
     </div>
 
-    <div *ngIf="userAuth?.uid" style="cursor: pointer;" fxFlex="0 1 auto" fxLayoutAlign="start center" fxHide.lt-sm>
-      <a>/&nbsp;{{userAuth.nickName ? userAuth.nickName : userEmail }}</a>
-      <i class="material-icons">
-        account_circle
-      </i>
-    </div>
+
+    <ng-container *ngIf="(user$ | async) as user">
+
+      <div *ngIf="user?.email" style="cursor: pointer;" fxFlex="0 1 auto" fxLayoutAlign="start center" fxHide.lt-sm>
+        <a>/&nbsp;</a>
+        <div *ngIf="user?.displayName;else userEmail">{{user.displayName}}</div>
+        <ng-template #userEmail>
+          <div>{{user.email | email}}</div>
+        </ng-template>
+        <i class="material-icons">
+          account_circle
+        </i>
+      </div>
+    </ng-container>
 
 
 

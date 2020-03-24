@@ -85,7 +85,7 @@ export class ChatService {
         return userDocs.length ? combineLatest(userDocs) : of([]);//ther is multi Observable. so that we use combineLatest which is rxjs
       }),
       map((arr: any) => {
-        console.log(arr);//[{Observable1.subcribe},{{Observable1.subcribe}}{{Observable1.subcribe}}]
+       // console.log(arr);//[{Observable1.subcribe},{{Observable1.subcribe}}{{Observable1.subcribe}}]
         arr.forEach(v => (joinKeys[(<any>v).uid] = v));//match uid with user info
         chat.messages = chat.messages.map(v => {
           return { ...v, user: joinKeys[v.uid] };//chat messege redesign
@@ -102,7 +102,7 @@ export class ChatService {
   chatHeader(roomId, userId) {
     return this.roomService.getRoomById(roomId).pipe(
       switchMap(((roomInfo: any) => {
-        let therapist = roomInfo.therapist.uidtherapist
+        let therapist = roomInfo.uidtherapist
         let user = roomInfo.uiduser
         if (user != userId) return this.auth.getUserById(user);
         if (therapist != userId) return this.auth.getUserById(therapist);

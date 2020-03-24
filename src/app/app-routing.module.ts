@@ -7,7 +7,6 @@ import { AuthGuard } from './auth/login/auth.guard';
 import { DashboardUserComponent } from './dashboard-user/dashboard-user.component';
 import { UserComponent } from './presence/user/user.component';
 import { ChatComponent } from './chat/chat/chat.component';
-import { TherapistComponent } from './therapist/therapist.component';
 import { TDashboardComponent } from './t-dashboard/t-dashboard/t-dashboard.component';
 import { TGuard } from './auth/t-quard';
 import { TherapistOfUserComponent } from './therapist-of-user/therapist-of-user.component';
@@ -18,6 +17,8 @@ import { SeansForTherapistComponent } from './seans-for-therapist/seans-for-ther
 import { QuestionToTherapistComponent } from './question-to-therapist/question-to-therapist.component';
 import { QuestionTemplateComponent } from './question-template/question-template.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { ProfileEditComponent } from './profile-edit/profile-edit.component';
+import { UserForAdminPanelComponent } from './user-for-admin-panel/user-for-admin-panel.component';
 
  
 const routes: Routes = [
@@ -32,12 +33,12 @@ const routes: Routes = [
   { path: 'questiontotherapist', component: QuestionToTherapistComponent},
   { path: 'questionTemplate', component: QuestionTemplateComponent},
   { path: 'seansForTherapist/:roomId/:displayName/:email', component: SeansForTherapistComponent},
-  { path: 'therapist/:id', component: TherapistComponent },
   { path: 't-dashboard', component: TDashboardComponent,canActivate:[TGuard] },
   { path: 'video', component: VideoAudioComponent },
   { path: 'adminPanelToUser', component: AdminPanelComponent },
+  { path: 'profile-edit', component:ProfileEditComponent }
 
-  
+   
 
 
 ]; 
