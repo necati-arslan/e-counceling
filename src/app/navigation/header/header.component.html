@@ -22,9 +22,7 @@
         <li class="toolbarLink">
           <a routerLink="/dashboard">Nasıl Çalışır</a>
         </li>
-        <li class="toolbarLink">
-          <a routerLink="/matching">Blog</a>
-        </li>
+       
         <li class="toolbarLink">
           <a routerLink="/about-us">Hakkımızda</a>
         </li>
@@ -41,7 +39,7 @@
 
     <ng-container *ngIf="(user$ | async) as user">
 
-      <div *ngIf="user?.email" style="cursor: pointer;" fxFlex="0 1 auto" fxLayoutAlign="start center" fxHide.lt-sm>
+      <div *ngIf="user?.email" [routerLink]="['/matching']" style="cursor: pointer;outline: 0;" fxFlex="0 1 auto" fxLayoutAlign="start center" fxHide.lt-sm>
         <a>/&nbsp;</a>
         <div *ngIf="user?.displayName;else userEmail">{{user.displayName}}</div>
         <ng-template #userEmail>

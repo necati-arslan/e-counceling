@@ -1,11 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { RoomService } from '../services/room.service';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import * as moment from 'moment';
+import { dateValidator } from '../custom validator/date.validator';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+
+
 
 @Component({
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
-  styleUrls: ['./profile-edit.component.css']
+  styleUrls: ['./profile-edit.component.css'],
+
 })
 export class ProfileEditComponent implements OnInit {
 
@@ -20,13 +30,17 @@ export class ProfileEditComponent implements OnInit {
   education;
   userId;
   alert = false;
+ 
+
+ 
 
   constructor(private authService: AuthService,
-    private roomService: RoomService
+    private roomService: RoomService,
+    private _fb: FormBuilder
   ) { }
 
   ngOnInit() {
-    this.authService.user$.subscribe((user: any) => {
+    this.authService.userSubject$.subscribe((user: any) => {
       console.log(user)
       this.user = user;
       this.userId = user.uid;
@@ -45,23 +59,29 @@ export class ProfileEditComponent implements OnInit {
             this.meslekOzet = therapist.meslekOzet;
           })
       }
-    })
 
-    this.askHelp$ = this.roomService.getAskHelp();
 
+      this.askHelp$ = this.roomService.getAskHelp();
+
+
+    })//user
   }
 
-  updateTherapist() {
-  
 
-    this.roomService.updateTherapistInfo(this.userId,this.meslekOzet,this.expertiseT,this.uzmanlik,this.education).then(()=>{
+
+
+
+  updateTherapist() {
+
+
+    this.roomService.updateTherapistInfo(this.userId, this.meslekOzet, this.expertiseT, this.uzmanlik, this.education).then(() => {
       console.log("kayıt işlemi yapıldı");
-      let  message:any = document.querySelector('#therapistMessage')
-      message.innerHTML="kayıt işlemi yapıldı";
+      let message: any = document.querySelector('#therapistMessage')
+      message.innerHTML = "kayıt işlemi yapıldı";
       message.style.color = "green";
 
     });
-   
+
   }
 
   updateUser() {
@@ -82,6 +102,10 @@ export class ProfileEditComponent implements OnInit {
     }
 
   }
+
+
+
+  
 
 
 

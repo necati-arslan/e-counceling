@@ -11,7 +11,7 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
 
 
 
-import {MaterialModule} from './material.module';
+import {MaterialModule, MY_FORMATS} from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { from } from 'rxjs';
@@ -48,6 +48,10 @@ import { UserForAdminPanelComponent } from './user-for-admin-panel/user-for-admi
 import { ProfileTherapistComponent } from './profile-therapist/profile-therapist.component';
 import { ProfileEditComponent } from './profile-edit/profile-edit.component';
 import { EmailPipe } from './pipes/email.pipe';
+import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { AppointmentRegulationComponent } from './appointment-regulation/appointment-regulation.component';
+import { AppointmentTableComponent } from './appointment-table/appointment-table.component';
 
 
 @NgModule({
@@ -81,6 +85,8 @@ import { EmailPipe } from './pipes/email.pipe';
     ProfileTherapistComponent,
     ProfileEditComponent,
     EmailPipe,
+    AppointmentRegulationComponent,
+    AppointmentTableComponent,
     
     
   ],
@@ -97,9 +103,12 @@ import { EmailPipe } from './pipes/email.pipe';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireDatabaseModule,
-    
+     
   ],
-  providers: [AuthService, FirestoreService,RoomService],
+  providers: [AuthService, FirestoreService,RoomService,
+    {provide: MAT_DATE_LOCALE, useValue: 'tr-TR'},
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [LoginComponent,
     SeansPaymentComponent,

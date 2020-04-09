@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthData } from './auth-data.model';
 import { Router } from '@angular/router';
 import { Subject, Observable, of, BehaviorSubject } from 'rxjs';
-import { map, switchMap, first, take,filter,tap } from 'rxjs/operators';
+import { map, switchMap, first, take,filter,tap, concatMap } from 'rxjs/operators';
 import { User } from './user.model';
 import { PresenceService } from '../presence/services/presence.service';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -85,18 +85,31 @@ export class AuthService {
 
   getStatus(uid, userType = 'therapist') {//{createdtime: "232323", state: "offline", seansstate: "finished"}
     let whichUser = this.getWhichUser(userType);
+    let isAvaible;
+    let userStatus:any;
+    let lastSeansStatus:any;
+    
     console.log(whichUser)
     return this.afs.collection(`users/${uid}/status`).valueChanges().pipe(
       switchMap((status: any) => {
-        return this.afs.doc(`${whichUser}/${uid}/lastseans/seansLive`).valueChanges().pipe(
-          map((lastSeans: any) => {
-            //let stateLive=status[0].state
-            let allStatus = { ...status[0], ...lastSeans };
-            return allStatus;
-          })
-        );
-      })
+        console.log(status)
+        userStatus=status[0];
+        return this.afs.doc(`${whichUser}/${uid}/lastseans/seansLive`).valueChanges()
+      }),
+      switchMap(lastSeans=>{
+        lastSeansStatus=lastSeans;
+        console.log(lastSeans)
+        return this.getAvaible(uid);
+      }),
+      map((avaible:any)=>{
+        console.log(avaible)
+        avaible?isAvaible=avaible.isAvaible:isAvaible=true; 
+        return {...userStatus,...lastSeansStatus,isAvaible}})
     );
+  }
+
+  getAvaible(uid){
+    return this.afs.doc(`avaible/${uid}`).valueChanges();
   }
 
   getWhichUser(userType) {
@@ -122,8 +135,8 @@ export class AuthService {
           type: 'user',
           matching: false,
           displayName: '',
-          photoURL: '',
-          gender: '',
+          photoURL: '/assets/userPhoto.png',
+          gender: '', 
           createdAt: Date.now()
         }
         this.subject.next(dataUser);
@@ -175,13 +188,13 @@ export class AuthService {
             email: userProvider.email,
             type: 'user',
             matching: false,
-            displayName: userProvider.displayName ? userProvider.displayName : '',
+            displayName: userProvider.displayName ? userProvider.displayName : '/assets/userPhoto.png',
             photoURL: userProvider.photoURL ? userProvider.photoURL : '',
             gender: '',
             createdAt: Date.now()
           }
           this.saveuser(data);
-        
+          return result;
         } else {
 
           this.getUserById(userId).subscribe((user: any) => {
@@ -193,8 +206,9 @@ export class AuthService {
             if (obj != {}) this.updateUserAllInfo(userId, obj);
 
           })
+          return result;
         }
-        return result;
+      
       })
       .catch(error => {
         window.alert(error);

@@ -1,8 +1,15 @@
 import * as functions from 'firebase-functions';
 import { firestore } from './init';
 
+
 // Create a new function which is triggered on changes to /status/{uid}
 // Note: This is a Realtime Database trigger, *not* Cloud Firestore.
+
+exports.helloWorld=functions.https.onRequest((req,res)=>{
+  res.send("helloz World");
+})
+
+
 exports.onUserStatusChanged = functions.database.ref('/status/{uid}').onUpdate(
   async (change, context) => {
     // Get the data written to Realtime Database
@@ -26,7 +33,7 @@ exports.onUserStatusChanged = functions.database.ref('/status/{uid}').onUpdate(
     // the data that triggered this event, we exit this function.
     if (status.last_changed > eventStatus.last_changed) {
       return null;
-    }
+    } 
 
     // Otherwise, we convert the last_changed field to a Date
     eventStatus.last_changed = new Date(eventStatus.last_changed);
@@ -35,4 +42,5 @@ exports.onUserStatusChanged = functions.database.ref('/status/{uid}').onUpdate(
     return userStatusFirestoreRef.set(eventStatus);
   });
 
-  export {useWildcard} from './uidtherapist-trigger';
+  //export {useWildcard} from './uidtherapist-trigger'; 
+  //export {finishSeans} from './finishSeans';

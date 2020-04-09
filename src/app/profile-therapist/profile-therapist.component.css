@@ -45,7 +45,8 @@
     position: absolute;
      left: 50%;
      bottom:-70px;
-     transform: translate(-50%);
+     -webkit-transform: translate(-50%);
+             transform: translate(-50%);
 }
 
 
@@ -89,10 +90,11 @@
 .hrProfile{
     border-top: 2px solid #49a010;
     width: 70px;
-    padding: 5px;
     margin:0px;
-    padding-top: 3px;
-  
+    padding: 0px;
+    margin-top: 2px;
+
+margin-bottom: 2px;
    
  }
 
@@ -103,7 +105,7 @@
     margin: 0px;
     padding: 0px;
     font-size: 13px;
-  
+   
   }
   li{
       margin-bottom: 3px;

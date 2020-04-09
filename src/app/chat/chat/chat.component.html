@@ -3,9 +3,12 @@
     <div fxLayout="column" class="card">
       <div fxFlex>
         <div fxLayout=row fxLayout.lt-sm="column">
-          <div *ngIf="(seans?.type=='video') || (seans?.type=='audio') " fxFlex class="videoRes" name="video">
-            <app-video-audio [seansInfo]="seansInfo" [roomId]="roomId" [seansId]="seansId"></app-video-audio>
-          </div>
+          <ng-container *ngIf="!isSeansTimeOut">
+            <div *ngIf="(seans?.type=='video') || (seans?.type=='audio') " fxFlex class="videoRes" name="video">
+              <app-video-audio [roomId]="roomId" [seansId]="seansId" [Advisee]="Advisee" ></app-video-audio>
+            </div>
+          </ng-container>
+
           <div fxFlex name=chat>
             <div fxLayout="column">
               <div fxFlex="1 0 auto" class="header">
@@ -45,7 +48,7 @@
                 <div fxLayout="row">
                   <mat-form-field fxFlex="80%" appearance="fill" class="messageInput">
                     <mat-label>mesajınız</mat-label>
-                    <textarea matInput  [(ngModel)]="newMsg" (keydown.enter)="submit(seans.id)">
+                    <textarea matInput [(ngModel)]="newMsg" (keydown.enter)="submit(seans.id)">
                     </textarea>
                     <button mat-icon-button matSuffix>
                       <mat-icon (click)="submit(seans.id)" style="color: #05284B;padding: 0;margin: 0px;">send
@@ -62,26 +65,24 @@
         </div>
       </div>
 
- 
+
 
     </div>
 
-    <mat-card *ngIf="userId===roomInfo?.uidtherapist" style="margin-top: 5px;"><!--Danışan bilgi-seans Note-->
+    <mat-card *ngIf="userId===roomInfo?.uidtherapist" style="margin-top: 5px;">
+      <!--Danışan bilgi-seans Note-->
       <mat-card-header>
         <mat-card-subtitle>Bu kısmı sadece seans therapisti görebilmektedir!</mat-card-subtitle>
-        <div style="text-align: right;">
-            <button (click)="finishSeans()" mat-raised-button color="warn">Seansı Bitir</button>
-            <span style="color: red;" id="finishMessage"></span>
-        </div>
-        
-        
+
+
+
       </mat-card-header>
       <mat-tab-group>
         <mat-tab label="Seans Bilgi">
           <div fxLayout="column" class="tabPanelTherapist">
             <div fxFlex>
               <div fxLayout=row>
-                <div fxFlex> 
+                <div fxFlex>
                   <!-- danışan bilgisi-->
                   <mat-list dense>
                     <h3 mat-subheader>Danışan Bilgileri:</h3>
@@ -126,7 +127,7 @@
             <div fxFlex>
               <mat-list dense *ngIf="roomInfo?.roomNote">
                 <h3 mat-subheader>Therapist Genel Notu;</h3>
-                <div class="roomNote"   role="listitem">
+                <div class="roomNote" role="listitem">
                   {{roomInfo?.roomNote}}
                 </div>
               </mat-list>
@@ -168,6 +169,17 @@
                 </mat-form-field>
               </div>
               <button (click)="addRoomNote()" mat-stroked-button>Genel Not Ekle</button>
+            </div>
+
+          </div>
+        </mat-tab>
+        <mat-tab label="Seans İşlemleri">
+          <div fxLayout="column">
+            <div style="padding: 10px;" fxFlex>
+              <div>
+                <button (click)="finishSeans()" mat-raised-button color="warn">Seansı Bitir</button>
+                <span style="color: red;" id="finishMessage"></span>
+              </div>
             </div>
 
           </div>

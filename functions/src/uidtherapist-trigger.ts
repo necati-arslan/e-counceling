@@ -15,19 +15,20 @@ export const useWildcard = functions.firestore
         if(changeData.displayName!=beforeData.displayName){ 
             
         let collectionRef = firestore.collection('rooms')
-        collectionRef.where('therapist.uidtherapist', '==', uid).get()
+        collectionRef.where('uidtherapist', '==', uid).get()
         .then((querySnapshot: any) => {
             querySnapshot.forEach((documentSnapshot: any) => {
                 console.log(`Found document at ${documentSnapshot.ref.path}`);
                 let roomRef = firestore.doc(documentSnapshot.ref.path);
+
                 let data = {
-                    therapist: {
+                   
                         therapistname: changeData.displayName,
                         uidtherapist: uid
-                    }
+                    
                 }
                 roomRef.update({ ...data }); 
             });
         });
     }
-    });
+    }); 

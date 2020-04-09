@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import AgoraRTC from "agora-rtc-sdk";
 import { AngularFirestore } from '@angular/fire/firestore';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -238,11 +239,8 @@ createClient(rtc){
     );
   }
 
-  updateSeans(roomId,seansId,data){     
-   return this.afs.doc(`rooms/${roomId}/seans/${seansId}`).update(data);
-  }
-  updateLastSeansTherapist(userId){
-    this.afs.doc(`therapists/${userId}/lastseans/seansLive`).update({ state: 'finished' })
+  getSeansByID(roomId,seansId){
+    return this.afs.doc(`rooms/${roomId}/seans/${seansId}`).valueChanges();
   }
 
 }

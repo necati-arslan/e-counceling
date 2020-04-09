@@ -20,6 +20,7 @@ export class TherapistOfUserComponent implements OnInit {
   therapist;
   therapistCard$:Observable<any>;
   roomId;
+  user;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -47,6 +48,8 @@ export class TherapistOfUserComponent implements OnInit {
         });
       } 
     });
+
+    this.authService.userSubject$.subscribe(user=>this.user=user);
    }
   
   ngOnInit() {

@@ -25,6 +25,7 @@ export class SidenavComponent implements OnInit {
   rooms$: Observable<any>;
   source$: Observable<any>;
   countQuestion;
+  countAppointment;
   lastSeans$;
 
   constructor(private authService: AuthService,
@@ -51,12 +52,21 @@ export class SidenavComponent implements OnInit {
 
 
         ///last message/////
-
+        let now=Date.now();
         if (user.type == 'therapist') {
           this.roomService.getLastQuestion(user.uid, user.type)
             .subscribe(questions => {
               this.countQuestion = questions.length
               console.log(this.countQuestion)
+            })
+
+        //reserved Appointment    
+            this.roomService.getReservedAppointmentThepapist(user.uid)
+            .subscribe(appointments=>{
+              if(!appointments)  {this.countAppointment=0; return};
+              appointments = appointments.filter((reserve:any) => reserve.timeStamp >= now);
+              this.countAppointment=appointments.length;
+              
             })
         }
         if (user.type == 'user') {
@@ -66,12 +76,19 @@ export class SidenavComponent implements OnInit {
               this.countQuestion=questions.length;
               console.log(this.countQuestion);
             }
-          )
-        }
-        ///last message/////
+          );
+          //reserved appointment
+          this.roomService.getReservedAppointmentUser(user.uid)
+          .subscribe(appointments=>{  
+            if(!appointments)  {this.countAppointment=0; return};
+            appointments = appointments.filter((reserve:any) => reserve.timeStamp >= now);
+            this.countAppointment=appointments.length;
+          })
+        } 
+        ///last message/////  
         //last video chat////
 
-        this.lastSeans$= this.roomService.getLastSeans(user.type,user.uid,user)
+        this.lastSeans$= this.roomService.getLastSeans(user.type,user.uid)
 
  
       } else {
@@ -99,13 +116,18 @@ export class SidenavComponent implements OnInit {
 
   startCounceling() {
 
-    const dialogRef = this.dialog.open(LoginComponent)
+      const dialogRef = this.dialog.open(LoginComponent)
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          console.log(result);
-          this.onClose();
-          this.router.navigate(['/dashboard']);
+          console.log(result)
+          let user = result.user
+          this.authService.getUserById(user.uid)
+          .subscribe((user:any)=>{
+            console.log(user)
+            if(user.type=="therapist") this.router.navigate(['t-dashboard']);
+            if(user.type=="user") this.router.navigate(['dashboard']);
+          }) 
         };
       })
 

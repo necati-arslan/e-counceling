@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ChatService } from '../chat.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Observable } from 'rxjs';
 import { RoomService } from 'src/app/services/room.service';
@@ -19,15 +19,18 @@ export class ChatComponent implements OnInit {
   therapist$: Observable<any>;
   newMsg: string;
   userId: string;
-  user:any;
-  roomId:string;
+  user: any;
+  roomId: string;
   headerUser$;
   seansInfo: any;
-  countDownText: any="Henüz başlamadı";
+  countDownText: any = "Henüz başlamadı";
   seansId: string;
   roomInfo: any;
   newUserofTherapist;
   otherUser: any;
+  isSeansTimeOut: boolean = false;
+  countInterval;
+  Advisee;
 
   seansNote;
   roomNote;
@@ -39,62 +42,72 @@ export class ChatComponent implements OnInit {
     private route: ActivatedRoute,
     public auth: AuthService,
     private roomService: RoomService,
-    private videoService:VideoAudioService
+    private videoService: VideoAudioService
   ) {
 
   }
 
   ngOnInit() {
 
-    const roomId = this.route.snapshot.paramMap.get('roomId');
-    this.roomId=roomId;
-    const seansId = this.route.snapshot.paramMap.get('seansId');
-    this.seansId = seansId;
-    const source = this.cs.get(roomId, seansId);
-    this.chat$ = this.cs.joinUsers(source).pipe(
-      map((seansInfo: any) => {
-        this.seansInfo = seansInfo;
-        console.log(this.seansInfo);
-        if(this.seansInfo.seansNote!=undefined) this.seansNote=this.seansInfo.seansNote;
-        if(this.seansInfo.startedTime){
-          this.countDown(this.seansInfo.startedTime);
-        }
-        return seansInfo;
+    this.route.paramMap.subscribe((params: ParamMap) => {
+
+      const roomId = params.get('roomId');
+      this.roomId = roomId;
+      const seansId = params.get('seansId');
+      this.seansId = seansId;
+
+      this.isSeansTimeOut=false
+
+      this.auth.userSubject$.subscribe((user: any) => {
+        this.userId = user.uid;
+        this.user = user;
+
+        const source = this.cs.get(this.roomId, this.seansId);
+        this.chat$ = this.cs.joinUsers(source).pipe(
+          map((seansInfo: any) => { 
+            this.seansInfo = seansInfo;
+            console.log(this.seansInfo);
+            if (this.seansInfo.seansNote != undefined) this.seansNote = this.seansInfo.seansNote;
+            if (this.seansInfo.startedTime) {
+              clearInterval(this.countInterval);
+              this.countDown(this.seansInfo.startedTime, this.seansInfo.state);
+            }
+            if (this.user.type == "therapist") {
+              this.checkFinishTime(this.seansInfo);
+            }
+
+            if (this.seansInfo.state == "finished") this.isSeansTimeOut = true;
+            return seansInfo;
+          })
+        );
+
+        this.headerUser$ = this.cs.chatHeader(this.roomId, this.user.uid).pipe(map(otherUser => {
+          console.log(otherUser);
+          this.otherUser = otherUser;
+          return otherUser;
+        }))
+
+
+        this.roomService.getRoomById(this.roomId).subscribe((room: any) => {
+          if (!room) return;
+          this.roomInfo = room;
+          this.Advisee=room.uiduser;
+          if (this.roomInfo.roomNote) this.roomNote = this.roomInfo.roomNote;
+          this.isNewUser(room.createdAt);
+
+        })
       })
-    );
-    this.auth.userSubject$.subscribe((user: any) => {
-      this.userId = user.uid;
-      this.user=user;
-      this.headerUser$ = this.cs.chatHeader(roomId, user.uid).pipe(map(otherUser => {
-        console.log(otherUser);
-        this.otherUser=otherUser;
-        return otherUser;
-      }))
     })
-
-    this.roomService.getRoomById(roomId).subscribe((room: any) => {
-      if(!room) return;
-      this.roomInfo = room;
-      if(this.roomInfo.roomNote) this.roomNote=this.roomInfo.roomNote;
-      this.isNewUser(room.createdAt);
-
-    })
-   
-
-   
-
-
-
-
 
   }
 
   submit(seansId) {
 
-    if(this.user.type=="therapist" && this.seansInfo.type=="chat"){
-      if(!this.seansInfo.startTime){
-        let data= {startedTime:Date.now()};
-        this.videoService.updateSeans(this.roomId,this.seansId,data);
+    if (this.user.type == "therapist" && this.seansInfo.type == "chat") {
+      if (!this.seansInfo.startTime) {
+        let data = { startedTime: Date.now() };
+        this.roomService.updateSeans(this.roomId, this.seansId, data);
+        this.roomService.updateLastSeansTherapist(this.roomId, this.seansId, data,this.Advisee)
       }
     }
 
@@ -110,10 +123,16 @@ export class ChatComponent implements OnInit {
   }
 
 
-  countDown(startedTime) {
+  countDown(startedTime, state) {
 
-    let countDownDate =startedTime + (60 * 60 * 1000)//+1 saat ekle
-    let countInterval = setInterval(() => {
+    let countDownDate = startedTime + (60 * 60 * 1000)//+1 saat ekle
+    if (countDownDate < Date.now() || state == "finished") {
+      this.isSeansTimeOut = true
+      this.countDownText = "Seans Bitti";
+      return;
+    }
+
+    this.countInterval = setInterval(() => {
 
       // Get today's date and time
       var now = new Date().getTime();
@@ -130,11 +149,14 @@ export class ChatComponent implements OnInit {
       // Output the result in an element with id="demo"
       this.countDownText = minutes + "dk " + seconds + "s ";
       // If the count down is over, write some text 
-      if (distance < 0) {
-        clearInterval(countInterval);
+      if (distance < 0 || state == "finished") {
+        clearInterval(this.countInterval);
         this.countDownText = "Seans Bitti";
+        this.isSeansTimeOut = true;
       }
     }, 1000);
+
+
   }
 
   isNewUser(createdAt) {//bir saatten azsa oluşturma 
@@ -146,35 +168,53 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  write(){
-    console.log("otheruser",this.otherUser);
-    console.log("seans",this.seansInfo);
-    console.log("room",this.roomInfo);
+  write() {
+    console.log("otheruser", this.otherUser);
+    console.log("seans", this.seansInfo);
+    console.log("room", this.roomInfo);
   }
 
-  addSeansNote(){
-    this.roomService.addSeansNot(this.roomId,this.seansId,this.seansNote).then(()=>{
-      document.querySelector('#seansMessage').innerHTML="Seans Notunuz Eklendi..."
-    })
-  }
- 
-  addRoomNote(){
-    this.roomService.addRoomNot(this.roomId,this.roomNote).then(()=>{
-      document.querySelector('#roomMessage').innerHTML="Genel Notunuz Eklendi..."
+  addSeansNote() {
+    this.roomService.addSeansNot(this.roomId, this.seansId, this.seansNote).then(() => {
+      document.querySelector('#seansMessage').innerHTML = "Seans Notunuz Eklendi..."
     })
   }
 
-  finishSeans(){
-    let data ={
-      finishedTime:Date.now(),
-      state:'finished'
+  addRoomNote() {
+    this.roomService.addRoomNot(this.roomId, this.roomNote).then(() => {
+      document.querySelector('#roomMessage').innerHTML = "Genel Notunuz Eklendi..."
+    })
+  }
+
+  finishSeans(userType?: string) {
+    let data = {
+      finishedTime: Date.now(),
+      state: 'finished'
     }
-    this.videoService.updateSeans(this.roomId,this.seansId,data).then(()=>{
+   
+    if (this.seansInfo.finishedTime) return;
+
+    this.roomService.updateSeans(this.roomId, this.seansId, data).then(() => {
+
       let srt = document.querySelector('#finishMessage');
-      srt.innerHTML="Seans bitirildi";
+      srt.innerHTML = "Seans bitirildi";
+
     })
-    this.videoService.updateLastSeansTherapist(this.userId)
+    this.roomService.updateLastSeansTherapist(this.userId, this.seansId,data,this.Advisee);
 
   }
+
+  checkFinishTime(seansInfo: any) {
+    if (!this.seansInfo.startedTime) return;
+
+    let addedHour = seansInfo.startedTime + (60 * 60 * 1000)//+1 saat ekle
+    let now = Date.now();
+
+    if (addedHour < now && !seansInfo.finishedTime) {
+      this.finishSeans();
+    }
+  }
+
+
 
 }

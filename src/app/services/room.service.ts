@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { switchMap, map, take, first, filter, mergeMap } from 'rxjs/operators';
+import { switchMap, map, take, first, filter, mergeMap, concatMap } from 'rxjs/operators';
 import { combineLatest, of, Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -9,6 +9,8 @@ import { resolve } from 'url';
 import { Router } from '@angular/router';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { firestore } from 'firebase/app';
+import * as moment from 'moment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +43,7 @@ export class RoomService {
   }
 
 
-  async creatRoom(therapist: any, user: any, seansType: any, bilgi, question) {
+  async creatRoom(therapist: any, user: any, seansType: any, bilgi, question,isAppointment) {
     const uiduser = user.uid;
     const uidtherapist = therapist.uidtherapist;
     let roomRef: any;
@@ -68,6 +70,7 @@ export class RoomService {
       console.log('senasRefxxx', seansId);
 
       if (seansType != "message") {
+        if(isAppointment) return;
         this.creatLastSeans(therapist, user, roomRef, seansId, seansType);
         this.creatLogSeans(therapist, user, roomRef, seansId, seansType);
       } else {
@@ -101,7 +104,7 @@ export class RoomService {
 
 
   creatLastSeans(therapist, user, roomId, seansId, seansType) {
-    const uidTherapist = therapist.uidtherapist;
+    const uidTherapist = therapist.uidtherapist||therapist.uid;
     const uidUser = user.uid;
 
     const dataTherapist = {
@@ -123,10 +126,14 @@ export class RoomService {
       therapistname: therapist.displayName
     }
 
+
+
     this.afs.doc(`therapists/${uidTherapist}/lastseans/seansLive`).set(dataTherapist);
     this.afs.doc(`users/${uidUser}/lastseans/seansLive`).set(dataUser);
 
   }
+
+  
 
   creatLastMessageSeans(therapist, user, roomId, seansId, seansType, question) {
     const uidTherapist = therapist.uidtherapist;
@@ -182,10 +189,10 @@ export class RoomService {
       ).toPromise()
   }
 
-  getAllMessage(uiduser,userType){
+  getAllMessage(uiduser, userType) {
 
-    return this.getRooms(uiduser,userType).pipe(
-      switchMap(rooms=>this.getQuestionFromRooms(rooms)),
+    return this.getRooms(uiduser, userType).pipe(
+      switchMap(rooms => this.getQuestionFromRooms(rooms)),
       map((seans: any) => {
         let seansInfo = []
         console.log(seans);
@@ -344,24 +351,28 @@ export class RoomService {
     return observe$.pipe(
       switchMap((snaps: any) => {
         data = snaps;
-        const userInfo = snaps.map((snap: any) => {
+        if(!snaps) return of(null);
+        const userInfo = snaps.map((snap: any) => { 
           if (!snap) return;
           let uid;
-          if (userType == "user") uid = snap.uidtherapist ? snap.uidtherapist : snap.therapist.uidtherapist;//not check
-          if (userType != "user") uid = snap.uiduser;
+          if (userType == "user") uid = snap.uidtherapist ? snap.uidtherapist : snap.tId;//not check
+          if (userType != "user") uid = snap.uiduser?snap.uiduser:snap.userId;
+          console.log(uid)
           return this.auth.getUserById(uid);
         })
         return userInfo.length ? combineLatest(userInfo) : of([]);
       }),
       map((users: any) => {
+        console.log(users)
+        if(!users) return null;
         users.forEach(user => {
           joinKey[user.uid] = user;
         });
         let uid;
 
         return data.map((element: any) => {
-          if (userType == "user") uid = element.uidtherapist ? element.uidtherapist : element.therapist.uidtherapist;// not check
-          if (userType != "user") uid = element.uiduser;
+          if (userType == "user") uid = element.uidtherapist ? element.uidtherapist : element.tId;// not check
+          if (userType != "user") uid = element.uiduser?element.uiduser:element.userId;
           return { ...element, ...joinKey[uid] }
         });
       })
@@ -403,8 +414,10 @@ export class RoomService {
         return userInfo.length ? combineLatest(userInfo) : of([]);
       }),
       map((users: any) => {
+        users = users.filter(user => !!user)
+        console.log(users);
         users.forEach(user => {
-          joinKey[user.uid] = user;
+          if (user) { joinKey[user.uid] = user; }
         });
         console.log(joinKey)
         return roomsInfo.map((room: any) => {
@@ -422,45 +435,64 @@ export class RoomService {
           return snaps.map((snap: any) => {
             return {
               idSeans: snap.payload.doc.id,
-              ...snap.payload.doc.data() 
+              ...snap.payload.doc.data()
             }
           })
         })
       );
   }
 
-  getLastSeans(userType, uid, user) {
+
+  getSeansById(roomId,seansId){
+    return this.afs.doc(`rooms/${roomId}/seans/${seansId}`).valueChanges().pipe(take(1));
+
+  }
+
+  finishSeans(seansInfo:any){
+    let roomId=seansInfo.roomId;
+    let seansId=seansInfo.seansId
+   
+    let data = {
+      finishedTime: Date.now(),
+      state: 'finished'
+    }
+    if (seansInfo.finishedTime) return;
+     this.updateSeans(roomId, seansId, data)
+  }
+
+
+   updateSeans(roomId,seansId,data){     
+    return this.afs.doc(`rooms/${roomId}/seans/${seansId}`).update(data);
+   }
+   updateLastSeansTherapist(userId,seansId,data,advisee?:any){
+     this.afs.doc(`therapists/${userId}/lastseans/seansLive`).valueChanges().pipe(take(1)).subscribe((seans:any)=>{
+       if(seans.seansId==seansId){
+         this.afs.doc(`therapists/${userId}/lastseans/seansLive`).update({ ...data });
+       }
+     })
+     this.afs.doc(`users/${advisee}/lastseans/seansLive`).valueChanges().pipe(take(1)).subscribe((seans:any)=>{
+       if(seans.seansId==seansId){
+         this.afs.doc(`users/${advisee}/lastseans/seansLive`).update({ ...data });
+       }
+     })
+   }
+
+   updateLastSeansUserById( uid,data){
+    return this.afs.doc<any>(`users/${uid}/lastseans/seansLive`).update({...data})
+   }
+   updateLastSeansTherapistsById( uid,data){
+    return this.afs.doc<any>(`therapists/${uid}/lastseans/seansLive`).update({...data})
+   }
+
+  getLastSeans(userType, uid) {
     let typeCollection;
     if (userType == "therapist") typeCollection = "therapists";
     if (userType == "user") typeCollection = "users";
     console.log(typeCollection);
-    return this.afs.doc<any>(`${typeCollection}/${uid}/lastseans/seansLive`).valueChanges()
-      .pipe(
-        map((lastSeans: any) => {
-          console.log(lastSeans);
-          if (lastSeans != null) {
-            let timeNow = Date.now();
-            let createdtime = lastSeans.createdtime;
-            let elapsedTime = Math.floor((timeNow - createdtime) / (1000 * 60 * 60));
-            let seansState = lastSeans.state;
-            console.log(lastSeans)
-            console.log(elapsedTime);
-            if (elapsedTime > 1) {
-              if (seansState == 'continuing' && userType == "user")
-                this.afs.doc(`${typeCollection}/${uid}/lastseans/seansLive`).update({ state: 'finished' });
-
-              return lastSeans;
-            }
-            if (elapsedTime < 1) {
-
-              console.log('mevcut görüşmeniz var!!');
-              return lastSeans;
-            };
-          }
-          return of(null);
-        })
-      );
+    return this.afs.doc<any>(`${typeCollection}/${uid}/lastseans/seansLive`).valueChanges();
   }
+
+
 
   getTotalSeans(uidUser) {
     return this.afs.collection('logSeans', ref => ref.where('uidTherapist', '==', uidUser)).valueChanges();
@@ -504,6 +536,146 @@ export class RoomService {
 
   updateUserAllInfo(userId, obj: object) {
     return this.afs.doc(`users/${userId}/`).update({ ...obj })
+  }
+
+  createDeleteTherapist(userId, obj: any) {
+    this.afs.collection('therapists').doc(userId).valueChanges().pipe(take(1))
+      .subscribe(therapist => {
+        if (therapist) {
+          if (obj.type == "user")
+            this.afs.doc(`therapists/${userId}/`).delete();
+        } else {
+          if (obj.type == "therapist")
+            this.afs.doc(`therapists/${userId}/`).set({ uidtherapist: userId });
+        }
+      })
+  }
+
+   createWorkingTime(data:any){
+    this.afs.collection('workingTime', ref => ref.where('userId', '==', data.userId)
+    .where('timeStamp', '==', data.timeStamp).where('reserved', '==', true)).valueChanges()
+    .pipe(take(1)).subscribe(workingTime=>{
+      
+      if(workingTime[0]) return;
+      this.afs.collection('workingTime').add({...data})
+    })
+    
+  }
+
+  getWorkingHours(userId, workingDate){
+    return this.afs.collection('workingTime', ref => ref.where('userId', '==', userId)
+      .where('workingDate', '==', workingDate)).valueChanges().pipe(map(hours=>{
+        return hours.map((hour:any)=>{
+          return hour.timeRange
+        })
+      }));
+  }
+
+  getWorkingTimes(userId){
+    return this.afs.collection('workingTime',ref => ref.where('userId','==', userId)).valueChanges()
+    .pipe(map((workingTimes:any)=>{
+      let workingAll={}
+      workingTimes.forEach(workingTime=>{
+        let workingDate=workingTime.workingDate
+        let timeRangeValue=workingTime.timeRange;
+        let timeStamp=workingTime.timeStamp   
+        if(!workingAll[workingDate]){
+          let timeRange=[];
+
+          timeRange.push(timeRangeValue);
+          workingAll[workingDate]={timeRange,workingDate,timeStamp}
+         
+        }else{
+          workingAll[workingDate].timeRange.push(timeRangeValue);
+        }
+        
+      })
+      let workingAllSend=[]
+      Object.keys(workingAll).forEach(key => {
+       // console.log(key);        // the name of the current key.
+       // console.log(workingAll[key]); // the value of the current key.
+        workingAllSend.push(workingAll[key])
+      });
+  
+      workingAllSend.sort(function (a, b) {
+        return b.timeStamp - a.timeStamp;
+      });
+    
+      return workingAllSend;
+    }))
+  }
+
+  updateReservedWorkingTimeById(IdWorkingTime,data:any){
+    this.afs.doc(`workingTime/${IdWorkingTime}`).update({...data})
+  }
+
+  deleteWorkingTime(userId, workingDate) {
+    return this.afs.collection('workingTime', ref => ref.where('userId', '==', userId)
+      .where('workingDate', '==', workingDate).where('reserved', '==', false)).snapshotChanges().pipe(map(workingTimes => {
+        console.log(workingTimes);
+        if(workingTimes){  workingTimes.forEach((workingTime: any) => {
+          let workingTimeId = workingTime.payload.doc.id
+          console.log(workingTime);
+          this.afs.collection('workingTime').doc(workingTimeId).delete();
+        })}
+      }),take(1)).toPromise()
+  }
+
+  getAppointmentHours(therapistId,date){
+    return this.afs.collection('workingTime',ref => ref.where('userId', '==', therapistId)
+    .where('workingDate', '==', date).where('reserved', '==', false))
+    .snapshotChanges().pipe(map((appointmentHours:any)=>{
+      if(!appointmentHours[0]) return null;
+      let addOne= moment().add(70, 'minutes').format('x');
+
+      appointmentHours= appointmentHours.map((snap: any) => {
+        return {
+          Id: snap.payload.doc.id,
+          ...snap.payload.doc.data()
+        }
+      })
+      
+      let avaibleHours= appointmentHours.filter((hour:any)=>hour.timeStamp>addOne)
+      
+      avaibleHours.sort(function (a, b) {
+        return a.timeStamp-b.timeStamp;
+      });
+
+      return avaibleHours;
+    }))
+
+  }
+
+  createAppointment(obj:any){
+    this.afs.collection('appointment').add({...obj})
+  }
+
+  updateAvaible(userId,isAvaible:boolean){
+
+    this.afs.collection('avaible').doc(userId).set({userId,isAvaible});
+
+  }
+
+  getReservedAppointmentThepapist(userId){
+   return this.afs.collection(`appointment`,ref=>ref.where('tId','==',userId)).valueChanges()
+   .pipe(map(reservaions=>reservaions[0]?reservaions:null));
+  }
+  getReservedAppointmentUser(userId){
+    return this.afs.collection(`appointment`,ref=>ref.where('userId','==',userId)).valueChanges()
+    .pipe(map(reservaions=>reservaions[0]?reservaions:null));
+   }
+
+  creatReservedLastSeans(appointment:any,therapist){
+
+    let roomId=appointment.roomId;
+    let seansId=appointment.seansId;
+    let seansType=appointment.seansType;
+    let userId=appointment.userId
+
+    this.auth.getUserById(userId).subscribe(user=>{
+      this.creatLastSeans(therapist,user,roomId,seansId,seansType);
+    })
+    
   }
 
   updateTherapistInfo(userId, meslekOzet = "", expertise = "", uzmanlik = "", education = "") {

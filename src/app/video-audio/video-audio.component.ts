@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { VideoAudioService } from './video-audio.service';
 import { AuthService } from '../auth/auth.service';
+import { RoomService } from '../services/room.service';
 
 @Component({
   selector: 'app-video-audio',
@@ -10,16 +11,18 @@ import { AuthService } from '../auth/auth.service';
 export class VideoAudioComponent implements OnInit {
 
 
+  seansInfo: any;
+  @Input('seansId') seansId: string;
 
-  @Input('seansId') seansId:string;
+  @Input('roomId') roomId: any;
 
-  @Input('seansInfo') seansInfo:any;
-  @Input('roomId') roomId:any;
+  @Input('Advisee') Advisee:any
 
-  localCallId:string="localStream";
-  remoteCallId:string="remoteStream";
+  localCallId: string = "localStream";
+  remoteCallId: string = "remoteStream";
 
-  user:any;
+  user: any;
+  userId;
 
   rtc: any = {
     client: null,
@@ -27,9 +30,9 @@ export class VideoAudioComponent implements OnInit {
     published: false,
     localStream: null,
     remoteStreams: [],
-    waiting:false,
+    waiting: false,
     params: {},
-    romoteChatch:false
+    romoteChatch: false
   };
 
   // Options for joining a channel
@@ -40,51 +43,69 @@ export class VideoAudioComponent implements OnInit {
   };
 
   constructor(
-    private videoService:VideoAudioService,
-    private authService:AuthService
+    private videoService: VideoAudioService,
+    private authService: AuthService,
+    private roomService: RoomService
   ) { }
 
   ngOnInit() {
-    
-    this.videoService.createClient(this.rtc);
-    this.videoService.handleEvents(this.rtc,this.remoteCallId);
 
-    this.authService.userSubject$.subscribe(user=>{
-      this.user=user
-      if(user.type=='user') this.clientInit();
+    this.videoService.createClient(this.rtc);
+    this.videoService.handleEvents(this.rtc, this.remoteCallId);
+
+    this.authService.userSubject$.subscribe(user => {
+      this.user = user;
+      this.userId=user.uid;
+      this.videoService.getSeansByID(this.roomId, this.seansId).subscribe(seans => {
+        this.seansInfo = seans;
+        console.log(this.seansInfo)
+     
+       if (this.user.type == "user" && this.seansInfo.startedTime) this.clientInit();
+        if (this.seansInfo.state=="finished") this.leave();
+      })
+
     })
-    
 
   }
 
 
-  clientInit(){
+  clientInit() {
     console.log(this.rtc)
 
-    if(this.user.type=="therapist"){
-      if(!this.seansInfo.startedTime){
-        let data= {startedTime:Date.now()};
-        this.videoService.updateSeans(this.roomId,this.seansId,data);
+    if (this.user.type == "therapist") {
+      if (!this.seansInfo.startedTime) {
+        let data = { startedTime: Date.now() };
+        this.roomService.updateSeans(this.roomId, this.seansId, data);
+        this.roomService.updateLastSeansTherapist(this.userId,this.seansId,data,this.Advisee);
       }
-    }
-    
 
-    this.videoService.clientInit(this.rtc,this.seansId,this.localCallId,this.seansInfo.type);  
+
+    } 
+
+    if (this.user.type == "user" && !this.seansInfo.startedTime) {     
+        this.rtc.waiting =true;
+        return;
+      }
+    
+    if (this.seansInfo.state=="finished") return;
+
+
+    this.videoService.clientInit(this.rtc, this.seansId, this.localCallId, this.seansInfo.type);
   }
 
-  leave(){
+  leave() {
     this.videoService.leave(this.rtc)
   }
 
-  fullscreen(){
+  fullscreen() {
     const docElmWithBrowsersFullScreenFunctions = document.querySelector("#remoteStream") as HTMLElement & {
       mozRequestFullScreen(): Promise<void>;
       webkitRequestFullscreen(): Promise<void>;
       msRequestFullscreen(): Promise<void>;
     };
-     
+
     //let elem = document.querySelector("#remoteStream");
-   // console.log(elem.innerHTML)
+    // console.log(elem.innerHTML)
     if (docElmWithBrowsersFullScreenFunctions.requestFullscreen) {
       docElmWithBrowsersFullScreenFunctions.requestFullscreen();
     } else if (docElmWithBrowsersFullScreenFunctions.mozRequestFullScreen) { /* Firefox */
@@ -94,9 +115,12 @@ export class VideoAudioComponent implements OnInit {
     } else if (docElmWithBrowsersFullScreenFunctions.msRequestFullscreen) { /* IE/Edge */
       docElmWithBrowsersFullScreenFunctions.msRequestFullscreen();
     }
-    
+
   }
+
+ 
+
+ 
 
 
 }
- 

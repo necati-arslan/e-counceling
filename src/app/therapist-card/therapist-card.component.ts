@@ -12,7 +12,8 @@ import { ProfileTherapistComponent } from '../profile-therapist/profile-therapis
 interface Status {
   stateLive: string,
   seansstate: string,
-  state:string
+  state:string,
+  isAvaible:boolean
 }
 
 @Component({
@@ -28,7 +29,7 @@ export class TherapistCardComponent implements OnInit {
   
   @Input() userAuth: any;
   @Input() therapist: any;
- 
+  
 
   status: string = "offline";
 
@@ -87,17 +88,19 @@ export class TherapistCardComponent implements OnInit {
 
 
  // }
-
-  getStatus(uid,data?:Object) {
+ 
+  getStatus(uid,data?:Object) { 
     if(!data) return of(null); 
     return this.authService.getStatus(uid).pipe(
       map((status: Status) => {
-        //console.log('>>>>>>>>>>',uid,status)
+      console.log('>>>>>>>>>>',uid,status)
         if(!status){return {status: 'offline',...data?data:null} }
         if (status.stateLive == 'offline') { return { status: 'offline',...data?data:null }; };
+        if(status.isAvaible==false ) return { status: 'busy',...data?data:null };
         if ((status.stateLive == "online" || status.stateLive == "away") && status.state == "finished") return { status: 'online',...data?data:null };
         if ( status.state == "continuing" && (status.stateLive == "online" || status.stateLive == "away")) return { status: 'busy',...data?data:null };
         if ( !status.state && (status.stateLive == "online" || status.stateLive == "away")) return { status: 'online',...data?data:null };
+        
       }));
   }
   
@@ -106,7 +109,23 @@ export class TherapistCardComponent implements OnInit {
     const dialogRef = this.dialog.open(SeansPaymentComponent,{
     
       panelClass: 'custom-dialog-container',
-      data:{therapist,user:this.userAuth}
+      data:{therapist,user:this.userAuth,appointment:false}
+    }) 
+    .afterClosed()
+    .subscribe(result=>{
+      if (result) {
+        console.log(result);
+        //this.router.navigate(['/dashboard']);
+      };
+    })
+
+  }
+  seansPaymentAppointment(therapist){
+ 
+    const dialogRef = this.dialog.open(SeansPaymentComponent,{
+    
+      panelClass: 'custom-dialog-container',
+      data:{therapist,user:this.userAuth,appointment:true}
     }) 
     .afterClosed()
     .subscribe(result=>{

@@ -2,8 +2,8 @@
     <mat-card>
         <div fxLayout="column" fxLayoutGap="10px">
             <div fxFlex>
-                <div fxLayout.gt-xs="row" fxLayout.lt-sm="column" >
-                    <div  fxFlex="0 1 auto">
+                <div fxLayout.gt-xs="row" fxLayout.lt-sm="column">
+                    <div fxFlex="0 1 auto">
                         <span><img style="width:60px;height:60px;vertical-align: middle;" [src]="user?.photoURL" alt="">
                             {{user?.displayName}} / {{user?.email}}
                         </span>
@@ -17,104 +17,124 @@
             <div fxFlex>
                 <mat-divider></mat-divider>
             </div>
-            <div fxFlex>
-                <fieldset>
-                    <legend>Kayıt Bilgileri</legend>
-                    <div>
-                        <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px">
-        
-                            <mat-form-field fxFlex appearance="fill">
-                                <mat-label>Display Name</mat-label>
-                                <input [(ngModel)]="displayName" matInput>
-                            </mat-form-field>
-        
-        
-                            <mat-form-field fxFlex style="width: 100px;">
-                                <mat-label>Cinsiyet</mat-label>
-                                <mat-select [(ngModel)]="userGender">
-                                    <mat-option value="Bay">Bay</mat-option>
-                                    <mat-option value="Bayan">Bayan</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-        
-                        </div>
-                    </div>
-                    <div>
-                        <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
-                            <div *ngIf="alert" fxFlex fxFlexAlign="start">
-                                <span  style="color: darkgreen;">Güncelleme Yapıldı!</span>
-                            </div>
-                            <div fxFlex="0 1 auto">
-                                <button (click)="updateUser()" mat-stroked-button>Güncelle</button>
-                            </div>
-                        </div>
-                    </div>
-        
-                </fieldset>
-            </div>
-            <div fxFlex *ngIf="user?.type==='therapist'">
-                <fieldset>
-                    <legend>Therapist Bilgileri</legend>
-                    <div fxLayout="column" fxLayoutGap="10px">
-                        <div fxFlex>
-                            <mat-form-field fxFlex appearance="fill">
-                                <mat-label>Mesleki Özet</mat-label>
-                                <textarea class="textArea" matInput [(ngModel)]="meslekOzet" placeholder="mesleki özgeçmiş...">
-        
-                                </textarea>
-                            </mat-form-field>
-                        </div>
-        
-                        <div fxFlex>
+        </div>
+        <mat-tab-group>
+            <mat-tab label="Profil">
+                <div fxLayout="column">
+                    <!--profile-->
+                    <div fxFlex>
+                        <fieldset>
+                            <legend>Kayıt Bilgileri</legend>
                             <div>
-                                <h6 class="cardSectionHeader">Expertise(Therapist araması bu alandaki bilgilere göre yapılır!)
-                                </h6>
-                            </div>
-        
-                            <div>
-                                <mat-form-field fxFlex appearance="fill">
-                                    <mat-select [(ngModel)]="expertiseT" multiple>
-                                        <mat-option *ngFor="let help of askHelp$ | async" [value]="help.value">
-                                            {{help.name}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div fxFlex>
-                            <mat-form-field fxFlex appearance="fill">
-                                <mat-label>Uzmanlık(uzaman olduğunuz alanları sırasıyla satır başı yaparak giriniz)</mat-label>
-                                <textarea class="textArea" matInput [(ngModel)]="uzmanlik"
-                                    placeholder="Uzmanlık Alanları">
-        
-                                </textarea>
-                            </mat-form-field>
-        
-                        </div>
-                        <div fxFlex>
-                            <!--eğitim sertifikalar-->
-                            <mat-form-field fxFlex appearance="fill">
-                                <mat-label>Eğitim ve Sertifikalar(Eğitim ve sertifikalarınızı sırasıyla satır başı yaparak
-                                    giriniz)</mat-label>
-                                <textarea class="textArea" matInput [(ngModel)]="education"
-                                    placeholder="eğitim ve sertifikalar...">
-        
-                                </textarea>
-                            </mat-form-field>
-                        </div>
-        
-                        <div fxFlex>
-                            <div fxLayout="row" fxLayoutAlign="end">
-                                <div fxFlex id="therapistMessage"></div>
-                                <div fxFlex="0 1 auto">
-                                    <button (click)="updateTherapist()" mat-stroked-button>Kaydet</button>
+                                <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px">
+
+                                    <mat-form-field fxFlex appearance="fill">
+                                        <mat-label>Display Name</mat-label>
+                                        <input [(ngModel)]="displayName" matInput>
+                                    </mat-form-field>
+
+
+                                    <mat-form-field fxFlex style="width: 100px;">
+                                        <mat-label>Cinsiyet</mat-label>
+                                        <mat-select [(ngModel)]="userGender">
+                                            <mat-option value="Bay">Bay</mat-option>
+                                            <mat-option value="Bayan">Bayan</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
                                 </div>
                             </div>
-                        </div>
+                            <div>
+                                <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
+                                    <div *ngIf="alert" fxFlex fxFlexAlign="start">
+                                        <span style="color: darkgreen;">Güncelleme Yapıldı!</span>
+                                    </div>
+                                    <div fxFlex="0 1 auto">
+                                        <button (click)="updateUser()" mat-stroked-button>Güncelle</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
                     </div>
-                </fieldset>
-        
-            </div>
-        </div>
+                    <div fxFlex *ngIf="user?.type==='therapist'">
+                        <fieldset>
+                            <legend>Therapist Bilgileri</legend>
+                            <div fxLayout="column" fxLayoutGap="10px">
+                                <div fxFlex>
+                                    <mat-form-field fxFlex appearance="fill">
+                                        <mat-label>Mesleki Özet</mat-label>
+                                        <textarea class="textArea" matInput [(ngModel)]="meslekOzet"
+                                            placeholder="mesleki özgeçmiş...">
+
+                                    </textarea>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex>
+                                    <div>
+                                        <h6 class="cardSectionHeader">Expertise(Therapist araması bu alandaki bilgilere
+                                            göre
+                                            yapılır!)
+                                        </h6>
+                                    </div>
+
+                                    <div>
+                                        <mat-form-field fxFlex appearance="fill">
+                                            <mat-select [(ngModel)]="expertiseT" multiple>
+                                                <mat-option *ngFor="let help of askHelp$ | async" [value]="help.value">
+                                                    {{help.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex>
+                                    <mat-form-field fxFlex appearance="fill">
+                                        <mat-label>Uzmanlık(uzaman olduğunuz alanları sırasıyla satır başı yaparak
+                                            giriniz)
+                                        </mat-label>
+                                        <textarea class="textArea" matInput [(ngModel)]="uzmanlik"
+                                            placeholder="Uzmanlık Alanları">
+
+                                    </textarea>
+                                    </mat-form-field>
+
+                                </div>
+                                <div fxFlex>
+                                    <!--eğitim sertifikalar-->
+                                    <mat-form-field fxFlex appearance="fill">
+                                        <mat-label>Eğitim ve Sertifikalar(Eğitim ve sertifikalarınızı sırasıyla satır
+                                            başı
+                                            yaparak
+                                            giriniz)</mat-label>
+                                        <textarea class="textArea" matInput [(ngModel)]="education"
+                                            placeholder="eğitim ve sertifikalar...">
+
+                                    </textarea>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex>
+                                    <div fxLayout="row" fxLayoutAlign="end">
+                                        <div fxFlex id="therapistMessage"></div>
+                                        <div fxFlex="0 1 auto">
+                                            <button (click)="updateTherapist()" mat-stroked-button>Kaydet</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="user?.type==='therapist'" label="Çalışma Saati">
+               <app-appointment-regulation></app-appointment-regulation>
+            </mat-tab>
+        </mat-tab-group>
+
+
+
     </mat-card>
 </div>

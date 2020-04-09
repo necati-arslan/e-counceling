@@ -6,12 +6,12 @@
 html, body {
     height: 100%;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: rgb(246, 246, 248);
+    background-color: #F9F9FE;
 }
 
 body{ 
     margin: 0;
-    background-color: rgb(246, 246, 248);
+    background-color: #F9F9FE;
     
 }
 

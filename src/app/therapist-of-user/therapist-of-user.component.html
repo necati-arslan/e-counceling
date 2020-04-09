@@ -1,6 +1,6 @@
 <div class="container">
-    <app-therapist-card *ngFor="let therapistSend of therapist" [therapist]="therapistSend"  style="margin-bottom: 3px;"></app-therapist-card>
-      
+    <app-therapist-card *ngFor="let therapistSend of therapist" [therapist]="therapistSend" [userAuth]="user"  style="margin-bottom: 3px;"></app-therapist-card>
+       
     <mat-form-field> 
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtre">
     </mat-form-field>

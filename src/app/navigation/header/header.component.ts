@@ -67,7 +67,7 @@ export class HeaderComponent implements OnInit {
   }
 
   startCounceling() {
-
+ 
     const dialogRef = this.dialog.open(LoginComponent)
       .afterClosed()
       .subscribe(result => {

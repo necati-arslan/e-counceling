@@ -19,6 +19,7 @@ import { QuestionTemplateComponent } from './question-template/question-template
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { ProfileEditComponent } from './profile-edit/profile-edit.component';
 import { UserForAdminPanelComponent } from './user-for-admin-panel/user-for-admin-panel.component';
+import { AppointmentTableComponent } from './appointment-table/appointment-table.component';
 
  
 const routes: Routes = [
@@ -36,8 +37,9 @@ const routes: Routes = [
   { path: 't-dashboard', component: TDashboardComponent,canActivate:[TGuard] },
   { path: 'video', component: VideoAudioComponent },
   { path: 'adminPanelToUser', component: AdminPanelComponent },
-  { path: 'profile-edit', component:ProfileEditComponent }
-
+  { path: 'profile-edit', component:ProfileEditComponent },
+  {path:'appointmentTable',component:AppointmentTableComponent}
+ 
    
 
 

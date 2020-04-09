@@ -37,11 +37,15 @@
 }
 
 .callBar{
-    width:100%;
+    width:200px;
     background-color: rgba(0, 0, 0, 0.5);;
     z-index: 3;
     position: absolute;
     bottom: -90px;
+    left: 50%;
+    -webkit-transform: translate(-50%);
+            transform: translate(-50%);
+    -webkit-transition: 0.3s;
     transition: 0.3s;
     padding: 5px;
     padding-left: 10px;

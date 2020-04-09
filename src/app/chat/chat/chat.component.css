@@ -47,17 +47,22 @@
 }
 
 .chatMessageMain{
+  display: -webkit-box;
   display: flex;
   width: 100%;
-  justify-content: flex-start;
+  -webkit-box-pack: start;
+          justify-content: flex-start;
 }
 .chatMessageMainEnd{
+  display: -webkit-box;
   display: flex;
   width: 100%;
-  justify-content: flex-end;
+  -webkit-box-pack: end;
+          justify-content: flex-end;
 }
 
 .chatMessage{
+  display: -webkit-box;
   display: flex;
   background: #fff;
   position: relative;

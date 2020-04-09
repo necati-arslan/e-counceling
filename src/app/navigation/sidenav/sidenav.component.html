@@ -21,8 +21,8 @@
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Danışanlar</span>
     </a>
     <a mat-list-item *ngIf="userAuth?.type==='therapist'" routerLink="/questiontotherapist">
-        <mat-icon *ngIf="countQuestion>0" [matBadge]="countQuestion" matBadgeColor="warn">home</mat-icon>
-        <mat-icon *ngIf="countQuestion===0">home</mat-icon>
+        <mat-icon  *ngIf="countQuestion>0" [matBadge]="countQuestion" matBadgeColor="warn">mail</mat-icon>
+        <mat-icon *ngIf="countQuestion===0">mail</mat-icon>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">&nbsp;&nbsp;Gelen Sorular</span>
     </a>
     <!--matching-->
@@ -32,8 +32,8 @@
     </mat-list-item>
     <!--matching-->
     <a mat-list-item *ngIf="userAuth?.type==='user'" routerLink="/questiontotherapist">
-        <mat-icon style="margin-right: 10px;" *ngIf="countQuestion>0" [matBadge]="countQuestion" matBadgeColor="warn">
-            home</mat-icon> 
+        <mat-icon style="margin-right: 10px;" style="margin-right: 10px;" *ngIf="countQuestion>0" [matBadge]="countQuestion" matBadgeColor="warn">
+            mail</mat-icon> 
         <mat-icon *ngIf="countQuestion===0">mail</mat-icon>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Sorularınız</span>
     </a>
@@ -53,14 +53,17 @@
         </a>
     </div>
     <!--therapist-->
+    <mat-list-item routerLink="/appointmentTable" *ngIf="userAuth?.uid">
+        <mat-icon style="margin-right: 10px;" *ngIf="countAppointment>0" [matBadge]="countAppointment" matBadgeColor="warn">mail</mat-icon>
+        <mat-icon *ngIf="countAppointment===0">mail</mat-icon>
+        <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Randevu</span>
+    </mat-list-item>
+
     <a mat-list-item routerLink="/how" (click)="onClose()">
         <mat-icon>account_circle</mat-icon>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Nasıl Çalışır</span>
     </a>
-    <a mat-list-item routerLink="/blog" (click)="onClose()">
-        <mat-icon>account_circle</mat-icon>
-        <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Blog</span>
-    </a>
+   
     <a mat-list-item routerLink="/about-us" (click)="onClose()">
         <mat-icon>account_circle</mat-icon>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Hakkımızda</span>

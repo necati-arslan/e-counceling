@@ -66,6 +66,7 @@ export class MatchFormComponent implements OnInit {
     askHelp = this.matchingForm.value.askHelp;
     console.log(askHelp);
     therapists = await this.roomService.getTherapist().toPromise();//mutlaka promise olmalı
+   
  
     //create score fieald each item
     therapists.forEach((therapist) => {

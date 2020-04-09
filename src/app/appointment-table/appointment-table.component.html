@@ -1,0 +1,54 @@
+
+<div class="container">
+    <mat-card>
+        <h5 class="cardSectionHeader">Randevular:</h5>
+        <div *ngIf="countAppointment===0" fxLayout=row fxLayoutAlign="start center">
+            <div fxFlex="0 1 50%" fxFlex.lt-sm="100%" class="warningMain">
+                <span style="text-align: left;">Herhangi bir randevunuz bulunmamaktadır. </span>
+            </div>
+        </div> 
+        <div *ngIf="countAppointment>0">
+            <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtre">
+            </mat-form-field>
+        </div>
+        <table [hidden]="countAppointment===0" mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="no">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
+            </ng-container>
+            <ng-container matColumnDef="timeStamp">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span>Randevu Tarihi</span>
+                </th>
+                <td mat-cell *matCellDef="let element">  {{element?.timeStamp | date:'dd/MM/yyyy H:mm'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="user">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span *ngIf="userType==='user'">Terapist</span>
+                    <span *ngIf="userType==='therapist'">Danışan</span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <span *ngIf="element.displayName;else email">{{element?.displayName}}</span> 
+                    <ng-template #email></ng-template>    
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="seansType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Görüşme Türü</th>
+                <td mat-cell *matCellDef="let element"> {{element?.seansType}} </td>
+            </ng-container>
+            <ng-container matColumnDef="timeRange">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Görüşme Süresi</th>
+                <td mat-cell *matCellDef="let element"> {{element?.timeRange}} </td>
+            </ng-container>
+
+          
+           
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row class="row-link" 
+                *matRowDef="let row; columns: displayedColumns;"></tr>
+            <mat-paginator itemsPerPageLabel="xx" [pageSizeOptions]="[50, 100, 150, 200]"></mat-paginator>
+        </table>    
+        
+    </mat-card>
+</div>

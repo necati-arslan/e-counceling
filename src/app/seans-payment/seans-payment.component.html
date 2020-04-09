@@ -8,7 +8,8 @@
     </div>
 </div>
 <div *ngIf="isPassiveVideo" style="margin: 2px;padding-left: 10px;">
-        <span style="color: rgb(128, 126, 126);font-size: 12px;text-align: justify;">!Therapist şuan online değildir. Video ve sesli görüşme yapılamaz. İsterseniz randevu alabilirsiniz!</span>
+    <span style="color: rgb(128, 126, 126);font-size: 12px;text-align: justify;">!Therapist şuan online değildir. Video
+        ve sesli görüşme yapılamaz. İsterseniz randevu alabilirsiniz!</span>
 </div>
 <div class="allcontent">
     <mat-card>
@@ -20,7 +21,8 @@
                     <div class="step1" fxLayout="column">
                         <div class="section" fxFlex>
                             <div [ngClass]="{'color_change':seansType==='video'}" fxLayout="row">
-                                <mat-radio-button [disabled]="isPassiveVideo" value="video" class="example-radio-button">
+                                <mat-radio-button [disabled]="isPassiveVideo" value="video"
+                                    class="example-radio-button">
                                     <div fxFlex>
                                         <div class="type">
                                             <i style="font-size: 30px;" class="material-icons">
@@ -43,7 +45,8 @@
                         </div>
                         <div class="section" fxFlex>
                             <div [ngClass]="{'color_change':seansType==='audio'}" fxLayout="row">
-                                <mat-radio-button [disabled]="isPassiveVideo" class="example-radio-button" value="audio">
+                                <mat-radio-button [disabled]="isPassiveVideo" class="example-radio-button"
+                                    value="audio">
                                     <div fxFlex>
                                         <div class="type">
                                             <i style="font-size: 30px;" class="material-icons">
@@ -110,9 +113,7 @@
                             </div>
                         </div>
                     </div>
-                    <div>
-                        {{seansType}}
-                    </div>
+
 
                 </mat-radio-group>
 
@@ -120,6 +121,66 @@
                     <button class="banner-button" mat-button matStepperNext>Devam</button>
                 </div>
 
+
+            </mat-step>
+            <mat-step *ngIf="isAppointment" [stepControl]="appointmentForm">
+                <form [formGroup]="appointmentForm">
+                    <ng-template matStepLabel>Randevu</ng-template>
+
+                    <div fxLayout="column">
+                        <div fxFlex>
+                            <div fxLayout.gt-xs="row" fxLayoutGap.gt-xs="10px">
+                                <div fxFlex>
+                                    <mat-form-field>
+                                        <mat-label>Randevu Tarihini seçiniz</mat-label>
+                                        <input matInput formControlName="appointmentDate" [min]="minDate"
+                                            [max]="maxDate" [matDatepicker]="picker"
+                                            (dateChange)="appointmentAddEventDatepicker('change', $event)">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                        <mat-error *ngIf="appointmentForm.get('appointmentDate').hasError('required')">
+                                            Tarih
+                                            kısmı
+                                            boş brıaklımaz!
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex>
+                                    <mat-form-field style="width:200px;">
+                                        <mat-label>Randevu saatini seçiniz.</mat-label>
+                                        <mat-select formControlName="appointmentHour">
+                                            <mat-option *ngFor="let hour of (AppointmentHours$ | async)"
+                                                [value]="hour">
+                                                {{hour.timeRange}}
+                                            </mat-option>
+                                        </mat-select>
+
+                                    </mat-form-field>
+                                    <div style="margin: 0px;color: red;">
+                                        <ng-container *ngIf="(AppointmentHours$ | async) as hours;else none">
+                                        </ng-container>
+                                        <ng-template #none><span *ngIf="waitOneSecond">Bu tarihte, uygun bir randevu
+                                                saati bulunmamaktadır.</span></ng-template>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div fxFlex >
+                            <!-- <button [disabled]="appointmentForm.invalid" mat-raised-button>
+                                Randevu Al
+                            </button> -->
+
+                            <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;">
+                                <button mat-button matStepperPrevious>Back</button>
+                                <button class="banner-button" mat-button matStepperNext>Devam</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </form>
 
             </mat-step>
             <mat-step *ngIf="seansType==='message'" [stepControl]="messageForm">
@@ -167,7 +228,8 @@
                         <div fxFlex="80%" fxLayoutGap="10px">
                             <div fxLayout="column">
                                 <div fxFlex>
-                                    <div *ngIf="!matching" fxLayout="row" ><!--matching if-->
+                                    <div *ngIf="!matching" fxLayout="row">
+                                        <!--matching if-->
                                         <fieldset fxFlexFill>
                                             <legend> Kendiniz hakkında bilgi giriniz(İsteğe bağlı);</legend>
                                             <div fxLayout="row" fxLayoutAlign="center center">
@@ -175,7 +237,7 @@
                                                     fxLayoutGap="10px">
 
                                                     <mat-form-field fxFlex.gt-xs="50%" fxFlex.lt-sm="100%">
-                                                        <input  [(ngModel)]="displayName" matInput
+                                                        <input [(ngModel)]="displayName" matInput
                                                             placeholder="Kulanıcı İsmi">
                                                     </mat-form-field>
 
@@ -194,10 +256,10 @@
                                     </div>
                                 </div>
                                 <div fxFlex>
-                                    <div  style="width: 100%;text-align:center;margin: 15px;">
+                                    <div style="width: 100%;text-align:center;margin: 15px;">
                                         <span>Görüşme öncesi ön bilgi verebilirsiniz.(İsteğe bağlıdır.) </span>
                                     </div>
-                                    <mat-form-field style="width: 100%;" >
+                                    <mat-form-field style="width: 100%;">
                                         <textarea matInput [(ngModel)]="bilgi"
                                             placeholder="Ön bilgilendirme"></textarea>
                                     </mat-form-field>
@@ -292,7 +354,7 @@
 
                     </div>
                 </div>
-                <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;"> 
+                <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;">
                     <button mat-button matStepperPrevious>Back</button>
                     <button mat-button (click)="stepper.reset()">Reset</button>
                     <button class="banner-button" (click)="onSubmitPayment()" mat-button matStepperNext>Öde</button>

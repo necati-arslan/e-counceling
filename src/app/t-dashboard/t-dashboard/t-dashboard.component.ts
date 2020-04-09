@@ -29,7 +29,7 @@ export class TDashboardComponent implements OnInit {
 
     this.authService.user$.subscribe((user: any) => {
       this.user = user;
-      this.lastSeans$ = this.roomService.getLastSeans(user.type, user.uid, user)
+      this.lastSeans$ = this.roomService.getLastSeans(user.type, user.uid)
 
       this.roomService.getTotalSeans(this.user.uid).subscribe(
         (totalSeans: any) => {

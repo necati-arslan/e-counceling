@@ -1,0 +1,105 @@
+<div fxLayout="column">
+    <div fxFlex>
+        <form [formGroup]="workingTimeForm" (ngSubmit)="submitWorkingTime(ngworkingTimeForm)"
+            #ngworkingTimeForm="ngForm">
+            <div>
+                <mat-form-field >
+                    <mat-label>Tarih Seçiniz</mat-label>
+                    <input matInput formControlName="workingDate" [min]="minDate" [max]="maxDate"
+                        [matDatepicker]="picker" (dateChange)="addEventDatepicker('change', $event)">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="workingTimeForm.get('workingDate').hasError('required')">Çalışma
+                        Tarihi
+                        boş brıaklımaz!
+                    </mat-error>
+                    <mat-error *ngIf="workingTimeForm.get('workingDate').hasError('dateValidator')">
+                        Yanlış formatta tarih girdiniz
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div>
+                <div fxLayout="column" fxLayoutGap="5px">
+                    <div fxFlex>
+                        <mat-form-field style="width: 300px;">
+                            <mat-label>Randevu almak istediğiniz saatleri seçiniz</mat-label>
+                            <mat-select formControlName="workingHours" multiple>
+                                <mat-option *ngFor="let hour of hours" [value]="hour">
+                                    {{hour}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex>
+                        <mat-radio-group formControlName="shortWayHours" class="example-radio-group"
+                            (change)="checkShortWayWorkTime($event)">
+                            <mat-radio-button class="example-radio-button" value="allDay">
+                                Tüm Gün
+                            </mat-radio-button>
+                            <mat-radio-button class="example-radio-button" value="8-17">
+                                08:00-17:00 saatleri
+                            </mat-radio-button>
+                            <mat-radio-button class="example-radio-button" value="17-22">
+                                17:00-22:00 saatleri
+                            </mat-radio-button>
+                            <mat-radio-button class="example-radio-button" value="reset">
+                                Sıfırla
+                            </mat-radio-button>
+                            <mat-radio-button class="example-radio-button" value="randevuAlma">
+                                Randevu Alma
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <button type="submit" [disabled]="workingTimeForm.invalid" mat-raised-button
+                color="primary">
+                Ayarla
+            </button>
+            <div style="margin: 5px;color: red;">
+                <span id="workingMessage"></span>
+            </div>
+        </form>
+
+
+
+
+    </div>
+    <div fxFlex>
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Randevu Almak İçin Müsait Olduğunuz Tarih ve Saatler:</mat-card-title>
+            </mat-card-header>
+            <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtre">
+            </mat-form-field>
+            <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="no">
+                    <th mat-header-cell *matHeaderCellDef> No. </th>
+                    <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="workingDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span>Tarih</span>
+                    </th>
+                    <td mat-cell *matCellDef="let element">  {{element?.workingDate}} </td>
+                </ng-container>
+                <ng-container matColumnDef="workingHours">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Saatler</th>
+                    <td mat-cell *matCellDef="let element"> {{element?.timeRange}} </td>
+                </ng-container>
+              
+               
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row class="row-link" 
+                    *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </mat-card>
+    </div>
+
+</div>
+ 

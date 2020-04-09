@@ -56,11 +56,13 @@ export class UserForAdminPanelComponent implements OnInit {
     if(this.userType) obj.type=this.userType;
     console.log(obj);
     this.roomService.updateUserAllInfo(this.userId,obj).then(()=>{
+      console.log('yyyyy')
+      this.roomService.createDeleteTherapist(this.userId,obj)
       this.userTypeFire=obj.type
       this.alert=true;
       console.log("kayıt yapıldı")
     })
-    
+     
 
   }
 
