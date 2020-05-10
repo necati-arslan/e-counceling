@@ -2,8 +2,11 @@
     <div fxLayout="column" class="card">
         <div fxFlex="0 1 auto" class="header">
             <div fxLayout="row wrap">
-                <div fxFlex="0 1 auto">
-                    <img class="imgHeader" [src]="data?.row?.photoURL" alt="">
+                <div fxFlex="0 1 auto"> 
+                    <img class="imgHeader" *ngIf="data?.allMessage" [src]="data?.row?.photoURL" alt="">
+                    <img class="imgHeader" *ngIf="data?.usertype==='user' && !data?.allMessage" [src]="data?.row?.therapistPhotoURL" alt="">
+                    <img class="imgHeader" *ngIf="data?.usertype==='therapist' && !data?.allMessage " [src]="data?.row?.userPhotoURL" alt="">
+
                 </div>
                 <div class="headerText" *ngIf="data?.usertype==='therapist'" style="padding-left: 5px;"
                     fxFlex="0 1 auto" fxFlexAlign="center">

@@ -5,7 +5,7 @@
         <div *ngIf="countAppointment===0" fxLayout=row fxLayoutAlign="start center">
             <div fxFlex="0 1 50%" fxFlex.lt-sm="100%" class="warningMain">
                 <span style="text-align: left;">Herhangi bir randevunuz bulunmamaktadır. </span>
-            </div>
+            </div> 
         </div> 
         <div *ngIf="countAppointment>0">
             <mat-form-field>
@@ -35,7 +35,7 @@
             </ng-container>
             <ng-container matColumnDef="seansType">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Görüşme Türü</th>
-                <td mat-cell *matCellDef="let element"> {{element?.seansType}} </td>
+                <td mat-cell *matCellDef="let element"> {{element?.seansType?.name}} </td>
             </ng-container>
             <ng-container matColumnDef="timeRange">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Görüşme Süresi</th>

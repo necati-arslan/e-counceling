@@ -1,28 +1,25 @@
-<div fxFlex>
-<app-header   [ngClass]="{'header':(!currentUrl && (isLoggedIn$ | async))}"
-      (sidenavToggle)="sidenav.toggle()"></app-header>
-<mat-sidenav-container [ngClass]="{'container':(!currentUrl && (isLoggedIn$ | async))}" autosize>
-  <mat-sidenav [ngClass]="{'sidenavUser':(isExpanded && !currentUrl && (isLoggedIn$ | async)),
-                            'sidenavnotExpanded':(!currentUrl && (isLoggedIn$ | async) && !isExpanded)}"
-   #sidenav role="navigation"
-   [mode]="mdq || currentUrl  ? 'over' : 'side'" 
-   [opened]="!mdq && (isLoggedIn$ | async) && !currentUrl "
-   (closed)="closeSidenav()"
-   fullscreen><!--sidenavUser sidenav genişlik expand a göre 250-->  
-     
-    <app-sidenav 
-    [mobileQuery]="mdq"
-    [currentUrl]="currentUrl" 
-    (closeSidenav)="sidenavClose($event)"></app-sidenav>
-  </mat-sidenav>
+<div fxFlex> 
+  <app-header [ngClass]="{'header':(!currentUrl && (isLoggedIn$ | async))}" (sidenavToggle)="sidenav.toggle()">
+  </app-header>
+  <mat-sidenav-container [ngClass]="{'container':(!currentUrl && (isLoggedIn$ | async))}" autosize>
+    <mat-sidenav [ngClass]="{'sidenavUser':(isExpanded && !currentUrl && (isLoggedIn$ | async)),
+                            'sidenavnotExpanded':(!currentUrl && (isLoggedIn$ | async) && !isExpanded)}" #sidenav
+      role="navigation" [mode]="mdq || currentUrl  ? 'over' : 'side'"
+      [opened]="!mdq && (isLoggedIn$ | async) && !currentUrl " (closed)="closeSidenav()" fullscreen>
+      <!--sidenavUser sidenav genişlik expand a göre 250-->
 
-  <mat-sidenav-content>
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+      <app-sidenav [mobileQuery]="mdq" [currentUrl]="currentUrl" (closeSidenav)="sidenavClose($event)"></app-sidenav>
+    </mat-sidenav>
+
+    <mat-sidenav-content> 
+      <main>
+       
+        <router-outlet ></router-outlet>
+       
+      </main>
+      <app-footer></app-footer>
+    </mat-sidenav-content>
+  
+  </mat-sidenav-container>
+  
 </div>
-
-
- 

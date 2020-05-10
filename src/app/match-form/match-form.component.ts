@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { FirestoreService } from '../services/firestore.service';
 import { Therapist } from '../models/therapist-model';
-
-import { AngularFirestore } from '@angular/fire/firestore';
-import { ChatService } from '../chat/chat.service';
 import { AuthService } from '../auth/auth.service';
 import { RoomService } from '../services/room.service';
 
@@ -50,7 +45,7 @@ export class MatchFormComponent implements OnInit {
     });
 
     this.askHelp$ = this.roomService.getAskHelp();
-
+ 
 
   }
 
@@ -70,9 +65,12 @@ export class MatchFormComponent implements OnInit {
  
     //create score fieald each item
     therapists.forEach((therapist) => {
-      let intersection = therapist.expertise.filter(element => askHelp.includes(element));
+      if(therapist.expertise){
+        let intersection = therapist.expertise.filter(element => askHelp.includes(element));
       let score = intersection.length * 10;
       therapistOrder.push({ ...therapist, score });
+      }
+      
     });
 
     //sort therapist by score
@@ -84,7 +82,7 @@ export class MatchFormComponent implements OnInit {
 
     this.recommendedTherapist = therapistOrder; 
 
-    console.log(this.recommendedTherapist); 
+    //console.log(this.recommendedTherapist); 
   }
 
   

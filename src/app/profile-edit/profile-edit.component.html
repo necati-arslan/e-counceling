@@ -17,7 +17,7 @@
             <div fxFlex>
                 <mat-divider></mat-divider>
             </div>
-        </div>
+        </div> 
         <mat-tab-group>
             <mat-tab label="Profil">
                 <div fxLayout="column">
@@ -43,6 +43,23 @@
                                     </mat-form-field>
 
                                 </div>
+                            </div>
+                            <div class="image-upload">
+                                    <span>Profil Resmi Yükle:</span>
+                                    <input type="file" (change)="uploadFile($event)">
+        
+                                    <div class="upload-progress" *ngIf="(uploadPercent$ | async) as percentage">
+
+                                        <span style="margin-top: 10px;">Upload Progress:</span>
+                            
+                                        <mat-progress-bar class="progress-bar" mode="determinate" [value]="percentage">
+                            
+                                        </mat-progress-bar>
+                            
+                                        <span>{{percentage / 100 | percent}}</span>
+                            
+                                    </div>
+       
                             </div>
                             <div>
                                 <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
@@ -127,6 +144,31 @@
                         </fieldset>
 
                     </div>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="user?.type==='therapist'" label="Seans Tipleri">
+                <div style="margin-top: 10px;">
+                    <fieldset>
+                        <legend>Kabul etmek istediğiniz seans tiplerini seçiniz</legend>
+                        <div style="margin-top: 5px;">
+                            <div fxLayout="column" fxLayoutGap="10px" >
+                                <div fxFlex>
+                                    <mat-checkbox style="margin-left: 5px;" [(ngModel)]="video">Videolu Görüşme </mat-checkbox>
+                                </div>
+                                <div fxFlex>
+                                    <mat-checkbox style="margin-left: 5px;" [(ngModel)]="audio">Sesli Görüşme </mat-checkbox>
+                                </div>
+                                <div fxFlex>
+                                    <mat-checkbox style="margin-left: 5px;" [(ngModel)]="chat">Chatli Görüşme </mat-checkbox>
+                                </div>
+                                <div fxFlex>
+                                    <button (click)="updateSeansType()" mat-stroked-button>Güncelle</button>
+                                </div> 
+                        
+                               
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
             </mat-tab>
             <mat-tab *ngIf="user?.type==='therapist'" label="Çalışma Saati">

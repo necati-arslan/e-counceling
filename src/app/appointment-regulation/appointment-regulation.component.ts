@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator, MatSort, MatTableDataSource, MatDatepickerInputEvent } from '@angular/material';
 import * as moment from 'moment';
 import { dateValidator } from '../custom validator/date.validator';
+import { UiService } from '../ui-service.service';
 
 @Component({
   selector: 'app-appointment-regulation',
@@ -23,6 +24,8 @@ export class AppointmentRegulationComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  ////
+  
 
   workingTimeForm: FormGroup;
   hours = [
@@ -54,6 +57,7 @@ export class AppointmentRegulationComponent implements OnInit {
   ]
   constructor(private authService: AuthService,
     private roomService: RoomService,
+    private uiService:UiService,
     private _fb: FormBuilder) { }
 
   ngOnInit() {
@@ -61,8 +65,6 @@ export class AppointmentRegulationComponent implements OnInit {
       console.log(user)
       this.user = user;
       this.userId = user.uid;
-   
-
    
 
 
@@ -77,7 +79,13 @@ export class AppointmentRegulationComponent implements OnInit {
       let workingDate = moment().format('DD/MM/YYYY')
       console.log(workingDate)
       this.roomService.getWorkingHours(this.userId, workingDate).subscribe(workingHours =>{
-        this.workingTimeForm.controls['workingHours'].setValue(workingHours)
+        
+        this.workingTimeForm.controls['workingHours'].setValue(workingHours.timeRange)
+        // this.workingTimeForm.controls['video'].setValue(workingHours.video);
+        // this.workingTimeForm.controls['audio'].setValue(workingHours.audio);
+        // this.workingTimeForm.controls['chat'].setValue(workingHours.chat);
+
+
       })
 
       const currentYear = new Date().getFullYear();
@@ -106,9 +114,11 @@ export class AppointmentRegulationComponent implements OnInit {
 
   async submitWorkingTime(ngworkingTimeForm) {
     console.log(this.workingTimeForm.value.workingDate.format('DD/MM/YYYY'));
-    console.log(this.workingTimeForm.value.workingHours)
+    console.log('>>>>>>>>>>',this.workingTimeForm.value)
+
     const workingDate = this.workingTimeForm.value.workingDate.format('DD/MM/YYYY');
     const workingHours = this.workingTimeForm.value.workingHours;
+
     await this.roomService.deleteWorkingTime(this.userId, workingDate)
 
     workingHours.forEach(hour => {
@@ -128,11 +138,9 @@ export class AppointmentRegulationComponent implements OnInit {
       }
       this.roomService.createWorkingTime(data)
     })
-
+ 
     ngworkingTimeForm.resetForm();
-    let str = document.querySelector('#workingMessage')
-    str.innerHTML = "Kayıt Eklendi"
-
+    this.uiService.showSnackbar('Kayıt Başarı ile eklendi','Başarılı',3000);
   }
 
   addEventDatepicker(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -140,7 +148,11 @@ export class AppointmentRegulationComponent implements OnInit {
     if (!this.workingTimeForm.get('workingDate').valid) return;
     let workingDate = this.workingTimeForm.value.workingDate.format('DD/MM/YYYY')
     this.roomService.getWorkingHours(this.userId, workingDate).subscribe(workingHours => {
-      this.workingTimeForm.controls['workingHours'].setValue(workingHours)
+       this.workingTimeForm.controls['workingHours'].setValue(workingHours.timeRange)
+        // this.workingTimeForm.controls['video'].setValue(workingHours.video);
+        // this.workingTimeForm.controls['audio'].setValue(workingHours.audio);
+        // this.workingTimeForm.controls['chat'].setValue(workingHours.chat);
+
     })
 
   }

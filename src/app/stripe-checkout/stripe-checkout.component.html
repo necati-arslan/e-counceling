@@ -1,0 +1,11 @@
+<div class="container">
+    <div style="margin-top: 10px;" fxLayout="column" fxLayoutAlign="space-around center">
+
+        <div style="text-align: center;" class="topHeaderFont" fxFlex>
+            {{message}}
+        </div>
+        <div fxFlex>
+            <mat-spinner *ngIf="waiting"></mat-spinner>
+        </div>
+    </div>
+</div>

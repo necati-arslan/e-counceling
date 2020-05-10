@@ -1,0 +1,170 @@
+<div class="container">
+    <div class="mainDiv">
+        <div style="text-align: center; padding: 5px;" class="topHeaderFont">Ödeme Formu</div>
+        <div fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="center center" fxLayout.lt-sm="column" fxLayoutGap.lt-sm="15px">
+            <div fxFlex fxFlexAlign.gt-xs="start">
+                <div style="text-align:center" fxLayout="column">
+                    <div fxFlex>
+                        <img [src]="therapist?.photoURL" class="therapistPhoto" alt="">
+                    </div>
+                    <div style="margin-top: 10px;margin-bottom: 20px;" class="topHeaderFont" fxFlex>
+                        {{therapist?.displayName}}
+                    </div>
+                    <div fxFlex>
+
+                    </div>
+                    <div class="textFont" fxFlex>
+                        <mat-icon style="margin-right: 3px;vertical-align: bottom;">{{seansType?.icon}}</mat-icon>
+                        {{seansType?.label}}
+                    </div>
+                    <div style="margin-top: 10px;" class="textFont" fxFlex>
+                        Ödenecek Miktar: <strong>{{seansType?.price}} TRY</strong>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex>
+                <form #checkout="ngForm" (ngSubmit)="onSubmit(checkout)" class="checkout">
+
+                    <div fxLayout="column">
+                        <div fxFlex>
+                            <label>Kart İsmi</label>
+                            <div id="cardName" class="StripeElement">
+                                <label>
+                                    <input id="inputCardName" name="cardName" ngModel required class="field"
+                                        placeholder="Card Name" appUpperCase #cardName="ngModel" />
+                                </label>
+                            </div>
+
+                            <div class="error"
+                                *ngIf="cardName.hasError('required') && (cardName.dirty || cardName.touched)">Lütfen
+                                Kard
+                                ismini
+                                doldurunuz!</div>
+                        </div>
+                        <div fxFlex>
+                            <label for="card-cvc">
+                                Kart Numarası
+                            </label>
+                            <div id="card-number" #cardnumber></div>
+                            <div *ngIf="cardNumberError" class="error">{{cardNumberError}}</div>
+                        </div>
+                        <div fxFlex>
+                            <div fxLayout="row" fxLayoutGap="50px">
+                                <div style="width: 200px;" fxFlex="0 1 auto">
+                                    <label for="card-expiry">
+                                        Son Kullanım Tarihi
+                                    </label>
+                                    <div id="card-expiry" #cardexpiry></div>
+                                    <div *ngIf="cardExpiryError" class="error">{{cardExpiryError}}</div>
+                                </div>
+                                <div style="width: 70px;" fxFlex="0 1 auto">
+                                    <label for="card-cvc">
+                                        CVC
+                                    </label>
+                                    <div id="card-cvc" #cardcvc></div>
+                                    <div *ngIf="cardCvcError" class="error">{{cardCvcError}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+ 
+                    <div class="spinnerDiv">
+                        <mat-spinner *ngIf="checkoutButton" [diameter]="40"></mat-spinner>
+                    </div>
+
+                    <button [disabled]="checkoutButton" class="checkoutButton" type="submit">Ödeme Yap</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <form #checkout="ngForm" (ngSubmit)="onSubmit(checkout)" class="checkout">
+
+    <div fxLayout="column">
+        <div fxFlex>
+            <label>Kart İsmi</label>
+            <div id="cardName" class="StripeElement">
+                <label>
+                    <input id="inputCardName" name="cardName" ngModel required class="field" placeholder="Card Name"
+                        appUpperCase #cardName="ngModel" />
+                </label>
+            </div>
+
+            <div class="error" *ngIf="cardName.hasError('required') && (cardName.dirty || cardName.touched)">Lütfen Kard
+                ismini
+                doldurunuz!</div>
+        </div>
+        <div fxFlex>
+
+            <label>Kart Numarası / Son kullanım Tarihi / CVV</label>
+            <div id="card-info" #cardInfo>
+
+            </div>
+            <div id="card-errors" role="alert" *ngIf="error">{{ error }}</div>
+
+        </div>
+        <div fxFlex>
+            <label for="card-cvc">
+                card cvc
+            </label>
+            <div id="card-number" #cardnumber>
+
+            </div>
+        </div>
+        <div fxFlex>
+            <div fxLayout="row">
+                <div fxFlex>
+                    <label for="card-expiry">
+                        card cvc
+                    </label>
+                    <div id="card-expiry" #cardexpiry>
+
+                    </div>
+                </div>
+                <div fxFlex>
+                    <label for="card-cvc">
+                        card cvc
+                    </label>
+                    <div id="card-cvc" #cardcvc>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <button class="checkoutButton" type="submit">Ödeme Yap</button>
+</form> -->

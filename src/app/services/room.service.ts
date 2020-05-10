@@ -65,19 +65,8 @@ export class RoomService {
     let seansId;
 
     await this.creatSeans(roomRef, seansType, bilgi, question).then(seansRef => {
-      console.log('seansRef', seansRef);
+      //console.log('seansRef', seansRef);
       seansId = seansRef.id;
-      console.log('senasRefxxx', seansId);
-
-      if (seansType != "message") {
-        if(isAppointment) return;
-        this.creatLastSeans(therapist, user, roomRef, seansId, seansType);
-        this.creatLogSeans(therapist, user, roomRef, seansId, seansType);
-      } else {
-        this.creatLastMessageSeans(therapist, user, roomRef, seansId, seansType, question);
-        this.creatLogSeans(therapist, user, roomRef, seansId, seansType);
-      }
-
     });
 
     const seansData = {
@@ -97,7 +86,8 @@ export class RoomService {
       messages: [],
       state: "continuing",
       bilgi: bilgi ? bilgi : null,
-      question: question ? question : null
+      question: question ? question : null,
+      payment:false
     };
     return this.afs.collection(`rooms/${roomRef}/seans`).add(data);
   }
@@ -107,29 +97,24 @@ export class RoomService {
     const uidTherapist = therapist.uidtherapist||therapist.uid;
     const uidUser = user.uid;
 
-    const dataTherapist = {
+    const data= {
       roomId: roomId,
       seansId: seansId,
-      type: seansType,
-      createdtime: Date.now(),
+      type: seansType.name,
+      createdAt: Date.now(),
       state: 'continuing',
       userId: uidUser,
-      userdisplayname: user.displayName ? user.displayName : ''
-    }
-    const dataUser = {
-      roomId: roomId,
-      seansId: seansId,
-      type: seansType,
-      createdtime: Date.now(),
-      state: 'continuing',
+      userdisplayname: user.displayName ? user.displayName : '',
       uidtherapist: uidTherapist,
-      therapistname: therapist.displayName
-    }
+      therapistname: therapist.displayName,
+      therapistPhotoURL: therapist.photoURL,
+      usermail: user.email,
+      userPhotoURL: user.photoURL,
+  }
+console.log(data)
 
-
-
-    this.afs.doc(`therapists/${uidTherapist}/lastseans/seansLive`).set(dataTherapist);
-    this.afs.doc(`users/${uidUser}/lastseans/seansLive`).set(dataUser);
+    this.afs.doc(`therapists/${uidTherapist}/lastseans/seansLive`).set(data);
+    this.afs.doc(`users/${uidUser}/lastseans/seansLive`).set(data);
 
   }
 
@@ -177,7 +162,7 @@ export class RoomService {
   checkRoom(uidtherapist, uiduser) {
     return this.afs.collection('rooms', ref => ref.where('uiduser', '==', uiduser)
       .where('uidtherapist', '==', uidtherapist)).snapshotChanges()
-      .pipe(take(1),
+      .pipe(take(1),//take olmazsa promise olamaz
         map(snaps => {
           return snaps.map((snap: any) => {
             return {
@@ -295,7 +280,8 @@ export class RoomService {
   getLastQuestion(userId, userType) {
     if (userType == 'user') userType = 'users';
     if (userType == 'therapist') userType = 'therapists';
-    return this.afs.collection(`${userType}/${userId}/lastquestion`, ref => ref.orderBy('createdtime', "desc")).valueChanges();
+    console.log(userId);
+    return this.afs.collection(`${userType}/${userId}/lastquestion`, ref => ref.orderBy('createdAt', "desc")).valueChanges();
 
   }
   getLastQuestionCountForUser(userId) {
@@ -366,6 +352,7 @@ export class RoomService {
         console.log(users)
         if(!users) return null;
         users.forEach(user => {
+          delete user.createdAt;
           joinKey[user.uid] = user;
         });
         let uid;
@@ -431,13 +418,14 @@ export class RoomService {
   getSeans(roomId): Observable<any[]> {
     return this.afs.collection(`rooms/${roomId}/seans/`, ref => ref.orderBy('createdAt', "desc")).snapshotChanges()
       .pipe(
+        
         map(snaps => {
           return snaps.map((snap: any) => {
             return {
               idSeans: snap.payload.doc.id,
               ...snap.payload.doc.data()
             }
-          })
+          }).filter((snap:any)=>snap.payment==true);
         })
       );
   }
@@ -541,12 +529,14 @@ export class RoomService {
   createDeleteTherapist(userId, obj: any) {
     this.afs.collection('therapists').doc(userId).valueChanges().pipe(take(1))
       .subscribe(therapist => {
+        
         if (therapist) {
           if (obj.type == "user")
             this.afs.doc(`therapists/${userId}/`).delete();
         } else {
           if (obj.type == "therapist")
-            this.afs.doc(`therapists/${userId}/`).set({ uidtherapist: userId });
+           
+            this.afs.doc(`therapists/${userId}/`).set({ uidtherapist: userId,video:true,audio:true,chat:true });
         }
       })
   }
@@ -564,10 +554,22 @@ export class RoomService {
 
   getWorkingHours(userId, workingDate){
     return this.afs.collection('workingTime', ref => ref.where('userId', '==', userId)
-      .where('workingDate', '==', workingDate)).valueChanges().pipe(map(hours=>{
-        return hours.map((hour:any)=>{
+      .where('workingDate', '==', workingDate)).valueChanges().pipe(map((hours:any)=>{
+        let timeRange= hours.map((hour:any)=>{
           return hour.timeRange
-        })
+        });
+
+        return {timeRange};
+
+        // let isHasVideo=hours.find(el=>el.reserved==false)
+        
+        // if (isHasVideo){
+        //   const {video,audio,chat}=isHasVideo;
+        //   return{timeRange,video,audio,chat}
+        // }else{
+        //   return{timeRange,video:true,audio:true,chat:true}
+        // }
+      
       }));
   }
 
@@ -605,9 +607,7 @@ export class RoomService {
     }))
   }
 
-  updateReservedWorkingTimeById(IdWorkingTime,data:any){
-    this.afs.doc(`workingTime/${IdWorkingTime}`).update({...data})
-  }
+
 
   deleteWorkingTime(userId, workingDate) {
     return this.afs.collection('workingTime', ref => ref.where('userId', '==', userId)
@@ -646,16 +646,13 @@ export class RoomService {
 
   }
 
-  createAppointment(obj:any){
-    this.afs.collection('appointment').add({...obj})
-  }
 
   updateAvaible(userId,isAvaible:boolean){
 
     this.afs.collection('avaible').doc(userId).set({userId,isAvaible});
 
   }
-
+ 
   getReservedAppointmentThepapist(userId){
    return this.afs.collection(`appointment`,ref=>ref.where('tId','==',userId)).valueChanges()
    .pipe(map(reservaions=>reservaions[0]?reservaions:null));
@@ -672,7 +669,7 @@ export class RoomService {
     let seansType=appointment.seansType;
     let userId=appointment.userId
 
-    this.auth.getUserById(userId).subscribe(user=>{
+    this.auth.getUserById(userId).pipe(take(1)).subscribe(user=>{
       this.creatLastSeans(therapist,user,roomId,seansId,seansType);
     })
     
@@ -687,6 +684,12 @@ export class RoomService {
     });
 
   }
+  updateTherapistInfoAnyData(userId,data:object) {
+    return this.afs.doc(`therapists/${userId}`).update({
+      ...data
+    });
+
+  }
 
 
   getAllUser() {//check is in auth
@@ -696,7 +699,9 @@ export class RoomService {
     return this.afs.collection('users/', ref => ref.where('type', '==', 'therapist')).valueChanges();
   }
 
-
+  getSeansPrice(){
+    return this.afs.collection('seansPrice').valueChanges().pipe(take(1));
+  }
 
 }
 

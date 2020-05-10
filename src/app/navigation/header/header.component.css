@@ -2,7 +2,7 @@
   background-color:transparent;
   position: fixed;
   top: 0; /* Sets the sticky toolbar to be on top */
-  height: 80px;
+  height: 60px;
   z-index: 2;
   margin: 0;
 
@@ -11,17 +11,17 @@
   background-color:rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0; /* Sets the sticky toolbar to be on top */
-  height: 80px;
+  height: 60px;
   z-index: 1000;
   margin: 0;
- 
+  
 }
 .toolbarUser{ 
   background-color:rgba(0, 0, 0, 0.5);
  position: fixed;
    /* For macOS/iOS Safari */
   top: 0; /* Sets the sticky toolbar to be on top */
-  height: 80px;
+  height: 60px;
   z-index: 1000;
   margin: 0;
   
@@ -44,6 +44,12 @@ a {
     list-style: none;
     padding: 0;
     margin: 0;
+  }
+
+  .toolbarLink{
+    font-weight: 400;
+    line-height: 200%;
+    font-size: 16px;
   }
 
   .toolbarLink::after{
@@ -70,7 +76,23 @@ a {
   font-size: 35px;
 }
 
+.menu{
+  font-weight: 400;
+  line-height: 20px;
+  font-size: 16px;
+}
+
 .menu > ul > li{
-  padding-right: 5px;
+  padding-right: 30px;
   
+}
+
+.userHeader:hover{
+  color:white;
+
+}
+
+.userHeader{
+  margin-bottom: 5px;
+
 }

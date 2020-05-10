@@ -42,5 +42,5 @@ exports.onUserStatusChanged = functions.database.ref('/status/{uid}').onUpdate(
     return userStatusFirestoreRef.set(eventStatus);
   });
 
-  //export {useWildcard} from './uidtherapist-trigger'; 
+  export {resizeThumbnail} from './image-upload'; 
   //export {finishSeans} from './finishSeans';

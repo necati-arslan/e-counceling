@@ -17,6 +17,13 @@ export const ANONYMOUS_USER: UserInfo = {
   type: undefined,
   matching:undefined
 }
+
+interface Status {
+  stateLive: string,
+  seansstate: string,
+  state:string,
+  isAvaible:boolean
+}
  
 
 @Injectable()
@@ -29,10 +36,10 @@ export class AuthService {
 
   userSubject$: Observable<UserInfo> = this.subject.asObservable().pipe(filter(user => !!user));
 
-  isLoggedIn$: Observable<boolean> = this.userSubject$.pipe(map(user => !!user.uid));
+  isLoggedIn$: Observable<boolean> = this.userSubject$.pipe(map(user => !!user.uid));//çift ünlem boolen yapar.
 
   isLoggedOut$: Observable<boolean> = this.isLoggedIn$.pipe(map(isLoggedIn => !isLoggedIn));
-
+ 
   constructor(
     private afauth: AngularFireAuth,
     private router: Router,
@@ -42,16 +49,16 @@ export class AuthService {
 
   ) {
 
-    this.user$ = this.afauth.authState.pipe(
-      switchMap(user => {
-        console.log(user);
-        if (user) {
-          return this.afs.doc<any>(`users/${user.uid}`).valueChanges().pipe(take(1));
-        } else {
-          return of(null);
-        }
-      }));
-
+    // this.user$ = this.afauth.authState.pipe(
+    //   switchMap(user => {
+    //     console.log(user);
+    //     if (user) {
+    //       return this.afs.doc<any>(`users/${user.uid}`).valueChanges().pipe(take(1));
+    //     } else {
+    //       return of(null);
+    //     }
+    //   }));
+ 
       this.afauth.authState.pipe(
         switchMap(user => {
           console.log(user);
@@ -80,7 +87,19 @@ export class AuthService {
     return this.afs.doc(`users/${userId}`).valueChanges().toPromise();
   }
 
-
+  getAvaibleTherapist(uid) { 
+    return this.getStatus(uid).pipe(
+      map((status: Status) => {
+      console.log('>>>>>>>>>>',uid,status)
+        if(!status){return {status: 'offline'} }
+        if (status.stateLive == 'offline') { return { status: 'offline'}; };
+        if(status.isAvaible==false ) return { status: 'busy'};
+        if ((status.stateLive == "online" || status.stateLive == "away") && status.state == "finished") return { status: 'online'};
+        if ( status.state == "continuing" && (status.stateLive == "online" || status.stateLive == "away")) return { status: 'busy' };
+        if ( !status.state && (status.stateLive == "online" || status.stateLive == "away")) return { status: 'online' };
+        
+      }));
+  }
 
 
   getStatus(uid, userType = 'therapist') {//{createdtime: "232323", state: "offline", seansstate: "finished"}
@@ -188,8 +207,8 @@ export class AuthService {
             email: userProvider.email,
             type: 'user',
             matching: false,
-            displayName: userProvider.displayName ? userProvider.displayName : '/assets/userPhoto.png',
-            photoURL: userProvider.photoURL ? userProvider.photoURL : '',
+            displayName: userProvider.displayName ? userProvider.displayName : '',
+            photoURL: userProvider.photoURL ? userProvider.photoURL : '/assets/userPhoto.png',
             gender: '',
             createdAt: Date.now()
           }
@@ -211,7 +230,7 @@ export class AuthService {
       
       })
       .catch(error => {
-        window.alert(error);
+        console.log(error);
       });
   }
 

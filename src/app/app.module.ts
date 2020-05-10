@@ -8,6 +8,7 @@ import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
+import {AngularFireStorageModule} from '@angular/fire/storage';
 
 
 
@@ -28,8 +29,6 @@ import { FirestoreService } from './services/firestore.service';
 import { DashboardUserComponent } from './dashboard-user/dashboard-user.component';
 import { UserComponent } from './presence/user/user.component';
 import { ChatComponent } from './chat/chat/chat.component';
-import { CardNumberDirective } from './directives/card-number.directive';
-import { CardCvvDirective } from './directives/card-cvv.directive';
 import { RoomService } from './services/room.service';
 import { THomeComponent } from './t-dashboard/t-home/t-home.component';
 import { TDashboardComponent } from './t-dashboard/t-dashboard/t-dashboard.component';
@@ -52,6 +51,16 @@ import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/materia
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { AppointmentRegulationComponent } from './appointment-regulation/appointment-regulation.component';
 import { AppointmentTableComponent } from './appointment-table/appointment-table.component';
+import { FooterComponent } from './footer/footer.component';
+import { PageNotFoundComponent } from './page-not-found-component/page-not-found-component.component';
+import { StripeCheckoutComponent } from './stripe-checkout/stripe-checkout.component';
+import { StripeSimpleTestComponent } from './stripe-simple-test/stripe-simple-test.component';
+import { PaymentComponent } from './payment/payment.component';
+//directives
+import { CardNumberDirective } from './directives/card-number.directive';
+import { CardCvvDirective } from './directives/card-cvv.directive';
+import {UpperCaseDirective} from './directives/upperCase.directive';
+
 
 
 @NgModule({
@@ -68,6 +77,7 @@ import { AppointmentTableComponent } from './appointment-table/appointment-table
     ChatComponent,
     CardNumberDirective,
     CardCvvDirective,
+    UpperCaseDirective,
     THomeComponent,
     TDashboardComponent,
     TherapistOfUserComponent,
@@ -87,6 +97,11 @@ import { AppointmentTableComponent } from './appointment-table/appointment-table
     EmailPipe,
     AppointmentRegulationComponent,
     AppointmentTableComponent,
+    FooterComponent,
+    PageNotFoundComponent,
+    StripeCheckoutComponent,
+    StripeSimpleTestComponent,
+    PaymentComponent,
     
     
   ],
@@ -103,6 +118,7 @@ import { AppointmentTableComponent } from './appointment-table/appointment-table
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireDatabaseModule,
+    AngularFireStorageModule
      
   ],
   providers: [AuthService, FirestoreService,RoomService,

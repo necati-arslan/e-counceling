@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "psychoapp-durmaz",
+  "private_key_id": "c49edcba3a14a68d0b50a84ca37b88e6e0c242b7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCcxvUpmgGuu0DJ\nkM6RcIcwy7Vve3Nd4Wp3En3dEvWClvXBqwW4fHpOdcovX1EiXcVaOlaOLk1so8VK\nJb54r01Ma89TSADIhHQDTZvlFw14VlhDzh/iRPtsW9F6bnJhOos6p13Jlz5qNRrW\n2Pqn2ynxdPUWJWU9qJTG4X4EaV284MMzUlcx6sy8NG1tcF021WCvvWjshKaFi31M\n30XpFdNhWRxyzoIo8CGZgDWz2h67TQQtvJFcBTENKAQThv07/S3H/zIaPD8rW/9r\nuN8exzj/JmnMKD1xwTxzlPrtLOebL/qyiHiWqP1yrJf6LUhV97Yd6PQ+qMRrWptB\noOCPAKD3AgMBAAECggEAOApsh1bsRAvecE7JcDaztI8Ux4lu5z+VAYREJnrI9MnG\nhlh+XoBsbdBwGfft9iVjzslsuD034t41vzf3uocbT/Z3sVLbKNIj8CxVThIr9/iR\na4dqYUT8RLMbkbKaQ0QckbZS8aUVI/zgn60HCGpwt0Vx+F0cr+oraF4hYC1T2xhD\no/0bQyP6SWi1MCT6TG6j3eEBTePis8nwMAfH/K6/ZNdXEh4R3UcWu4g/epp0RNhw\n1S2DiarGph3H81DD27KPPD2VwhmodqCu4aXg4EnMr6VSsDGSFlh+NHgwk+bC0dS3\nuVWgsg7Db4CVWw6szSJUxQE6Ezxfg3yr+sofclW2HQKBgQDJvXYJy2+eFCV/SCuj\nKsw+G4B9oQmH9usYITnk0tBV+XQtboqg+szBnRSO/Kza2v2fyBBwqpARZE7H3cKf\nzAJrEwrUsGlxd2dmgzXBtVp68UP12asK5twTRPSZ0H/8+uWet2FI6YuV7/daNQGC\nS7uZZzuHladn/q0BmYhDgJ9ADQKBgQDG8aMSG955FkEX3pi6tYmSV8afrPc5rvil\n+QBhWYNYh23ouQPLM1y367C1lZziDujPnpBsY1ear5SzZ2YT/JU5xz6Cj3Wuftmp\nAbmnvrV2MZMdDJkjAQ/fIV3jfvprYyjz0nylkDHk3xBkPtRt5JvlNSfhZZIJb1ZG\nzXDWI1JgEwKBgQDENvAdqq5PNA0cdRdsRe4M4jbg+cYJZhFWkMp8UsarOErU/VT8\nKbMJBTy/reZ5ntFbnPzQeDRTlhpBruDjB0u61PSN1V9ZKud4/1lDpJ3yQcL11dXU\nbqHSZBj7mZ1CcszuyDFo9y36kUEljbSABCTcmVl/EAGY1k1y5t9vuCQr6QKBgCXH\nKv08V5HM3Q2IUp5Z7MbibjBSKxxEEqmJ0D2sPtnn1cI0p/jFRx0R35uLzp/KzwDm\nDmzWrIMORoGO5/5xn3C6Wi92yJUbN3/1eOjWuSS5o0MH6miQQhBQCMEzkqAj01oB\npXPXHvJkPXubxsEbgVMUNf+CRyoNf2ewiXXQfUsLAoGAJncUqyXxuBJFOu0PRWOP\njDO7LhFgkG3Z8YrkAvxQYhUQNUz8nek37pG3H2MpyKMYrOiRU3aufiLtGPLzGFoa\n/vqttBmQIC3v3heQaXiyX0iT6s0O0WEukbl730X43/c48ZRzH9qg7PjMYjiVo7vZ\nEuZHdZdtJDgskXVdo3fFu80=\n-----END PRIVATE KEY-----\n",
+  "client_email": "ecounceling@psychoapp-durmaz.iam.gserviceaccount.com",
+  "client_id": "109968684356741899247",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ecounceling%40psychoapp-durmaz.iam.gserviceaccount.com"
+}

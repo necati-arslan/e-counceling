@@ -27,7 +27,7 @@ export class TDashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.authService.user$.subscribe((user: any) => {
+    this.authService.userSubject$.subscribe((user: any) => {
       this.user = user;
       this.lastSeans$ = this.roomService.getLastSeans(user.type, user.uid)
 

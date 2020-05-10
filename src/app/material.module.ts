@@ -11,7 +11,6 @@ import {
     MatDialogModule,
     MatTabsModule,
     MatSelectModule,
-    MatSnackBarModule,
     MatListModule,
     MatDividerModule,
     MatTableModule,
@@ -24,7 +23,9 @@ import {
     MatBadgeModule,
     MatDatepickerModule,
     MatDateFormats,
-    MatCheckboxModule   
+    MatCheckboxModule,
+    MatProgressBarModule,
+    MatSnackBarModule   
 
   } from '@angular/material';  
 
@@ -40,7 +41,6 @@ import {
        MatDialogModule,
        MatTabsModule,
        MatSelectModule,
-       MatSnackBarModule,
        MatListModule,
        MatDividerModule,
        MatTableModule,
@@ -53,7 +53,9 @@ import {
        MatBadgeModule,
        MatDatepickerModule,
        MatMomentDateModule, //özel yükleme
-       MatCheckboxModule
+       MatCheckboxModule,
+       MatProgressBarModule,
+       MatSnackBarModule
       ],
    exports:[
     MatButtonModule, 
@@ -66,7 +68,6 @@ import {
     MatDialogModule,
     MatTabsModule,
     MatSelectModule,
-    MatSnackBarModule,
     MatListModule,
     MatDividerModule,
     MatTableModule,
@@ -79,7 +80,10 @@ import {
     MatBadgeModule,
     MatDatepickerModule,
     MatMomentDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressBarModule,
+    MatSnackBarModule
+
    ]
 })
 export class MaterialModule {

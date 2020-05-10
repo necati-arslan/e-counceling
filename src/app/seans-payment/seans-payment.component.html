@@ -1,88 +1,91 @@
+<div class="seansPayment">
+
+
 <div fxLayout="row" class="headerTherapist" fxLayoutAlign="start">
     <div fxFlex="0 1 auto">
         <img class="card-img " *ngIf="data?.therapist?.photoURL" [src]="data?.therapist?.photoURL" alt="">
     </div>
-    <div fxFlex="0 1 auto" fxFlexAlign="center">
-        <span class="card-text"><strong>{{data?.therapist?.displayName}}</strong></span>
-        <span style="color: rgb(128, 126, 126);font-size: 15px;"> &nbsp;/&nbsp; Therapist</span>
+    <div class="textFont" fxFlex="0 1 auto" fxFlexAlign="center">
+        <span style="margin-left: 5px;"><strong>{{data?.therapist?.displayName}}</strong></span>
+        <span> &nbsp;/&nbsp; Therapist</span>
     </div>
 </div>
 <div *ngIf="isPassiveVideo" style="margin: 2px;padding-left: 10px;">
-    <span style="color: rgb(128, 126, 126);font-size: 12px;text-align: justify;">!Therapist şuan online değildir. Video
+    <span class="textFont" style="font-size: 12px;text-align: justify;">!Therapist şuan online değildir. Video
         ve sesli görüşme yapılamaz. İsterseniz randevu alabilirsiniz!</span>
 </div>
-<div class="allcontent">
+<div class="allcontent textFont">
     <mat-card>
         <mat-horizontal-stepper [linear]="true" #stepper>
-            <mat-step>
+            <mat-step >
                 <ng-template matStepLabel>Görüşme Türü</ng-template>
                 <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-                    [(ngModel)]="seansType">
+                    [(ngModel)]="seansType" 
+                    (change)="seansTypeChange()">
+
                     <div class="step1" fxLayout="column">
-                        <div class="section" fxFlex>
-                            <div [ngClass]="{'color_change':seansType==='video'}" fxLayout="row">
-                                <mat-radio-button [disabled]="isPassiveVideo" value="video"
+                        <div *ngIf="therapist?.video" class="section" fxFlex>
+                            <div [ngClass]="{'color_change':seansType===seansPrice?.video}" fxLayout="row">
+                                <mat-radio-button [disabled]="isPassiveVideo" [value]="seansPrice?.video"
                                     class="example-radio-button">
                                     <div fxFlex>
                                         <div class="type">
                                             <i style="font-size: 30px;" class="material-icons">
-                                                contact_phone
+                                                {{seansPrice?.video?.icon}}
                                             </i>
                                             <span style="margin-left: 5px;">
                                                 <strong>Videolu Görüşme</strong>
                                             </span>
                                         </div>
                                         <div class="price">
-                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum quae
-                                            atque
+                                            {{seansPrice?.video?.price}} TL / 45 dakikalık Videolu Görüşme
                                         </div>
                                     </div>
                                 </mat-radio-button>
                             </div>
                         </div>
-                        <div class="section" fxFlex>
+                        <div *ngIf="therapist?.video" class="section" fxFlex>
                             <hr class="card-divider">
                         </div>
-                        <div class="section" fxFlex>
-                            <div [ngClass]="{'color_change':seansType==='audio'}" fxLayout="row">
+                        <div *ngIf="therapist?.audio" class="section" fxFlex>
+                            <div [ngClass]="{'color_change':seansType===seansPrice?.audio}" fxLayout="row">
                                 <mat-radio-button [disabled]="isPassiveVideo" class="example-radio-button"
-                                    value="audio">
+                                    [value]="seansPrice?.audio">
                                     <div fxFlex>
                                         <div class="type">
                                             <i style="font-size: 30px;" class="material-icons">
-                                                mic
+                                                {{seansPrice?.audio?.icon}}
                                             </i>
                                             <span style="margin-left: 5px;">
                                                 <strong>Sesli Görüşme</strong>
                                             </span>
                                         </div>
                                         <div class="price">
-                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum quae
-                                            atque
+                                            {{seansPrice?.audio?.price}} TL / 45 dakikalık Sesli Görüşme
                                         </div>
                                     </div>
                                 </mat-radio-button>
                             </div>
                         </div>
-                        <div class="section" fxFlex>
+                        <div *ngIf="therapist?.audio" class="section" fxFlex>
                             <hr class="card-divider">
                         </div>
 
-                        <div class="section" fxFlex>
-                            <div [ngClass]="{'color_change':seansType==='chat'}" fxLayout="row">
-                                <mat-radio-button [disabled]="isPassiveVideo" class="example-radio-button" value="chat">
+                        <div *ngIf="therapist?.chat" class="section" fxFlex>
+                            <div [ngClass]="{'color_change':seansType===seansPrice?.chat}" fxLayout="row">
+                                <mat-radio-button [disabled]="isPassiveVideo" class="example-radio-button"
+                                    [value]="seansPrice?.chat">
                                     <div fxFlex>
                                         <div class="type">
                                             <i style="font-size: 30px;" class="material-icons">
-                                                sms
+                                                {{seansPrice?.chat?.icon}}
                                             </i>
                                             <span style="margin-left: 5px;">
                                                 <strong>Anlık Mesajlaşma</strong>
                                             </span>
                                         </div>
                                         <div class="price">
-                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum quae
-                                            atque
+                                            {{seansPrice?.chat?.price}} TL / 45 dakikalık Chatli Görüşme
                                         </div>
                                     </div>
                                 </mat-radio-button>
@@ -93,20 +96,19 @@
                             <hr class="card-divider">
                         </div>
                         <div class="section" fxFlex>
-                            <div [ngClass]="{'color_change':seansType==='message'}" fxLayout="row">
-                                <mat-radio-button value="message" class="example-radio-button">
+                            <div [ngClass]="{'color_change':seansType===seansPrice?.message}" fxLayout="row">
+                                <mat-radio-button [value]="seansPrice?.message" class="example-radio-button">
                                     <div fxFlex>
                                         <div class="type">
                                             <i style="font-size: 30px;" class="material-icons">
-                                                message
+                                                {{seansPrice?.message?.icon}}
                                             </i>
                                             <span style="margin-left: 5px;">
                                                 <strong>Soru Sor</strong>
                                             </span>
                                         </div>
                                         <div class="price">
-                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum quae
-                                            atque
+                                            {{seansPrice?.message?.price}} TL / Mesajla Soru Sorma
                                         </div>
                                     </div>
                                 </mat-radio-button>
@@ -123,13 +125,13 @@
 
 
             </mat-step>
-            <mat-step *ngIf="isAppointment" [stepControl]="appointmentForm">
+            <mat-step *ngIf="isAppointment && seansType!==seansPrice?.message " [stepControl]="appointmentForm">
                 <form [formGroup]="appointmentForm">
                     <ng-template matStepLabel>Randevu</ng-template>
 
                     <div fxLayout="column">
                         <div fxFlex>
-                            <div fxLayout.gt-xs="row" fxLayoutGap.gt-xs="10px">
+                            <div fxLayout.gt-xs="row" fxLayoutGap.gt-xs="10px" fxLayout.lt-sm="column" fxLayoutGap.lt-sm="5px">
                                 <div fxFlex>
                                     <mat-form-field>
                                         <mat-label>Randevu Tarihini seçiniz</mat-label>
@@ -149,8 +151,7 @@
                                     <mat-form-field style="width:200px;">
                                         <mat-label>Randevu saatini seçiniz.</mat-label>
                                         <mat-select formControlName="appointmentHour">
-                                            <mat-option *ngFor="let hour of (AppointmentHours$ | async)"
-                                                [value]="hour">
+                                            <mat-option *ngFor="let hour of (AppointmentHours$ | async)" [value]="hour">
                                                 {{hour.timeRange}}
                                             </mat-option>
                                         </mat-select>
@@ -166,13 +167,17 @@
 
                             </div>
                         </div>
-                        <div fxFlex >
+                      
+                        <div>
+
+                        </div>
+                        <div fxFlex>
                             <!-- <button [disabled]="appointmentForm.invalid" mat-raised-button>
                                 Randevu Al
                             </button> -->
 
                             <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;">
-                                <button mat-button matStepperPrevious>Back</button>
+                                <button mat-button matStepperPrevious>Geri</button>
                                 <button class="banner-button" mat-button matStepperNext>Devam</button>
                             </div>
 
@@ -182,9 +187,9 @@
 
                 </form>
 
-            </mat-step>
-            <mat-step *ngIf="seansType==='message'" [stepControl]="messageForm">
-                <form *ngIf="seansType==='message'" [formGroup]="messageForm">
+            </mat-step>          
+            <mat-step *ngIf="seansType===seansPrice?.message" [stepControl]="messageForm">
+                <form *ngIf="seansType===seansPrice?.message" [formGroup]="messageForm">
                     <ng-template matStepLabel>Soru Formu</ng-template>
                     <div fxLayout="row" fxLayoutAlign="center">
                         <div fxFlex="80%" fxLayoutGap="10px">
@@ -213,7 +218,7 @@
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;">
-                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperPrevious>Geri</button>
                         <button class="banner-button" mat-button matStepperNext>Devam</button>
                     </div>
 
@@ -221,8 +226,10 @@
                 </form>
 
             </mat-step>
-            <mat-step *ngIf="(seansType==='video'||seansType==='audio' || seansType==='chat' )">
-                <div *ngIf="(seansType==='video'||seansType==='audio' || seansType==='chat')">
+            <mat-step
+                *ngIf="(seansType===seansPrice?.video||seansType===seansPrice?.audio || seansType===seansPrice?.chat )">
+                <div
+                    *ngIf="(seansType===seansPrice?.video||seansType===seansPrice?.audio || seansType===seansPrice?.chat )">
                     <ng-template matStepLabel>Bilgi Formu</ng-template>
                     <div fxLayout="row" fxLayoutAlign="center">
                         <div fxFlex="80%" fxLayoutGap="10px">
@@ -259,12 +266,12 @@
                                     <div style="width: 100%;text-align:center;margin: 15px;">
                                         <span>Görüşme öncesi ön bilgi verebilirsiniz.(İsteğe bağlıdır.) </span>
                                     </div>
-                                    <mat-form-field style="width: 100%;">
-                                        <textarea matInput [(ngModel)]="bilgi"
+                                    <mat-form-field style="width: 100%;" appearance="fill">
+                                        <textarea class="textAreaShow" matInput [(ngModel)]="bilgi"
                                             placeholder="Ön bilgilendirme"></textarea>
                                     </mat-form-field>
                                 </div>
-                                <div>{{bilgi}}</div>
+                              
                             </div>
                         </div>
                     </div>
@@ -278,88 +285,65 @@
                 <ng-template matStepLabel>Tamamlama</ng-template>
 
                 <div fxLayout="row" fxLayoutAlign="center">
-                    <div fxFlex="80%" fxLayoutGap="10px">
-                        <form fxLayout="column" [formGroup]="paymentForm">
+                    <div fxFlex="1 1 auto" >
+                        <div fxLayout="column">
                             <div fxFlex>
-                                <h3 class="explain">Payment</h3>
+
+                                <fieldset style="padding-bottom: 20px;" fxFlexFill>
+                                    <legend>Kontrol</legend>
+                                    <P>Lütfen Yapmak istediğiniz görüşme türünü tekrar kontrol ediniz.</P>
+                                    <ng-container *ngIf="seansType">
+                                        <div>
+                                            <i style="font-size: 50px;vertical-align: middle;color:#49a010;"
+                                                class="material-icons">
+                                                {{seansType.icon}}
+                                            </i>
+                                            <div class="controlSeansTypeText">
+                                                <div>{{seansType.label}}</div>
+                                                <div><strong>{{seansType.price}} TL </strong> / 45 dakikalık
+                                                    {{seansType.label}} Seçtiniz </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!messageForm.invalid">
+                                        <div style="margin-top: 5px;">
+                                            <mat-form-field fxFlex appearance="fill">
+                                                <mat-label>Sorunuz:</mat-label>
+                                                <textarea disabled class="textAreaShow" matInput [value]="messageForm.value.message"
+                                                    placeholder="sorunuzu yazınız...">
+                                                </textarea>
+                                            </mat-form-field>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container  *ngIf="isAppointment && !appointmentForm.invalid">
+                                        <div style="margin-top: 3px;"><span><strong>Randevunuz:</strong></span></div>
+                                        <div class="controlAppointment" >
+                                            <span><strong>Tarih :</strong> </span>{{appointmentForm.value.appointmentDate.format('DD/MM/YYYY')}}
+                                        </div>
+                                        <div class="controlAppointment">
+                                            <span><strong>Saat :</strong> </span> {{appointmentForm.value.appointmentHour.timeRange }}
+                                        </div>
+                                    </ng-container>
+                                </fieldset>
                             </div>
-                            <mat-form-field fxFlex hintLabel="Should be at least 6 characters long.">
-                                <input type="tel" matInput placeholder="card Number" formControlName="cardNumber"
-                                    appCardNumber>
-                                <mat-error *ngIf="paymentForm.get('cardNumber').hasError('required')">Lütfen
-                                    bir
-                                    kard
-                                    numarası giriniz</mat-error>
-                            </mat-form-field>
-                            <mat-form-field fxFlex hintLabel="Should be at least 6 characters long.">
-                                <input type="text" matInput placeholder="Card Name" formControlName="cardName">
-                                <mat-error>Lütfen kard üzerinde yazılı ismi
-                                    giriniz</mat-error>
-                            </mat-form-field>
+                        </div> 
 
-                            <div fxFlex>
-                                <div fxLayout="row wrap">
-                                    <div fxFlex>
-                                        <mat-form-field>
-                                            <mat-label>expration</mat-label>
-                                            <select matNativeControl required>
-                                                <option value="">Month</option>
-                                                <option value="1">01</option>
-                                                <option value="2">02</option>
-                                                <option value="3">03</option>
-                                                <option value="4">04</option>
-                                                <option value="5">05</option>
-                                                <option value="6">06</option>
-                                                <option value="7">07</option>
-                                                <option value="8">08</option>
-                                                <option value="9">09</option>
-                                                <option value="10">10</option>
-                                                <option value="11">11</option>
-                                                <option value="12">12</option>
-                                            </select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div fxFlex>
-                                        <mat-form-field>
-                                            <mat-label>expration</mat-label>
-                                            <select matNativeControl required>
-                                                <option value="">Year</option>
-                                                <option value="20">2020</option>
-                                                <option value="21">2021</option>
-                                                <option value="22">2022</option>
-                                                <option value="23">2023</option>
-                                                <option value="24">2024</option>
-                                                <option value="25">2025</option>
-                                                <option value="26">2026</option>
-                                                <option value="27">2027</option>
-                                                <option value="28">2028</option>
-                                                <option value="29">2029</option>
-                                                <option value="30">2030</option>
-                                            </select>
-                                        </mat-form-field>
-
-                                    </div>
-                                    <div fxFlex>
-                                        <mat-form-field hintLabel="Should be at least 6 characters long.">
-                                            <input type="text" matInput placeholder="CVV" formControlName="cardCVV"
-                                                appCardCvv>
-                                            <mat-error>Lütfen kard üzerinde yazılı ismi
-                                                giriniz</mat-error>
-                                        </mat-form-field>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </form>
 
                     </div>
                 </div>
-                <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;">
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button (click)="stepper.reset()">Reset</button>
-                    <button class="banner-button" (click)="onSubmitPayment()" mat-button matStepperNext>Öde</button>
+                <div fxLayout="row" fxLayoutAlign="end" style="text-align: right;padding: 10px 35px 0px 10px;">
+                     <mat-spinner  *ngIf="waiting" [diameter]="40"></mat-spinner> 
+                </div> 
+                <div fxLayout="row" fxLayoutAlign="end" style="margin-right: 10px;margin-top: 20px;">
+                    <button mat-button matStepperPrevious>Geri</button>
+                    <button mat-button (click)="stepper.reset()">Sıfırla</button>
+                    <button class="banner-button controlPay" (click)="onSubmitPayment()" mat-button matStepperNext>Ödemeye Geç</button>
+                    
                 </div>
             </mat-step>
         </mat-horizontal-stepper>
     </mat-card>
+</div>
+
+
 </div>

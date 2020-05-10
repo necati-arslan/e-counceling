@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 import { RoomService } from 'src/app/services/room.service';
 import { map, switchMap } from 'rxjs/operators';
 import { VideoAudioService } from 'src/app/video-audio/video-audio.service';
-
+import { UiService } from 'src/app/ui-service.service';
+ 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -42,6 +43,7 @@ export class ChatComponent implements OnInit {
     private route: ActivatedRoute,
     public auth: AuthService,
     private roomService: RoomService,
+    private uiService:UiService,
     private videoService: VideoAudioService
   ) {
 
@@ -168,21 +170,18 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  write() {
-    console.log("otheruser", this.otherUser);
-    console.log("seans", this.seansInfo);
-    console.log("room", this.roomInfo);
-  }
+ 
 
   addSeansNote() {
     this.roomService.addSeansNot(this.roomId, this.seansId, this.seansNote).then(() => {
-      document.querySelector('#seansMessage').innerHTML = "Seans Notunuz Eklendi..."
+      this.uiService.showSnackbar('Seans Notunuz Eklendi...',null,3000);
+     
     })
   }
 
   addRoomNote() {
     this.roomService.addRoomNot(this.roomId, this.roomNote).then(() => {
-      document.querySelector('#roomMessage').innerHTML = "Genel Notunuz Eklendi..."
+      this.uiService.showSnackbar('Genel Notunuz Eklendi...',null,3000);
     })
   }
 
@@ -196,8 +195,7 @@ export class ChatComponent implements OnInit {
 
     this.roomService.updateSeans(this.roomId, this.seansId, data).then(() => {
 
-      let srt = document.querySelector('#finishMessage');
-      srt.innerHTML = "Seans bitirildi";
+      this.uiService.showSnackbar('Sean süresi bitti','Bildirim',3000);
 
     })
     this.roomService.updateLastSeansTherapist(this.userId, this.seansId,data,this.Advisee);

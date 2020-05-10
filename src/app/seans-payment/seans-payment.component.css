@@ -8,13 +8,17 @@
   }
   
   
- 
+  
 }
   
-  
+
+
   .example-radio-group {
+    display: -webkit-box;
     display: flex;
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
     margin: 15px 0;
   }
   
@@ -22,7 +26,9 @@
     margin: 5px;
   }
  
-
+  .price{
+    white-space: normal;
+  }
 
   .color_change{
     color: green;
@@ -50,13 +56,12 @@
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
 .step1 .section .type{
+    display: -webkit-box;
     display: flex;
-    align-items: center;
+    -webkit-box-align: center;
+            align-items: center;
   }
-  .price{
-    color: rgb(128, 126, 126);
-    width: 100%;
-  }
+  
   
   .banner-button{
     background-color: #49a010;
@@ -90,11 +95,24 @@ fieldset{
   margin-top: 15px;
   border: 1px solid rgb(205, 207, 207);
   border-radius: 3px;
+  min-width: auto !important;
+  width: auto !important;
+
 }
 legend{
   color: rgba(163, 163, 163, 0.911);
 }
 
+.controlSeansTypeText{
+  display: inline-block;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.controlAppointment{
+  display: inline;
+  margin-right: 20px;
+}
 
 @media screen and (max-width: 599px) {
  
@@ -102,6 +120,19 @@ legend{
   font-size: 12px!important;
 }
 
+.controlSeansTypeText{
+  margin-left: 0px;
+  margin-top: 3px;
+}
+.controlAppointment{
+  display: block;
+  
+}
+
+.controlPay{
+  font-size: 12px!important;
+  padding: 0px!important;
+}
 }
 
 .headerTherapist{
@@ -109,3 +140,5 @@ legend{
   padding-top: 10px;
   margin-top: 10px;
 }
+
+

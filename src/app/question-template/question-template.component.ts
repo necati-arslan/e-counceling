@@ -16,7 +16,7 @@ export class QuestionTemplateComponent implements OnInit {
   answerState;
   userType;
   allMessage;
-
+ 
   constructor(
     private roomService: RoomService,
     private afs: AngularFirestore,
@@ -25,7 +25,7 @@ export class QuestionTemplateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.data);
+    //console.log(this.data);
     this.allMessage=this.data.allMessage;
     if (this.data.row.answer) {
       this.answer = this.data.row.answer;
@@ -37,7 +37,7 @@ export class QuestionTemplateComponent implements OnInit {
       const readState = true
       const roomId = this.data.row.roomId;
       const seansId = this.data.row.seansId;
-      const uiduser = this.data.row.uiduser
+      const uiduser = this.data.row.userId
       this.roomService.addReadState(roomId, seansId, readState).pipe(
         concatMap(() => this.roomService.getRefLastMessage(seansId, uiduser)),
         concatMap((refId)=>this.roomService.deleteLastMessageUsers(uiduser,refId))
@@ -46,14 +46,15 @@ export class QuestionTemplateComponent implements OnInit {
     }
 
   }
-
+ 
   answerClick() {
     const roomId = this.data.row.roomId;
     const seansId = this.data.row.seansId;
-    const uiduser = this.data.row.uiduser
+    const uiduser = this.data.row.userId
     const uidTherapist = this.data.row.uidtherapist
-    const whichUser = "therapists"
+    const whichUser = "therapists" 
     const answer = this.answer
+    console.log(this.data);
 
     if (this.userType == 'therapist' && !this.allMessage) {
       this.roomService.addAnswer(roomId, seansId, answer).pipe(

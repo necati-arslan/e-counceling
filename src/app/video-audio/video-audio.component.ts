@@ -2,9 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { VideoAudioService } from './video-audio.service';
 import { AuthService } from '../auth/auth.service';
 import { RoomService } from '../services/room.service';
+import { UiService } from '../ui-service.service';
 
 @Component({
-  selector: 'app-video-audio',
+  selector: 'app-video-audio', 
   templateUrl: './video-audio.component.html',
   styleUrls: ['./video-audio.component.css']
 })
@@ -71,8 +72,10 @@ export class VideoAudioComponent implements OnInit {
 
   clientInit() {
     console.log(this.rtc)
+    
 
     if (this.user.type == "therapist") {
+   
       if (!this.seansInfo.startedTime) {
         let data = { startedTime: Date.now() };
         this.roomService.updateSeans(this.roomId, this.seansId, data);

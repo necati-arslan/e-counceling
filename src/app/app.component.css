@@ -12,35 +12,35 @@ mat-sidenav-container{
   .sidenavUser {
     width: 250px;
     position: fixed;
-    top:80px;
+    top:60px;
     bottom: 0px;
     z-index: 1000;
   }
   .sidenavnotExpanded{
     width: auto;
     position: fixed;
-    top:80px;
+    top:60px;
     bottom: 0px;
-    z-index: 1000;
+    z-index: 1000; 
     }
   
   mat-sidenav-content{
-      
       height: 100%;
+      overflow: hidden;
   }
   mat-sidenav-container{
   background-color: rgb(246, 246, 248);
   width: 100%;
   margin: 0;
-  min-height: 1000px;
+  
+  }
+  main{
+    min-height: 570px;
   }
  
 
   .container {
-    position: absolute;
-    top: 80px;
-    left: 0;
-    right: 0;
+   margin-top: 60px;
   }
   .header {
     position: fixed;
@@ -50,10 +50,11 @@ mat-sidenav-container{
     background-color:transparent;
   
   }
+  
 
   .menuButton{
     position: absolute;
-    top: 80px;
+    top: 60px;
     left: 0;
     right: 0;
     

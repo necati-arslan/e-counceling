@@ -5,9 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import { of, Observable } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
- 
+  
 @Component({
   selector: 'app-therapist-of-user',
   templateUrl: './therapist-of-user.component.html',

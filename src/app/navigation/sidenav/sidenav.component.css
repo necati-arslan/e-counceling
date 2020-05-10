@@ -52,3 +52,15 @@
         border-radius: 4px;
         
     }
+
+    .blinkButton{
+        color:#e96632;
+        vertical-align: bottom;
+        animation: blink 2s linear infinite;
+      }
+  
+      @keyframes blink{
+        0%{opacity: 0;}
+        50%{opacity: .5;}
+        100%{opacity: 1;}
+        }

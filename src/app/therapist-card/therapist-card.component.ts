@@ -1,14 +1,13 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
-import { Observable, of, forkJoin, combineLatest, concat, merge, zip } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { RoomService } from '../services/room.service';
-import { switchMap, map, filter, tap, concatMap, catchError } from 'rxjs/operators';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { switchMap, map, filter, tap, concatMap } from 'rxjs/operators';
 import { SeansPaymentComponent } from '../seans-payment/seans-payment.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ProfileTherapistComponent } from '../profile-therapist/profile-therapist.component';
  
-
+ 
 interface Status {
   stateLive: string,
   seansstate: string,
@@ -43,51 +42,17 @@ export class TherapistCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.therapist)
+    //console.log(this.therapist)
     let uidTherapist=this.therapist.uidtherapist
-    this.therapistCard$=this.authService.getUserById(uidTherapist).pipe(
+    this.therapistCard$=this.authService.getUserById(uidTherapist).pipe( 
       filter(user=>!!user),
       switchMap(user=>this.roomService.getTherapistById(uidTherapist,user)),
-      concatMap(therapist=>this.getStatus(uidTherapist,therapist)),
-      tap(x=>console.log(x))
+      concatMap(therapist=>this.getStatus(uidTherapist,therapist))
     )
 
  
   }
- // ngOnChanges(changes: SimpleChanges) {
-    // changes.prop contains the old and the new value...
-    // console.log(changes);
-    // let value = changes.uidTherapist.currentValue;
-    // let uidTherapist;
-    // if (typeof value == 'string') {//for single therapist
-    //   let data = { uidtherapist: value }
-    //   uidTherapist = Array.from(new Set([data]));
-    // } else {
-    //   uidTherapist = value;
-    // } 
-    // //console.log(uidTherapist)
-    // this.therapistCard$ = combineLatest(
-    //   uidTherapist.map((element: any) => {
-    //     //console.log(element.uidtherapist)
-    //     return this.roomService.getTherapistAllInfoById(element.uidtherapist).pipe(
-    //       switchMap((infoTherapist: any) => {
-    //         //console.log(infoTherapist);
-    //         return this.getStatus(element.uidtherapist).pipe(map(status => {
-    //           //console.log(status)
-    //           let dataStatus;
-    //           status ? dataStatus = status : dataStatus = { status: 'offline' };
-    //           return { ...infoTherapist, ...dataStatus };
-    //         }))
-    //       }));
-    //   })).pipe( 
-    //     map(x => {
-    //       return x.filter(Boolean)
-    //     }),
-    //     tap(x => console.log(x))
-    //   );
-
-
- // }
+ 
  
   getStatus(uid,data?:Object) { 
     if(!data) return of(null); 
@@ -107,14 +72,14 @@ export class TherapistCardComponent implements OnInit {
   seansPayment(therapist){
  
     const dialogRef = this.dialog.open(SeansPaymentComponent,{
-    
+  
       panelClass: 'custom-dialog-container',
       data:{therapist,user:this.userAuth,appointment:false}
     }) 
     .afterClosed()
     .subscribe(result=>{
       if (result) {
-        console.log(result);
+        //console.log(result);
         //this.router.navigate(['/dashboard']);
       };
     })
@@ -130,7 +95,7 @@ export class TherapistCardComponent implements OnInit {
     .afterClosed()
     .subscribe(result=>{
       if (result) {
-        console.log(result);
+       // console.log(result);
         //this.router.navigate(['/dashboard']);
       };
     })
@@ -138,7 +103,7 @@ export class TherapistCardComponent implements OnInit {
   }
 
   profileTherapist(therapist){
-    console.log(therapist.uid);
+   // console.log(therapist.uid);
     const dialogRef = this.dialog.open(ProfileTherapistComponent,{
       width:'800px',
       height:'90%',

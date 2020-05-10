@@ -1,0 +1,19 @@
+<form #checkout="ngForm" (ngSubmit)="onSubmit(checkout)" class="checkout">
+
+    <label>Kart İsmi</label>
+    <div id="cardName"  class="StripeElement">
+        <label>
+            <input id="inputCardName" name="cardName" ngModel required class="field" placeholder="Card Name" appUpperCase #cardName="ngModel" />
+        </label> 
+    </div>
+    <div class="error" *ngIf="cardName.hasError('required') && (cardName.dirty || cardName.touched)">Lütfen Kard ismini doldurunuz!</div>
+    <div class="form-row">
+        <label>Kart Numarası / Son kullanım Tarihi / CVV</label>
+        <div id="card-info" #cardInfo>
+
+        </div>
+        <div id="card-errors" role="alert" *ngIf="error">{{ error }}</div>
+    </div>
+
+    <button  class="checkoutButton" type="submit">Ödeme Yap</button>
+</form>

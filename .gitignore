@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+/server/service-accounts
 # Only exists if Bazel was run
 /bazel-out
 
