@@ -10,7 +10,8 @@ import { firestore } from './init';
 
 const { Storage } = require('@google-cloud/storage');
 
-const gcs = new Storage();
+const gcs = new Storage({projectId: 'psychoapp-durmaz',
+keyFilename: './service-account.json'});
 
 
 export const resizeThumbnail = functions.storage.object()

@@ -6,6 +6,7 @@ import { switchMap, map, filter, tap, concatMap } from 'rxjs/operators';
 import { SeansPaymentComponent } from '../seans-payment/seans-payment.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ProfileTherapistComponent } from '../profile-therapist/profile-therapist.component';
+import { UiService } from '../ui-service.service';
  
  
 interface Status {
@@ -35,7 +36,8 @@ export class TherapistCardComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private roomService: RoomService,
-    private dialog:MatDialog
+    private dialog:MatDialog,
+    private uiService:UiService,
   ) {
 
 
@@ -47,8 +49,11 @@ export class TherapistCardComponent implements OnInit {
     this.therapistCard$=this.authService.getUserById(uidTherapist).pipe( 
       filter(user=>!!user),
       switchMap(user=>this.roomService.getTherapistById(uidTherapist,user)),
-      concatMap(therapist=>this.getStatus(uidTherapist,therapist))
+      concatMap(therapist=>this.getStatus(uidTherapist,therapist)),
+      tap(()=>{this.uiService.loadingStateChangedEmit(false);})
     )
+
+    
 
  
   }
@@ -72,7 +77,7 @@ export class TherapistCardComponent implements OnInit {
   seansPayment(therapist){
  
     const dialogRef = this.dialog.open(SeansPaymentComponent,{
-  
+      maxHeight: '95vh',
       panelClass: 'custom-dialog-container',
       data:{therapist,user:this.userAuth,appointment:false}
     }) 
@@ -88,7 +93,7 @@ export class TherapistCardComponent implements OnInit {
   seansPaymentAppointment(therapist){
  
     const dialogRef = this.dialog.open(SeansPaymentComponent,{
-    
+      maxHeight: '95vh',
       panelClass: 'custom-dialog-container',
       data:{therapist,user:this.userAuth,appointment:true}
     }) 

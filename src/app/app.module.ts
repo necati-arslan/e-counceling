@@ -12,6 +12,7 @@ import {AngularFireStorageModule} from '@angular/fire/storage';
 
 
 
+
 import {MaterialModule, MY_FORMATS} from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -118,7 +119,8 @@ import {UpperCaseDirective} from './directives/upperCase.directive';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireDatabaseModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    
      
   ],
   providers: [AuthService, FirestoreService,RoomService,

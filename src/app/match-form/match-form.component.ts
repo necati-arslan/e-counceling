@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Therapist } from '../models/therapist-model';
 import { AuthService } from '../auth/auth.service';
 import { RoomService } from '../services/room.service';
+import { UiService } from '../ui-service.service';
 
 
 
@@ -12,17 +13,21 @@ import { RoomService } from '../services/room.service';
   templateUrl: './match-form.component.html',
   styleUrls: ['./match-form.component.css']
 })
-export class MatchFormComponent implements OnInit {
+export class MatchFormComponent implements OnInit,OnDestroy {
   recommendedTherapist: Therapist[];
   matchingForm: FormGroup;
   askHelp$: Observable<any>;
   user:any;
   matching:boolean;
+  waiting:boolean=false;
+  loadingSubject$;
  
 
   constructor(
     private authService:AuthService,
-    private roomService:RoomService
+    private roomService:RoomService,
+    private uiService:UiService,
+    private cdRef:ChangeDetectorRef
   ) { 
 
     this.authService.userSubject$.subscribe((user:any)=>{
@@ -45,15 +50,31 @@ export class MatchFormComponent implements OnInit {
     });
 
     this.askHelp$ = this.roomService.getAskHelp();
+
  
 
   }
+
+  ngAfterViewChecked()
+{
+  
+  this.loadingSubject$= this.uiService.loadingStateChanged.subscribe(value=>this.waiting=value);
+  this.cdRef.detectChanges();
+}
+
+
+ngOnDestroy(){
+  this.loadingSubject$.unsubscribe();
+}
+
 
   async onSubmitMatch() {
 
     let therapists: Therapist[];
     let therapistOrder: Therapist[] = [];
     let askHelp: any[];
+   
+    this.uiService.loadingStateChangedEmit(true);
   
     
     //get therapist from firestore and get form selection
@@ -77,11 +98,11 @@ export class MatchFormComponent implements OnInit {
     therapistOrder.sort(function (a, b) {
       return b.score - a.score;
     });
-
+ 
 
 
     this.recommendedTherapist = therapistOrder; 
-
+   
     //console.log(this.recommendedTherapist); 
   }
 

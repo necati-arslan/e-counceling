@@ -1,21 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
-@import "@angular/material/prebuilt-themes/indigo-pink.css";
+@import "@angular/material/prebuilt-themes/indigo-pink.css"; 
 /* @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/css/font-awesome.css"; */
+
  
 html, body {
     height: 100%;
     font-family:  Helvetica, sans-serif;
     background-color: #F9F9FE;
-    font-size: 16px;
-    color: #5c656d;
-    font-weight: 400px;
+    
+    
 }
  
 body{ 
     margin: 0;
     background-color: #F9F9FE;
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto Slab', serif;
+}
+
+.headerSection>h2{
+  padding-top: 15px;
+  padding-bottom: 15px;
+  display: inline-block;
+  font-size: 1.7rem;
+}
+
+.headerSection>h2::after{ 
+  content:'';
+  display:block;
+  width:70px;
+  height:1px;
+  background:#49a010;
+  margin-top: 10px;
+  
+}
+@media screen and (max-width:615px){
+
+  .headerSection>h2{  
+      font-size: 1.5rem!important;
+  }
+  
+
 }
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
@@ -58,3 +88,4 @@ body{
   font-size: 25px;
   line-height: 200%;
 }
+

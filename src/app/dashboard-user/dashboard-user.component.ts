@@ -13,12 +13,12 @@ export class DashboardUserComponent implements OnInit {
 
   userinfo: UserInfo;
   lastInfo:any;
-  constructor(private frService: FirestoreService,
+  constructor(
     private authService:AuthService,
     private router: Router
   ) {
 
-
+ 
   }
 
   ngOnInit() {

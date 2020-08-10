@@ -61,15 +61,12 @@
 }
 
 .callBar .iconCall{
-    font-size: 30px;
+    
     color: #49a010;
     padding-right: 3px;
 }
 
-.callBar .iconClose{
-    font-size: 30px;
-    
-}
+
 
 .iconFull{
     font-size: 30px;

@@ -4,7 +4,7 @@
     </div>
     
     <div  class="spinBar" *ngIf="(rtc.romoteChatch===true) && (seansInfo.type==='audio') " >
-        <mat-icon style="color: white;font-size: 100px;">mic</mat-icon>
+         <i class="fas fa-microphone" style="color: white;font-size: 100px;"></i>
     </div>
  
  
@@ -15,18 +15,20 @@
         <div fxFlex="0 1 auto">
             <button (click)="clientInit()" mat-icon-button color="warn"
                 aria-label="Example icon-button with a heart icon">
-                <mat-icon class="iconCall">phone</mat-icon>
+                <i class="fas fa-phone-alt fa-2x iconCall"></i>
             </button>
         </div>
-        <div fxFlex="0 1 auto">
+        <div fxFlex="0 1 auto " style="margin-left: 10px;">
             <button (click)="leave()" mat-icon-button color="warn" aria-label="Example icon-button with a heart icon">
-                <mat-icon class="iconClose">phone_disabled</mat-icon>
+                
+                <i class="fas fa-phone-alt fa-2x"></i>
+                
             </button>
         </div>
         <div class="closeChat" fxFlex>
             <button (click)="fullscreen()" mat-icon-button color="warn"
                 aria-label="Example icon-button with a heart icon">
-                <mat-icon class="iconFull">fullscreen</mat-icon>
+                <i class="fas fa-compress fa-2x"></i>
             </button>
         </div>
 

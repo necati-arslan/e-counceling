@@ -30,8 +30,7 @@
                                     class="example-radio-button">
                                     <div fxFlex>
                                         <div class="type">
-                                            <i style="font-size: 30px;" class="material-icons">
-                                                {{seansPrice?.video?.icon}}
+                                            <i [class]="seansPrice?.video?.icon">
                                             </i>
                                             <span style="margin-left: 5px;">
                                                 <strong>Videolu Görüşme</strong>
@@ -53,8 +52,7 @@
                                     [value]="seansPrice?.audio">
                                     <div fxFlex>
                                         <div class="type">
-                                            <i style="font-size: 30px;" class="material-icons">
-                                                {{seansPrice?.audio?.icon}}
+                                            <i  [class]="seansPrice?.audio?.icon">
                                             </i>
                                             <span style="margin-left: 5px;">
                                                 <strong>Sesli Görüşme</strong>
@@ -77,8 +75,7 @@
                                     [value]="seansPrice?.chat">
                                     <div fxFlex>
                                         <div class="type">
-                                            <i style="font-size: 30px;" class="material-icons">
-                                                {{seansPrice?.chat?.icon}}
+                                            <i  [class]="seansPrice?.chat?.icon"> 
                                             </i>
                                             <span style="margin-left: 5px;">
                                                 <strong>Anlık Mesajlaşma</strong>
@@ -100,8 +97,7 @@
                                 <mat-radio-button [value]="seansPrice?.message" class="example-radio-button">
                                     <div fxFlex>
                                         <div class="type">
-                                            <i style="font-size: 30px;" class="material-icons">
-                                                {{seansPrice?.message?.icon}}
+                                            <i [class]="seansPrice?.message?.icon">
                                             </i>
                                             <span style="margin-left: 5px;">
                                                 <strong>Soru Sor</strong>
@@ -294,9 +290,8 @@
                                     <P>Lütfen Yapmak istediğiniz görüşme türünü tekrar kontrol ediniz.</P>
                                     <ng-container *ngIf="seansType">
                                         <div>
-                                            <i style="font-size: 50px;vertical-align: middle;color:#49a010;"
-                                                class="material-icons">
-                                                {{seansType.icon}}
+                                            <i style="vertical-align: middle;color:#49a010;"
+                                                [class]="seansType.icon">
                                             </i>
                                             <div class="controlSeansTypeText">
                                                 <div>{{seansType.label}}</div>
@@ -341,6 +336,10 @@
                     
                 </div>
             </mat-step>
+            <ng-template matStepperIcon="edit">
+                <i class="fas fa-check"></i>
+              </ng-template>
+            
         </mat-horizontal-stepper>
     </mat-card>
 </div>

@@ -22,9 +22,9 @@
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                            </div> 
+                            </div>
                         </div>
-                       
+
                         <div fxFlex fxFlexAlign="center">
                             <button class="match" type="submit" mat-raised-button
                                 [disabled]="matchingForm.invalid">Ara</button>
@@ -34,15 +34,20 @@
             </div>
         </div>
 
-    </mat-card> 
+    </mat-card>
 
- 
+    <div *ngIf="waiting" class="spinninnDiv">
+        <mat-spinner></mat-spinner>
+    </div>
+
+
+
+
 
     <div>
-        <app-therapist-card *ngFor="let therapist of recommendedTherapist "
-         [therapist]="therapist"  [userAuth]="user" 
+        <app-therapist-card *ngFor="let therapist of recommendedTherapist " [therapist]="therapist" [userAuth]="user"
             style="margin-bottom: 3px;"></app-therapist-card>
     </div>
- 
+
 
 </div>

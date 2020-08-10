@@ -12,6 +12,9 @@ export const environment = {
     storageBucket: "psychoapp-durmaz.appspot.com",
     messagingSenderId: "653811496811",
     appId: "1:653811496811:web:03a4ad34e85ce0bc327e2e"
+  },
+  api:{
+    baseUrl:"https://psychoapp-durmaz.uc.r.appspot.com/"
   }
 };
 

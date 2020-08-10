@@ -4,18 +4,13 @@
   <div fxFlexFill fxLayout=row fxLayoutAlign="center center" fxLayoutGap="5px">
 
     <div fxFlex="0 1 auto" fxHide.gt-xs fxLayoutAlign="start">
-      <button mat-icon-button (click)="onToggleSidenav()">
-        <mat-icon>menu</mat-icon>
-      </button>
+        <i  class="fas fa-bars hamburg" (click)="onToggleSidenav()"></i>
     </div>
     <div fxFlex="0 1 auto" fxLayoutAlign="start center" fxFlex.lt-sm fxLayoutAlign.lt-sm="flex-end">
-      <div>
-        <a style="cursor: pointer;" routerLink="/"><img src="/assets/payandamini.png" alt=""></a>
+      <div class="banner-image">
+        <a style="cursor: pointer;" routerLink="/"><img style="width: 100%;" src="/assets/logo.png" alt=""></a>
       </div>
-      <div>
-        <a style="cursor: pointer;" routerLink="/"><img style="padding-top:7px;" src="/assets/payandamintext.png"
-            alt=""></a>
-      </div>
+     
     </div>
     <div class="menu" fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.lt-sm>
       <ul fxLayout class="navigation-items">
@@ -45,9 +40,7 @@
         <ng-template #userEmail>
           <div>{{user.email | email}}</div>
         </ng-template>
-        <i class="material-icons">
-          account_circle
-        </i>
+        <i style="padding-left: 5px;" class="fas fa-user-alt"></i>
       </div>
     </ng-container>
 

@@ -1,6 +1,6 @@
 <div fxFlex> 
   <app-header [ngClass]="{'header':(!currentUrl && (isLoggedIn$ | async))}" (sidenavToggle)="sidenav.toggle()">
-  </app-header>
+  </app-header> 
   <mat-sidenav-container [ngClass]="{'container':(!currentUrl && (isLoggedIn$ | async))}" autosize>
     <mat-sidenav [ngClass]="{'sidenavUser':(isExpanded && !currentUrl && (isLoggedIn$ | async)),
                             'sidenavnotExpanded':(!currentUrl && (isLoggedIn$ | async) && !isExpanded)}" #sidenav

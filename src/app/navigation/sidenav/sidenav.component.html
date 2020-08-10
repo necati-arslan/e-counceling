@@ -1,7 +1,7 @@
 <mat-nav-list>
     <ng-container *ngIf="userAuth?.uid && !mobileQuery && !currentUrl ">
         <mat-list-item fxLayoutAlign="flex-end" (click)="onClose(isExpanded = !isExpanded)">
-            <mat-icon class="menu-button" [ngClass]="{'rotated' : !isExpanded}">navigate_before</mat-icon>
+            <i class="fas fa-arrow-right menu-button" [ngClass]="{'rotated' : !isExpanded}"></i>
         </mat-list-item>
         <mat-divider></mat-divider>
 
@@ -11,7 +11,7 @@
     <div *ngIf="lastSeans$ | async as lastSeans">
         <a (click)="lastSeansClick()" mat-list-item class="warningMain" *ngIf="lastSeans?.state==='continuing'"
             [routerLink]="['/chat',lastSeans.roomId,lastSeans.seansId]">
-            <mat-icon id="blinkButton"  [ngClass]="{'blinkButton' : userAuth?.type==='therapist'}" style="color: green;margin-right: 10px;" matBadge="1" matBadgeColor="warn" >phone</mat-icon>
+            <i class="fas fa-phone-volume" id="blinkButton"  [ngClass]="{'blinkButton' : userAuth?.type==='therapist'}" style="color: green;margin-right: 10px;" matBadge="1" matBadgeColor="warn"></i>
             <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Yeni Seans</span>
              
         </a>
@@ -21,33 +21,31 @@
     
  
     <a mat-list-item *ngIf="userAuth?.type==='therapist'" routerLink="/userOfTherapist">
-        <mat-icon>account_circle</mat-icon>
+        <i class="fas fa-user-circle"></i>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Danışanlar</span>
     </a>
     <a mat-list-item *ngIf="userAuth?.type==='therapist'" routerLink="/questiontotherapist">
-        <mat-icon  *ngIf="countQuestion>0" [matBadge]="countQuestion" matBadgeColor="warn">mail</mat-icon>
-        <mat-icon *ngIf="countQuestion===0">mail</mat-icon>
+        <i *ngIf="countQuestion>0" [matBadge]="countQuestion" matBadgeColor="warn" class="fas fa-envelope"></i>
+        <i *ngIf="countQuestion===0" class="fas fa-envelope"></i>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">&nbsp;&nbsp;Gelen Sorular</span>
     </a>
     <!--matching-->
     <mat-list-item routerLink="/matching" *ngIf="userAuth?.uid">
-        <mat-icon>search</mat-icon>
+        <i class="fas fa-search"></i>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Therapist Bul</span>
     </mat-list-item> 
     <!--matching-->
     <a mat-list-item *ngIf="userAuth?.type==='user'" routerLink="/questiontotherapist">
-        <mat-icon style="margin-right: 10px;" style="margin-right: 10px;" *ngIf="countQuestion>0" [matBadge]="countQuestion" matBadgeColor="warn">
-            mail</mat-icon> 
-        <mat-icon *ngIf="countQuestion===0">mail</mat-icon>
+        <i style="margin-right: 10px;" *ngIf="countQuestion>0" [matBadge]="countQuestion" matBadgeColor="warn" class="fas fa-envelope"></i>
+        <i *ngIf="countQuestion===0" class="fas fa-envelope"></i>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Sorularınız</span>
     </a>
 
     <!--therapist-->
     <mat-list-item *ngIf="userAuth?.type==='user'" (click)="showSubmenu = !showSubmenu">
-        <mat-icon>person</mat-icon>
+        <i class="fas fa-user-tie"></i>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Therapists</span>
-        <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || mobileQuery">
-            expand_more</mat-icon>
+        <i class="fas fa-arrow-up menu-button"  [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || mobileQuery"></i>
     </mat-list-item>
     <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isExpanded">
         <a style="margin-bottom: 5px;margin-top: 5px;" *ngFor="let therapistOfUser of rooms$ | async" mat-list-item
@@ -58,18 +56,18 @@
     </div>
     <!--therapist-->
     <mat-list-item routerLink="/appointmentTable" *ngIf="userAuth?.uid">
-        <mat-icon style="margin-right: 10px;" *ngIf="countAppointment>0" [matBadge]="countAppointment" matBadgeColor="warn">schedule</mat-icon>
-        <mat-icon *ngIf="countAppointment===0">schedule</mat-icon>
+        <i class="far fa-clock" style="margin-right: 10px;" *ngIf="countAppointment>0" [matBadge]="countAppointment" matBadgeColor="warn"></i>
+        <i class="far fa-clock" *ngIf="countAppointment===0"></i>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Randevu</span>
     </mat-list-item>
 
     <a mat-list-item [routerLink]="['']" fragment="how-work" (click)="onClose()">
-        <mat-icon>settings</mat-icon>
+        <i class="fas fa-cog"></i>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Nasıl Çalışır</span>
     </a>
    
     <a mat-list-item [routerLink]="['']" fragment="about-us" (click)="onClose()">
-        <mat-icon>home</mat-icon>
+        <i class="fas fa-home"></i>
         <span *ngIf="isExpanded || mobileQuery" class="nav-caption">Hakkımızda</span>
     </a>
     <a class="hemenBasla" mat-list-item *ngIf="!userAuth?.uid" (click)="startCounceling()">
@@ -78,7 +76,7 @@
     <mat-divider *ngIf="userAuth?.uid && !mobileQuery && !currentUrl"></mat-divider>
 
     <a mat-list-item routerLink="/profile-edit" *ngIf="userAuth?.type">
-        <mat-icon>account_circle</mat-icon>
+        <i class="far fa-user-circle"></i>
         <ng-container *ngIf="isExpanded || mobileQuery">
             <span *ngIf="userAuth?.displayName;else userEmail" class="nav-caption">{{userAuth.displayName }}</span>
             <ng-template #userEmail>
@@ -87,11 +85,11 @@
         </ng-container>
     </a>
     <a mat-list-item *ngIf="userAuth?.uid" (click)="onLogout()">
-        <mat-icon>keyboard_return</mat-icon>
+        <i class="fas fa-sign-out-alt"></i>
         <span *ngIf="isExpanded" class="nav-caption">Oturum Kapat</span>
     </a>
     <a mat-list-item routerLink="adminPanelToUser" *ngIf="userAuth?.role==='userOfManager'">
-        <mat-icon>edit</mat-icon>
+        <i class="fas fa-user-cog"></i>
         <span *ngIf="isExpanded" class="nav-caption">Yönetim</span>
     </a>
 

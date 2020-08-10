@@ -5,7 +5,7 @@ import { MatDialog } from "@angular/material";
 import { Router } from "@angular/router";
 import { LoginComponent } from "src/app/auth/login/login.component";
 import { RoomService } from "src/app/services/room.service";
-import { map } from "rxjs/operators";
+import { map, take } from "rxjs/operators";
 import { UiService } from "src/app/ui-service.service";
 
 @Component({
@@ -137,7 +137,8 @@ export class SidenavComponent implements OnInit {
         if (result) {
           console.log(result);
           let user = result.user;
-          this.authService.getUserById(user.uid).subscribe((user: any) => {
+          this.authService.getUserById(user.uid).pipe(take(1))
+          .subscribe((user: any) => {
             console.log(user);
             if (user.type == "therapist") this.router.navigate(["t-dashboard"]);
             if (user.type == "user") this.router.navigate(["dashboard"]);

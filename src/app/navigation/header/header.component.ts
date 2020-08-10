@@ -6,6 +6,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { LoginComponent } from 'src/app/auth/login/login.component';
 import { Observable } from 'rxjs';
 import { UserInfo } from 'src/app/models/userInfo-model';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -74,7 +75,7 @@ export class HeaderComponent implements OnInit {
         if (result) {
           console.log(result)
           let user = result.user
-          this.authService.getUserById(user.uid)
+          this.authService.getUserById(user.uid).pipe(take(1))
           .subscribe((user:any)=>{
             console.log(user)
             if(user.type=="therapist") this.router.navigate(['t-dashboard']);

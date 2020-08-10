@@ -49,3 +49,10 @@ fieldset{
 legend{
   color: rgba(163, 163, 163, 0.911);
 }
+
+.spinninnDiv{
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}

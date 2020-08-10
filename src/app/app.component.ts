@@ -100,7 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
       let createdAt = lastSeans.createdAt;
       console.log(createdAt);
       let now = Date.now();
-      let eventTime = now + (1000 * 30);//(1000*60*60)
+      let eventTime = now + (1000 * 60*3);//(1000*60*60)
       let diff = eventTime - now;
      
       setTimeout(() => {

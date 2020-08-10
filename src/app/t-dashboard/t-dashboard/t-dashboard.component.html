@@ -7,7 +7,7 @@
                         <div  class="warningMain"> 
                             <mat-chip-list aria-label="Fish selection">
                                 <span>
-                                    <i class="blinkButton material-icons">warning</i>
+                                    <i class="fas fa-exclamation-triangle blinkButton"></i>
                                     Yeni bir seansınız var! <strong>Bağlanmak için tıklatınız.</strong></span>
                                 <mat-chip class="baglan" [routerLink]="['/chat',lastSeans.roomId,lastSeans.seansId]">
                                     Bağlan</mat-chip>
@@ -24,22 +24,23 @@
         <div fxLayout.gt-sm="row wrap" fxLayout.lt-md="column" fxLayoutAlign.gt-sm="center center">
             <div class="alert-success" fxFlex.lt-md="1" fxFlex.gt-sm="0 0 230px">
                 <h5>Toplam Danışan Sayısı</h5>
-                <mat-icon style="font-size:35px;">supervised_user_circle</mat-icon>
+                
+                <i class="fas fa-users fa-2x"></i>
                 <h4 style="text-align: center;"> {{totalUser}}</h4>
             </div>
             <div class="alert-success" fxFlex.lt-md="1" fxFlex.gt-sm="0 0 230px">
                 <h5>Toplam Video Seans</h5>
-                <mat-icon style="font-size:35px;">videocam</mat-icon>
+                <i class="fas fa-video fa-2x" ></i>
                 <h4 style="text-align: center;">{{totalVideo}}</h4>
             </div>
             <div class="alert-success" fxFlex.lt-md="1" fxFlex.gt-sm="0 0 230px">
                 <h5>Toplam Sesli Seans</h5>
-                <mat-icon style="font-size:35px;">mic</mat-icon>
+                <i class="fas fa-microphone fa-2x"></i>
                 <h4 style="text-align: center;">{{totalAudio}}</h4>
             </div>
             <div class="alert-success" fxFlex.lt-md="1" fxFlex.gt-sm="0 0 230px">
                 <h5>Toplam Soru Sayısı</h5>
-                <mat-icon style="font-size:35px;">message</mat-icon>
+                <i class="fas fa-envelope fa-2x"></i>
                 <h4 style="text-align: center;">{{totalMessage}}</h4>
             </div>
         </div>
@@ -49,15 +50,15 @@
             <mat-list dense>
                 <h3 mat-subheader>Danışan Bilgileri:</h3>
                 <mat-list-item role="listitem">
-                    <mat-icon mat-list-icon>done</mat-icon>
+                    <i class="fas fa-check"></i>
                     <span >Danışanın sizinle ilk seansıdır.</span>
                 </mat-list-item>
                 <mat-list-item role="listitem">
-                    <mat-icon mat-list-icon>done</mat-icon>
+                    <i class="fas fa-check"></i>
                     <span >Danışanın sizinle ilk seansıdır.</span>
                 </mat-list-item>
                 <mat-list-item role="listitem">
-                    <mat-icon mat-list-icon>done</mat-icon>
+                    <i class="fas fa-check"></i>
                     <span >Danışanın sizinle ilk seansıdır.</span>
                 </mat-list-item>
             </mat-list>

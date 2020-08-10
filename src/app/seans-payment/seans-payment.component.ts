@@ -20,7 +20,6 @@ import { UiService } from '../ui-service.service';
 })
 export class SeansPaymentComponent implements OnInit,AfterViewInit {
 
-
   isLinear = false;
   messageForm: FormGroup;
   therapist;
@@ -151,6 +150,7 @@ export class SeansPaymentComponent implements OnInit,AfterViewInit {
     this.waiting=true;
     let appointmentData=undefined;
     let IdWorkingTime=undefined;
+    let userType=this.data.user.type;
   
 
 
@@ -160,6 +160,11 @@ export class SeansPaymentComponent implements OnInit,AfterViewInit {
     // console.log(this.seansType);
     // console.log("display>>>>>", this.displayName);
     // console.log("gender>>>", this.gender);
+
+    if(userType=="therapist"){
+      this.uiService.showSnackbar('Bir therapist diğer therapistten seans açamaz. Lütfen kullanıcı yetkili hesap açınız ','Bildiri',5000);
+      return;
+    }
 
     if (!this.matching) {
       this.roomService.updateUserInfo(uidUser, this.displayName, this.gender);

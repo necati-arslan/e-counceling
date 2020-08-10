@@ -32,7 +32,6 @@ export class ProfileEditComponent implements OnInit {
   uzmanlik;
   education;
   userId;
-  alert = false;
   downloadURL:any;
 
   ////
@@ -109,13 +108,10 @@ export class ProfileEditComponent implements OnInit {
     console.log(obj);
     if (obj != {}) {
       this.roomService.updateUserAllInfo(this.userId, obj).then(() => {
-        this.alert = true;
-        setTimeout(() => {
-          this.alert = false;
-        }, 4000);
-        this.uiService.showSnackbar('Güncelleme İşlemi yapıldı','Başarılı',3000)
+       
+        this.uiService.showSnackbar('Güncellemey İşlemi yapıldı','Başarılı',3000)
       })
-
+ 
     }
 
   }
@@ -136,7 +132,7 @@ export class ProfileEditComponent implements OnInit {
   }
    
   uploadFile(event){
-
+ 
     const file:File=event.target.files[0];
     const filePath=`profilePhotos/${this.userId}/${file.name}`;
 
@@ -147,7 +143,11 @@ export class ProfileEditComponent implements OnInit {
     task.snapshotChanges().pipe(
       last(),
       concatMap(()=>this.storage.ref(filePath).getDownloadURL())
-    ).subscribe(downloadURL=>this.downloadURL=downloadURL);
+    ).subscribe(downloadURL=>{
+      this.downloadURL=downloadURL
+      console.log('downloadURL',this.downloadURL)
+    });
+    
 
   }
 

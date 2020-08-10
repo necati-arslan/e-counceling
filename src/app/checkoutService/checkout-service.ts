@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { CheckoutSession } from '../models/CheckoutSession-model';
 import { first, filter } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 
 declare const Stripe;
@@ -34,9 +35,9 @@ export class CheckoutService {
 
     sendStripeToken(stripeToken,chargeInfo){
       const headers=new HttpHeaders().set('Authorization',this.jwtAuth);
-      return this.http.post('/api/charge',{
+      return this.http.post(environment.api.baseUrl + '/api/charge',{
           stripeToken,
-          roomId:chargeInfo.seansRef.roomRef,
+          roomId:chargeInfo.seansRef.roomRef, 
           seansId:chargeInfo.seansRef.seansId,
           uidTherapist:chargeInfo.uidTherapist,
           seansType:chargeInfo.seansType,
