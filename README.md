@@ -1,4 +1,13 @@
 # ECounceling
+## Features:
+1- Secure communication
+2- Real-time messagingn.
+3-Video conferencing
+4-File sharing
+5-Stripe Payment System
+
+
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.3.
 
